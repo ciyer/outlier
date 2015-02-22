@@ -1,0 +1,119 @@
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url('EOT/SourceSandPro-ExtraLight.eot');
+    src: url('WOFF/OTF/SourceSansPro-ExtraLight.otf.woff') format('woff'),
+         url('WOFF/TTF/SourceSansPro-ExtraLight.ttf.woff') format('truetype'),
+         url('SVG/SourceSansPro-ExtraLight.svg') format('svg');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url('EOT/SourceSandPro-ExtraLightIt.eot');
+    src: url('WOFF/OTF/SourceSansPro-ExtraLightIt.otf.woff') format('woff'),
+         url('WOFF/TTF/SourceSansPro-ExtraLightIt.ttf.woff') format('truetype'),
+         url('SVG/SourceSansPro-ExtraLightIt.svg') format('svg');
+    font-weight: 200;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url('EOT/SourceSandPro-Light.eot');
+    src: url('WOFF/OTF/SourceSansPro-Light.otf.woff') format('woff'),
+         url('WOFF/TTF/SourceSansPro-Light.ttf.woff') format('truetype'),
+         url('SVG/SourceSansPro-Light.svg') format('svg');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url('EOT/SourceSandPro-LightIt.eot');
+    src: url('WOFF/OTF/SourceSansPro-LightIt.otf.woff') format('woff'),
+         url('WOFF/TTF/SourceSansPro-LightIt.ttf.woff') format('truetype'),
+         url('SVG/SourceSansPro-LightIt.svg') format('svg');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url('EOT/SourceSandPro-Semibold.eot');
+    src: url('WOFF/OTF/SourceSansPro-Semibold.otf.woff') format('woff'),
+         url('WOFF/TTF/SourceSansPro-Semibold.ttf.woff') format('truetype'),
+         url('SVG/SourceSansPro-Semibold.svg') format('svg');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url('EOT/SourceSandPro-SemiboldIt.eot');
+    src: url('WOFF/OTF/SourceSansPro-SemiboldIt.otf.woff') format('woff'),
+         url('WOFF/TTF/SourceSansPro-SemiboldIt.ttf.woff') format('truetype'),
+         url('SVG/SourceSansPro-SemiboldIt.svg') format('svg');
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url('EOT/SourceSandPro-Bold.eot');
+    src: url('WOFF/OTF/SourceSansPro-Bold.otf.woff') format('woff'),
+         url('WOFF/TTF/SourceSansPro-Bold.ttf.woff') format('truetype'),
+         url('SVG/SourceSansPro-Bold.svg') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url('EOT/SourceSandPro-BoldIt.eot');
+    src: url('WOFF/OTF/SourceSansPro-BoldIt.otf.woff') format('woff'),
+         url('WOFF/TTF/SourceSansPro-BoldIt.ttf.woff') format('truetype'),
+         url('SVG/SourceSansPro-BoldIt.svg') format('svg');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url('EOT/SourceSandPro-Black.eot');
+    src: url('WOFF/OTF/SourceSansPro-Black.otf.woff') format('woff'),
+         url('WOFF/TTF/SourceSansPro-Black.ttf.woff') format('truetype'),
+         url('SVG/SourceSansPro-Black.svg') format('svg');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url('EOT/SourceSandPro-BlackIt.eot');
+    src: url('WOFF/OTF/SourceSansPro-BlackIt.otf.woff') format('woff'),
+         url('WOFF/TTF/SourceSansPro-BlackIt.ttf.woff') format('truetype'),
+         url('SVG/SourceSansPro-BlackIt.svg') format('svg');
+    font-weight: 900;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url('EOT/SourceSandPro-Regular.eot');
+    src: url('WOFF/OTF/SourceSansPro-Regular.otf.woff') format('woff'),
+         url('WOFF/TTF/SourceSansPro-Regular.ttf.woff') format('truetype'),
+         url('SVG/SourceSansPro-Regular.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url('EOT/SourceSandPro-It.eot');
+    src: url('WOFF/OTF/SourceSansPro-It.otf.woff') format('woff'),
+         url('WOFF/TTF/SourceSansPro-It.ttf.woff') format('truetype'),
+         url('SVG/SourceSansPro-It.svg') format('svg');
+    font-weight: normal;
+    font-style: italic;
+}

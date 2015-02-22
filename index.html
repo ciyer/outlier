@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Outlier Clothsography</title>
+		<!-- #tminclude "~/Sites/illposed-support/includes/analytics.html" -->
+<!-- Start Open Web Analytics Tracker -->
+<script type="text/javascript">
+//<![CDATA[
+var owa_baseUrl = 'http://www.illposed.com/owa/';
+var owa_cmds = owa_cmds || [];
+owa_cmds.push(['setSiteId', 'a72bb755bd58723474fb21069d5fa792']);
+owa_cmds.push(['trackPageView']);
+owa_cmds.push(['trackClicks']);
+owa_cmds.push(['trackDomStream']);
+
+(function() {
+  var _owa = document.createElement('script'); _owa.type = 'text/javascript'; _owa.async = true;
+  owa_baseUrl = ('https:' == document.location.protocol ? window.owa_baseSecUrl || owa_baseUrl.replace(/http:/, 'https:') : owa_baseUrl );
+  _owa.src = owa_baseUrl + 'modules/base/js/owa.tracker-combined-min.js';
+  var _owa_s = document.getElementsByTagName('script')[0]; _owa_s.parentNode.insertBefore(_owa, _owa_s);
+}());
+//]]>
+</script>
+<!-- End Open Web Analytics Code -->
+<!-- end tminclude -->
+
+    <meta name="description" content="">
+    <meta name="author" content="Chandrasekhar Ramakrishnan, illposed.com">
+
+    <!-- Typefaces -->
+    <link href="fonts/league/webfonts.css" rel="stylesheet">
+    <link href="fonts/SourceSansPro/webfonts.css" rel="stylesheet">    
+    <!-- Styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="oai.css" rel="stylesheet">    
+    <style type="text/css">
+      footer p {
+        font-family: "Raleway";
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <div id="navbar" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#">O C</a>
+          </div>
+          <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="about.html">About</a></li>
+            </ul>
+          </div>
+        </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-2 col-md-2 sidebar">
+          <h3>Filter</h3>
+          <div style="padding-bottom: 10px;">
+            <button id="clear-button" type="button" class ="btn btn-xs btn-default">Clear All</button>
+          </div>
+          <div class="panel-group" id="filters">
+            <div id="clothes-filter" class="panel"></div>
+            <div id="accessory-filter" class="panel"></div>
+            <div id="fabric-filter" class="panel"></div>
+            <div id="mwu-filter" class="panel"></div>
+            <div id="reup-filter" class="panel"></div>
+          </div>
+        </div>
+        <div class="col-xs-6 col-md-6">
+          <h3>Products</h3>
+          <div style="height: 400px; overflow: scroll;">
+            <table id="products-table" class="table"></table>
+          </div>
+        </div>
+        <div class="col-xs-4 col-md-4">
+          <h3>Summary</h3>
+          <div class="row">
+            <div class="col-xs-4 col-md-4" style="width: 110px">
+              <h4>Price</h4>
+              <span id="price-container"></span>
+              <span id="price-median-container"></span>
+            </div>
+            <div class="col-xs-4 col-md-4" style="width: 110px">
+              <h4>Month</h4>
+              <span id="month-container"></span>
+            </div>
+            <div class="col-xs-4 col-md-4" style="width: 110px">
+              <h4>Weekday</h4>
+              <span id="weekday-container"></span>
+            </div>
+          </div>
+          <div class="row" style="padding: 10px 0px 0px 0px;">
+            <div class="col-xs-12 col-md-12">
+              <h5>Guide</h5>
+                <div id="guide-text">
+                  <p>The clothsography shows most Outlier releases made in the period from April 2011 to February 2015, and some earlier as well.</p>
+                  <p>
+                    To focus on certain kinds of items, turn on one or more of the filters from the far left. For example, to see just shirts for women, expand <strong>Clothes</strong> and select <strong>Shirts</strong> then expand <strong>Men/Women/Unisex</strong> and select <strong>Women</strong>.
+                  </p>
+                  <p>
+                    The data on release dates is from <a href="http://milled.com/outlier">Milled/Outlier</a> and <a href="https://twitter.com/outlier">twitter</a>; price data is mostly from the Outlier web site; any mistakes are mine alone. If you spot something, let <a href="https://twitter.com/ciyer">me know</a>.
+                  </p>
+                </div>              
+            </div>
+          </div>
+<!--          
+          <div class="row">
+            <div class="col-xs-12 col-md-12">
+              <hr>
+              <footer>
+                <p>&copy;illposed 2014</p>
+              </footer>
+            </div>
+          </div>
+-->
+        </div>
+      </div>
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/d3.js"></script>
+    <script src="oai.js"></script>
+
+  </body>
+</html>

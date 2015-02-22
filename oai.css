@@ -1,0 +1,18 @@
+.bar rect {
+  fill: slategray;
+  shape-rendering: crispEdges;
+}
+
+.graphlabel text {
+  fill: black;
+  font-size: 9pt;
+/* CHART FILTERING
+  cursor: pointer;
+*/
+}
+
+.axis path, .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
