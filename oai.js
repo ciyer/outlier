@@ -18,6 +18,8 @@
  */
 var dateParser = d3.time.format("%d.%m.%Y");
 var dateFormatter = d3.time.format("%b %d %Y");
+var monthFormatter = d3.time.format("%B")
+var yearFormatter = d3.time.format("%Y")
 
 /** 
  * @class
@@ -200,6 +202,9 @@ function OaiPresenter(model) {
   this.fabricFilterContainer = d3.select("#fabric-filter");
   this.mwuFilterContainer = d3.select("#mwu-filter");
   this.reupFilterContainer = d3.select("#reup-filter");
+
+  this.endMonthContainer = d3.select("#endmonth");
+  this.endYearContainer = d3.select("#endyear");
 
   var margin = {top: 0, right: 0, bottom: 0, left: 0};
   this.chartMargin = margin;
@@ -467,12 +472,20 @@ OaiPresenter.prototype.drawFilters = function() {
   this.drawFilter(this.reupFilterContainer, {category: "Re-up?", catName: "reup", filters: this.model.reup});
 };
 
+OaiPresenter.prototype.updateEndDateInfo = function() {
+  var lastEntry = this.model.products[0]
+  var lastEntryDate = lastEntry.releaseDate
+  this.endMonthContainer.text(monthFormatter(lastEntryDate));
+  this.endYearContainer.text(yearFormatter(lastEntryDate));
+};
+
 OaiPresenter.prototype.update = function() {
   this.drawProductTable();
   this.drawPriceInfo();
   this.drawMonthInfo();
   this.drawWeekdayInfo();
   this.drawFilters();
+  this.updateEndDateInfo();
 }
 
 OaiPresenter.prototype.clearFilters = function() {
