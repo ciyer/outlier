@@ -16,12 +16,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-var dateParser = d3.time.format("%d.%m.%Y");
+var dateParser = d3.time.format("%Y-%m-%d");
 var dateFormatter = d3.time.format("%b %d %Y");
 var monthFormatter = d3.time.format("%B")
 var yearFormatter = d3.time.format("%Y")
 
-/** 
+/**
  * @class
  */
 function OaiModel() {
@@ -64,12 +64,12 @@ OaiModel.prototype.loadData = function(callback) {
         return;
       }
       _this.initializeProducts(rows);
-      callback(rows); 
+      callback(rows);
     })
 }
 
 OaiModel.prototype.initializeProducts = function(rows) {
-  this.products = rows; 
+  this.products = rows;
   this.filteredProducts = this.products;
   this.orFilters = [];
   this.andFilters = [];
@@ -186,7 +186,7 @@ OaiModel.prototype.clearFilters = function() {
   this.filteredProducts = this.products;
 };
 
- /** 
+ /**
   * @class
   */
 function OaiPresenter(model) {
@@ -225,10 +225,10 @@ OaiPresenter.prototype.productTableColumns = function(row, headers) {
   var showImages = this.showImages;
   var imageColumnIdx = (showImages) ? 0 : -1;
   var productColumnIdx = (showImages) ? 1 : 0;
-  return headers.map(function(d, i) { 
+  return headers.map(function(d, i) {
     var links = [];
     var images = [];
-    if (i == productColumnIdx && row["InSitu"].length > 0) 
+    if (i == productColumnIdx && row["InSitu"].length > 0)
       links = [{label: row[d], link: row["InSitu"]}];
     if (i == imageColumnIdx && row["Image"] && row["Image"].length > 0) {
       link = null;
@@ -325,7 +325,7 @@ OaiPresenter.prototype.drawChart = function(container, hist, bins, labels) {
     var yTranslate = (height - 2);
     var xTranslate = blockWidth * (i + 0.5);
     if (shouldRotate) xTranslate += 4;
-    return "translate(" + xTranslate + "," + yTranslate + ")"; 
+    return "translate(" + xTranslate + "," + yTranslate + ")";
   }
 
   var textgEnter = textg.enter().append("g")
@@ -339,7 +339,7 @@ OaiPresenter.prototype.drawChart = function(container, hist, bins, labels) {
     .data(function(d, i) { return [d] });
   var textEnter = text.enter()
       .append("text");
-  (shouldRotate) ? 
+  (shouldRotate) ?
     textEnter.attr("transform", "rotate(-90)") :
     textEnter.attr("text-anchor", "middle");
 
@@ -383,7 +383,7 @@ OaiPresenter.prototype.drawMonthInfo = function() {
     return list
       .filter(function(d) { return "FALSE" == d["Historic"] && null != d.releaseDate})
       .map(function(d) { return d.releaseDate.getMonth() });
-  }  
+  }
   var labels = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"]
   var months = monthsToConsider(this.model.filteredProducts);
   var bins = [0,1,2,3,4,5,6,7,8,9,10,11,12];
@@ -425,7 +425,7 @@ OaiPresenter.prototype.drawFilter = function(container, categoryDescription) {
   var _this = this;
   var toggles, group, panelCollapse, category, link;
 
-  function onFiltersCount(d) { 
+  function onFiltersCount(d) {
     return d.filters.map(function(f) { return f.isOn ?  1 : 0 }).reduce(function(sum, b) { return b + sum });
   }
 
@@ -439,9 +439,9 @@ OaiPresenter.prototype.drawFilter = function(container, categoryDescription) {
       .attr("data-toggle", "collapse")
       .attr("data-parent", "#filters")
       .attr("href", function(d) { return "#collapse-" + d.catName; });
-  link.text(function(d) { 
+  link.text(function(d) {
     var count = onFiltersCount(d);
-    return (count > 0) ?  
+    return (count > 0) ?
       d.category + " (" + count + ")" :
       d.category;
   });
@@ -461,7 +461,7 @@ OaiPresenter.prototype.drawFilter = function(container, categoryDescription) {
     .attr("class", "btn btn-default")
     .attr("data-toggle", "button")
     .on("click", function(d) { _this.model.toggleFilter(d); _this.update(); })
-    .text(function(d) { return d.type; });  
+    .text(function(d) { return d.type; });
 }
 
 OaiPresenter.prototype.drawFilters = function() {
