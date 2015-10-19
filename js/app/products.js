@@ -138,6 +138,7 @@ define(["d3", "react"], function(d3, React) {
           .classed("row", true)
           .style("padding", "0 0 0 0")
           .style("margin", "0 0 0 0");
+      productsList.exit().transition(1000).style("opacity", 0).remove();
       var list = productsList.selectAll("li").data(unpack);
       var presenter = this.props.presenter;
       list
