@@ -126,11 +126,9 @@ define(["d3", "react"], function(d3, React) {
     displayName: 'ProductsGrid',
 
     drawProductList: function(container, products) {
-      // Split the products into groups depending on the size of the screen
-      // Check props.images_per_col
-      // Break the products into groups of 12
-
-      var groups = groupBy(products, 12);
+      // TODO: Split the products into groups depending on the size of the screen -- use props.images_per_col
+      // Current implementation -- break the products into groups of 6
+      var groups = groupBy(products, 6);
       var productsList = container.selectAll("ul").data(groups);
       productsList
           .enter()
