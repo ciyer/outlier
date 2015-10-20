@@ -297,17 +297,9 @@ define(["d3", "react"], function(d3, React) {
 
       var cutoffDate = dateFormat.parse("2013-01-01");
       var products =
-        this.props.products.filter(function(d, i, a) {
+        this.props.products.filter(function(d) {
           if ("TRUE" == d["Historic"]) return false;
           if (null == d.releaseDate) return false;
-          if (i > 0) {
-            // Ignore situations where the same product is re-released within two weeks.
-            var n = a[i - 1]
-            if (  (n["Product"] == d["Product"]) &&
-                  ((n.releaseDate - d.releaseDate) * msInWeekRecip < 2)) {
-              return false;
-            }
-          }
           return d.releaseDate > cutoffDate;
       });
       if (products.length < 3) {
