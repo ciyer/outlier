@@ -167,10 +167,7 @@ define(["d3"], function(d3) {
     var onAndFilters = this.andFilters.filter(function(d) { return d.isOn });
     if (onAndFilters.length < 1) return;
 
-    // TODO This needs to done by category -- within a category they are or
-    // between categories they are and
-    //var runAndFiltersInOrMode = (onFilters.length < 1);
-    var runAndFiltersInOrMode = true;
+    // Filters within a category are applied as OR, between categories as AND
     var filtersByCategory = {};
     onAndFilters.forEach(function(f) {
       if (filtersByCategory[f.category] != null) {
