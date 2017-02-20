@@ -14,7 +14,7 @@ define(["d3", "react"], function(d3, React) {
   function unpack(d) { return d;}
 
   function urlStringForProductName(name) {
-    return "#product/" + name.replace(/\//g, "%2F")
+    return "#product/" + name.replace(/\//g, "%2F").replace(/ /g, "+")
   }
 
   function rowLabel(d) {

@@ -22,6 +22,10 @@ define(function(require, exports, module) {
   var about = require("es6!app/about");
   var details = require("app/details");
 
+  function productNameFromUrlString(urlString) {
+    return urlString.replace(/\+/g, " ");
+  }
+
   OaiRouter = Backbone.Router.extend({
     routes: {
       "": "home",
@@ -115,7 +119,7 @@ define(function(require, exports, module) {
 
   OaiPresenter.prototype.showProductPage = function(productName) {
     // Show the product details page
-    this.props.selectedProductName = productName;
+    this.props.selectedProductName = productNameFromUrlString(productName);
     this.update();
   }
 
