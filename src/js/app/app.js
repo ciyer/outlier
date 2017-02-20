@@ -19,7 +19,7 @@ define(function(require, exports, module) {
   var model = require("app/model");
   var dashboard = require("app/dashboard");
   var products = require("app/products");
-  var about = require("es6!app/about");
+  var about = require("app/about");
   var details = require("app/details");
 
   function productNameFromUrlString(urlString) {

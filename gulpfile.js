@@ -8,7 +8,7 @@ gulp.task('build', function() {
   gulp.src(['./lib/**/*.*'])
     .pipe(gulp.dest('./dist'));
 
-  gulp.src(['./src/**/*.html', './src/**/*.js'])
+  gulp.src(['./src/**/*.html', './src/**/*.js', './src/**/*.csv', './src/**/*.css'])
     .pipe(preprocess())
     .pipe(gulp.dest('./dist'));
 
