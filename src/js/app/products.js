@@ -212,7 +212,13 @@ define(["d3", "react"], function(d3, React) {
     },
 
     productTableColumns: function(row, headers) {
-      return headers.map(function(d, i) { return {label: row[d], links: [], images: []} });
+      function labelForCol(col) {
+        if (col != "Colors") return row[col]
+        // Sort the colors alphabetically
+        let colors = row[col];
+        return colors.split(",").map((d) => d.trim()).sort().join(", ");
+      };
+      return headers.map(function(d, i) { return {label: labelForCol(d), links: [], images: []} });
     },
 
     drawProductTable: function(productsTable, products) {
