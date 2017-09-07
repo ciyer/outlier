@@ -89,6 +89,7 @@ define(function(require, exports, module) {
     this.accessories = this.model.accessories;
     this.fabrics = this.model.fabrics;
     this.mwu = this.model.mwu;
+    this.exp = this.model.exp;
     this.allProducts = this.model.products;
     this.products = this.model.filteredProducts;
 

@@ -87,7 +87,8 @@ define(["d3", "react", "underscore"], function(d3, React, _) {
         {filterId: "clothes-filter", category: "Clothes", catName: "clothes", filters: this.props.presenter.clothes},
         {filterId: "accessory-filter", category: "Objects", catName: "accessories", filters: this.props.presenter.accessories},
         {filterId: "fabric-filter", category: "Fabric", catName: "fabric", filters: this.props.presenter.fabrics},
-        {filterId: "mwu-filter", category: "Men/Woman/Unisex", catName: "mwu", filters: this.props.presenter.mwu}
+        {filterId: "mwu-filter", category: "Men/Woman/Unisex", catName: "mwu", filters: this.props.presenter.mwu},
+        {filterId: "exp-filter", category: "Experiments", catName: "exp", filters: this.props.presenter.exp}
       ]
       var _this = this;
       var filters = filterProps.map(function(d) { d.key = d.filterId; _.extend(d, _this.props); return Filter(d) });

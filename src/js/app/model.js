@@ -32,6 +32,7 @@ define(["d3"], function(d3) {
     this.orFilters = [];
     this.andFilters = [];
     this.mwu = [];
+    this.exp = [];
     this.reup = [];
   }
 
@@ -123,6 +124,17 @@ define(["d3"], function(d3) {
       }
     });
     this.andFilters = this.andFilters.concat(this.mwu);
+
+    var exp = ["Experiment", "Public Prototype"];
+    this.exp = exp.map(function(option) {
+      return {
+        isOn: false,
+        category: "Experiment",
+        type: option,
+        isHit: function(d) { return d["Product"].startsWith(option) }
+      }
+    });
+    this.andFilters = this.andFilters.concat(this.exp);
 
     var reup = [];
     this.initializeFilterCodes(reup, reupMap);
