@@ -20,6 +20,7 @@ define(function(require, exports, module) {
   var dashboard = require("app/dashboard");
   var products = require("app/products");
   var about = require("app/about");
+  var review2017 = require("app/review2017");
   var details = require("app/details");
 
   function productNameFromUrlString(urlString) {
@@ -30,6 +31,7 @@ define(function(require, exports, module) {
     routes: {
       "": "home",
       "about":  "about",
+      "review2017": "review2017",
       "product/:product": "product"
     }
   });
@@ -44,7 +46,9 @@ define(function(require, exports, module) {
           endmonth: model.monthFormatter(lastEntryDate),
           endyear: model.yearFormatter(lastEntryDate)
         });
-      } else if (this.props.selectedProductName){
+      } else if (this.props.showReview2017) {
+        return review2017.Review2017({ });
+      } else if (this.props.selectedProductName) {
         return details.Details(_.extend({
           product: this.props.presenter.compileProduct(this.props.selectedProductName)
         }, this.props));
@@ -70,6 +74,7 @@ define(function(require, exports, module) {
     this.router.presenter = this;
     this.router.on("route:home", function() { _this.showHomePage() });
     this.router.on("route:product", function(product) { _this.showProductPage(product) });
+    this.router.on("route:review2017", function() { _this.showReview2017() });
     this.router.on("route:about", function() { _this.showAboutPage() });
 
     this.props = {};
@@ -78,6 +83,7 @@ define(function(require, exports, module) {
     this.props.chartWidth = 100 - margin.left - margin.right;
     this.props.chartHeight = 100 - margin.top - margin.bottom;
     this.props.showAbout = false;
+    this.props.showReview2017 = false;
     this.props.mode =  "table";
     this.props.showImages = false;
     this.props.showLabels = true;
@@ -99,6 +105,11 @@ define(function(require, exports, module) {
       $('#about-widget').addClass("active");
     } else {
       $('#about-widget').removeClass("active");
+    }
+    if (this.props.showReview2017) {
+      $('#review-2017-widget').addClass("active");
+    } else {
+      $('#review-2017-widget').removeClass("active");
     }
     if (this.props.showImages) {
       $('#images-widget').addClass("active");
@@ -124,14 +135,24 @@ define(function(require, exports, module) {
     this.update();
   }
 
+  // TODO Refactor this stuff -- should not duplicate the current page logic
   OaiPresenter.prototype.showAboutPage = function() {
     // Show the about page
     this.props.showAbout = true;
+    this.props.showReview2017 = false;
+    this.update();
+  }
+
+  OaiPresenter.prototype.showReview2017 = function() {
+    // Show the about page
+    this.props.showReview2017 = true;
+    this.props.showAbout = false;
     this.update();
   }
 
   OaiPresenter.prototype.showHomePage = function() {
     this.props.showAbout = false;
+    this.props.showReview2017 = false;
     this.props.selectedProductName = null;
     this.update();
   }
@@ -181,7 +202,10 @@ define(function(require, exports, module) {
   };
 
   var presenter = new OaiPresenter();
+  // Production
   Backbone.history.start({root: "/outlier/"});
+  // Local development
+  // Backbone.history.start({root: "/"});
 
   function enterApp() {
     $('#images-control').click(function(event) {
