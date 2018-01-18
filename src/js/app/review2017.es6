@@ -58,6 +58,132 @@ var Text = React.createClass({
               <h3 id="layers">Layers</h3>
               <p><img src="2017_review_img/output_21_0.png" alt="png" title="" /></p>
               <p>Regular layers have been declining in aggregate price. In 2017, layers were split 50/50 between regular products and experimental ones.</p>
+              <h1 id="fabrics">Fabrics</h1>
+
+              <p>Since its start, Outlier has differentiated itself through their choice of fabrics. How have they utilized their fabrics accross their products? How often do they re-use fabrics for multiple products?</p>
+
+              <p><img src="2017_review_img/output_24_0.png" alt="png" title="" /></p>
+
+              <p>Looking at the number of products per fabric gives a picture of how many different materials Outlier works with. During the period between 2013 and 2015, an aspect of Outlier&#8217;s growth was in the variety of fabrics they employed: not only were they increasing the number of products and drops, they were using a greater variety of fabrics as well, as evidenced by the decling number of products per fabric. Between 2015 and 2017, Outlier continued to grew in terms of products and drops, but they started using the same fabrics in a larger number of products.</p>
+
+              <h1 id="the_price_of_free_shipping">The Price of <em>Free</em> Shipping</h1>
+              <p>In July 2017, <a href="https://www.reddit.com/r/Outlier/comments/6mnjfm/free_shipping_and_price_increases_july_14th/">Outlier announced</a> that they were changing how they handled shipping. Domestic shipping became free, international shipping became cheaper, but the price of products increased. For products that were released both before and after the price change, here is a list of price differences before and after July 14, 2017.</p>
+              <div>
+              <table border="1" class="dataframe">
+                <thead>
+                  <tr style={{"text-align": "right"}}>
+                    <th></th>
+                    <th>Price Change</th>
+                  </tr>
+                  <tr>
+                    <th>Product</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>Gostwyck Merino Turtleneck</th>
+                    <td>-50.0</td>
+                  </tr>
+                  <tr>
+                    <th>Alphacharge Vest</th>
+                    <td>-38.0</td>
+                  </tr>
+                  <tr>
+                    <th>Doublefine Merino Pullover</th>
+                    <td>-27.0</td>
+                  </tr>
+                  <tr>
+                    <th>Alphacharge Track Jacket</th>
+                    <td>-7.0</td>
+                  </tr>
+                  <tr>
+                    <th>Co/Weight Crewneck Sweatshirt</th>
+                    <td>0.0</td>
+                  </tr>
+                  <tr>
+                    <th>Doublefine Merino Hoodie</th>
+                    <td>0.0</td>
+                  </tr>
+                  <tr>
+                    <th>Freecotton Button-up</th>
+                    <td>0.0</td>
+                  </tr>
+                  <tr>
+                    <th>Futureworks</th>
+                    <td>0.0</td>
+                  </tr>
+                  <tr>
+                    <th>Injected Linen Pants</th>
+                    <td>0.0</td>
+                  </tr>
+                  <tr>
+                    <th>Runweight Merino T-Shirt</th>
+                    <td>0.0</td>
+                  </tr>
+                  <tr>
+                    <th>Slim Dungarees</th>
+                    <td>0.0</td>
+                  </tr>
+                  <tr>
+                    <th>Slim Dungarees (Long)</th>
+                    <td>0.0</td>
+                  </tr>
+                  <tr>
+                    <th>Ultrafine Merino Longsleeve</th>
+                    <td>0.0</td>
+                  </tr>
+                  <tr>
+                    <th>OG Classics</th>
+                    <td>8.0</td>
+                  </tr>
+                  <tr>
+                    <th>Ultrafine Merino T-Shirt</th>
+                    <td>12.0</td>
+                  </tr>
+                  <tr>
+                    <th>Runweight Merino V-Neck</th>
+                    <td>13.0</td>
+                  </tr>
+                  <tr>
+                    <th>Strong Dungarees</th>
+                    <td>13.0</td>
+                  </tr>
+                  <tr>
+                    <th>60/30 Chinos</th>
+                    <td>19.0</td>
+                  </tr>
+                  <tr>
+                    <th>M-Back Track Pants</th>
+                    <td>19.0</td>
+                  </tr>
+                  <tr>
+                    <th>Nyco Oxford</th>
+                    <td>22.0</td>
+                  </tr>
+                  <tr>
+                    <th>Runweight Merino Long Sleeve</th>
+                    <td>22.0</td>
+                  </tr>
+                  <tr>
+                    <th>Co/Weight Merino Pullover Hoodie</th>
+                    <td>23.0</td>
+                  </tr>
+                  <tr>
+                    <th>Co/Weight Merino Zip Front Hoodie</th>
+                    <td>23.0</td>
+                  </tr>
+                  <tr>
+                    <th>GD Cottonweight Merino T-Shirt</th>
+                    <td>27.0</td>
+                  </tr>
+                  <tr>
+                    <th>Deck Jacket</th>
+                    <td>50.0</td>
+                  </tr>
+                </tbody>
+              </table>
+              </div>
               <h1 id="looking_to_2018">Looking to 2018</h1>
               <p>Looking forward to see how these trends develop in 2018.</p>
             </div>)
