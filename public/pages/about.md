@@ -6,11 +6,11 @@ To focus on certain kinds of items, turn on one or more of the filters from the 
 
 Click on an individual item to see details about that product.
 
-The release gap display indicates how many weeks there have been between releases for the selected product or products. 
+The release gap display indicates how many weeks there have been between releases for the selected product or products.
 
 #### Data Sources
 
 The data on release dates is from [Milled/Outlier](http://milled.com/outlier), [twitter](https://twitter.com/outlier), [reddit](https://reddit.com/r/outlier); price data is mostly from the Outlier web site; any mistakes are mine alone. If you spot something, let [me (@ciyer) know](https://twitter.com/ciyer).
 
 #### Code
-The code is available on [GitHub](https://github.com/ciyer/outlier), in particular the data is available as [outlier-data.csv](https://github.com/ciyer/outlier/blob/master/outlier-data.csv)
+The code is available on [GitHub](https://github.com/ciyer/outlier), in particular the data is available as [outlier-data.csv](https://github.com/ciyer/outlier/blob/master/public/outlier-data.csv)
