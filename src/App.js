@@ -3,7 +3,7 @@ import './App.css';
 
 // Navigation
 import { BrowserRouter as Router, Route, Switch, NavLink as RRNavLink }  from 'react-router-dom'
-import { NavLink } from 'reactstrap';
+import { Collapse, Nav, Navbar, NavbarToggler, NavLink } from 'reactstrap';
 
 // Components
 import { About, Archive, ProductPage } from './component';
@@ -18,27 +18,33 @@ class NavItem extends Component {
 
 class AppNavBar extends Component {
 
+  constructor(props) {
+    super(props);
+    this.onToggleNavbar = this.toggleNavbar.bind(this);
+    this.state = { collapsed: true };
+  }
+
+  toggleNavbar() {
+    this.setState({ collapsed: !this.state.collapsed });
+  }
+
   render() {
     return (
       <header>
-        <nav className="navbar navbar-expand-sm navbar-light bg-light justify-content-between">
-          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav mr-auto">
+        <Navbar expand="sm" light>
+          <NavbarToggler onClick={this.onToggleNavbar} className="mr-2" />
+          <Collapse isOpen={!this.state.collapsed} navbar>
+            <Nav navbar>
               <NavItem to="/" title="Archive" />
-            </ul>
-            <ul className="navbar-nav my-2">
+            </Nav>
+            <Nav navbar className="ml-auto">
               { // Add later
                 // <NavItem to="/2017review" title="2017 Review"/>
               }
               <NavItem to="/about" title="About"/>
-            </ul>
-          </div>
-        </nav>
+            </Nav>
+          </Collapse>
+        </Navbar>
       </header>
     )
   }
