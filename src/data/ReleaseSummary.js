@@ -143,4 +143,28 @@ class ReleaseSummary {
   }
 }
 
-export {ReleaseSummary, ReleaseBaselineStats};
+/**
+ * Summarize Fabrics in the releases
+ */
+class ReleaseFabricSummary {
+  constructor(releases, stats) {
+    this.releases = releases;
+  }
+
+  fabricUseCount() {
+    const releases = this.releases;
+    const result = {};
+    releases.forEach(r => {
+      const count = (result[r.Fabric]) ? result[r.Fabric] + 1 : 1;
+      result[r.Fabric] = count;
+    });
+    return result;
+  }
+
+  compute() {
+    const fabricUseCount = this.fabricUseCount();
+    return { fabricUseCount }
+  }
+}
+
+export {ReleaseSummary, ReleaseBaselineStats, ReleaseFabricSummary};

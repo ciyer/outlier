@@ -3,14 +3,17 @@ import { connect } from 'react-redux';
 
 import { ArchiveState } from '../../state';
 import ArchivePresent from './Archive';
-import { ReleaseSummary } from '../../data';
+import { ReleaseSummary, ReleaseFabricSummary } from '../../data';
 
 function mapStateToProps(state, ownProps) {
   const archive = state.archive;
   const summary = (archive.summary.baseline.priceBins == null) ?
     null :
     (new ReleaseSummary(archive.data.filtered, archive.summary.baseline)).compute();
-  return {archive, summary}
+  const fabricSummary = (archive.summary.baseline.priceBins == null) ?
+    null :
+    (new ReleaseFabricSummary(archive.data.preFabricFilter)).compute();
+  return {archive, summary, fabricSummary}
 }
 
 function mapDispatchToProps(dispatch) {
@@ -32,7 +35,8 @@ class ArchiveWrapper extends Component {
   render() {
     return <ArchivePresent
       archive={this.props.archive} handlers={this.props.handlers}
-      summary={this.props.summary} productUrl="/product" />
+      summary={this.props.summary} fabricSummary={this.props.fabricSummary}
+      productUrl="/product" />
   }
 }
 

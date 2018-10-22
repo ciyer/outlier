@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom'
 
 import { ReleaseImagesTitled } from '../ReleaseImages';
 import { Histogram, BinnedScatter } from '../chart';
+import FabricFilters from './fabric';
 
 import { groupedData, urlStringForProductName } from '../../utils';
 import { FilterSummary } from '../../state';
@@ -91,6 +92,43 @@ class ArchiveFilterGroup extends Component {
   }
 }
 
+class ArchiveFabricFilterGroup extends Component {
+  constructor(props) {
+    super(props);
+    this.handlers = {
+      onClick: this.onClick.bind(this)
+    }
+  }
+  onClick(filter) { this.props.onToggle(filter); }
+
+  render() {
+    // The labels for the fabrics should be [fabric name] ([count]), sorted by count.
+    const summary = this.props.summary;
+    const filterMap = {};
+    this.props.filters.forEach(f => { filterMap[f['type']] = f });
+    const availableFilters = Object.keys(summary)
+      .map(name => ({name, count: summary[name], filter: filterMap[name]}))
+      .sort((a, b) => b.count - a.count);   // Sort in reverse order
+    const filterButtons = availableFilters.filter(f => f.filter.isOn).map(f =>
+      <Button key={f.filter.type} style={{width: "100%"}}
+        onClick={() => this.onClick(f.filter)}  // Use a function here to capture the filter
+        active={f.filter.isOn}
+        color={(f.filter.isOn) ? "primary" : "secondary"}>
+        {f.filter.type} ({f.count})
+      </Button>
+    );
+    return <div>
+      <span style={{fontWeight: "bold"}}>Fabrics</span>
+      <ButtonToolbar role="toolbar" style={{paddingBottom: '5px'}}>
+        <ButtonGroup style={{width: "100%"}} size="sm">
+          {filterButtons}
+        </ButtonGroup>
+      </ButtonToolbar>
+      <FabricFilters filters={availableFilters.filter(f => !f.filter.isOn)} onSelect={this.handlers.onClick} />
+    </div>
+  }
+}
+
 class ArchiveFilters extends Component {
   constructor(props) {
     super(props);
@@ -123,6 +161,12 @@ class ArchiveFilters extends Component {
         <ArchiveFilterGroup key={g} name={g} filters={filterMap[g]} onToggle={onToggle} />
       ) :
       null;
+    // Fabrics filter works a bit differently.
+    const postFiltersUI = (expanded) ?
+      <ArchiveFabricFilterGroup filters={filters.Fabrics} onToggle={onToggle}
+        summary={this.props.summary.fabricUseCount} />
+      :
+      null;
     const clearButton = (filterSummary !== "(show all)") ?
       <Button key="clearAll" style={{width: "100%"}} size="sm"
           onClick={() => this.onClearAll()}>
@@ -134,6 +178,7 @@ class ArchiveFilters extends Component {
       <a href="" onClick={this.onExpand}><p><b>{filterHeader}</b></p></a>
       {clearButton}
       {filtersUI}
+      {postFiltersUI}
     </div>
   }
 }
@@ -141,14 +186,20 @@ class ArchiveFilters extends Component {
 class ArchiveControls extends Component {
   render() {
     return [
-      <Row key="display"><Col>
-        <ArchiveDisplayControls settings={this.props.settings.display} handlers={this.props.handlers} />
-      </Col></Row>,
+      <Row key="display">
+        <Col>
+          <ArchiveDisplayControls settings={this.props.settings.display} handlers={this.props.handlers} />
+        </Col>
+      </Row>,
       // Grouping feature -- maybe later
       // <Row key="grouping" style={{"marginTop": 2}}><Col>
       //   <ArchiveListingControls settings={this.props.settings.display} handlers={this.props.handlers} />
       // </Col></Row>,
-      <Row key="filters"><Col><ArchiveFilters filters={this.props.settings.filters} handlers={this.props.handlers} /></Col></Row>,
+      <Row key="filters">
+        <Col>
+          <ArchiveFilters filters={this.props.settings.filters} summary={this.props.summary} handlers={this.props.handlers} />
+        </Col>
+      </Row>,
     ]
   }
 }
@@ -304,10 +355,15 @@ class Archive extends Component {
     const settings = this.props.archive.settings;
     const handlers = this.props.handlers;
     const summary = this.props.summary;
+    const fabricSummary = this.props.fabricSummary;
     return [
       <Row key="dash">
-        <Col md={4}><ArchiveControls settings={settings} handlers={handlers.displaySettingHandlers}/></Col>
-        <Col md={8}><ArchiveSummary data={data} summary={summary} /></Col>
+        <Col md={4}>
+          <ArchiveControls settings={settings} summary={fabricSummary} handlers={handlers.displaySettingHandlers}/>
+        </Col>
+        <Col md={8}>
+          <ArchiveSummary data={data} summary={summary} />
+        </Col>
       </Row>,
       <Row key="data">
         <Col xs={12}>

@@ -1,4 +1,4 @@
-import { ReleaseSummary, ReleaseBaselineStats } from './ReleaseSummary';
+import { ReleaseSummary, ReleaseBaselineStats, ReleaseFabricSummary } from './ReleaseSummary';
 
 import Data from './Data';
 import { simpleData } from './Data.test';
@@ -102,6 +102,32 @@ describe('summary', () => {
         { year: 2018, bin: 0, count: 1},
         { year: 2018, bin: 3, count: 1}
       ]);
+    });
+  });
+
+  it('computes fabric use summary', () => {
+    fetch.mockResponseOnce(simpleData);
+    return Data.read().then(releases => {
+
+      const summary = new ReleaseFabricSummary(releases).compute();
+      expect(summary.fabricUseCount).toEqual({
+        'Dyneema': 1,
+        'F. Cloth': 2,
+        'Linen': 2,
+        'Strongtwill': 1
+      });
+    });
+  });
+
+  it('computes filtered fabric use summary', () => {
+    fetch.mockResponseOnce(simpleData);
+    return Data.read().then(releases => {
+      const pants = releases.filter(d => d.subcategory === 'Pants');
+      const summary = new ReleaseFabricSummary(pants).compute();
+      expect(summary.fabricUseCount).toEqual({
+        'F. Cloth': 2,
+        'Strongtwill': 1
+      });
     });
   });
 });

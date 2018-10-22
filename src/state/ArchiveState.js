@@ -9,7 +9,8 @@ const ActionType = {
   FILTER_CLEAR: 'ArchiveState.FILTER_CLEAR'
 };
 
-function  filterCategoryFilteredMap(filterMap, filterFunc) {
+function filterCategoryFilteredMap(filterMap, filterFunc) {
+  // Return a map, keyed by category of filter, with a list of filters matching filterFunc
   const result = {}
   Object.keys(filterMap).forEach(k => {
     const catFilters = []
@@ -131,20 +132,29 @@ const ArchiveFilters = {
     filters["Season"] = ["Winter", "Spring", "Summer", "Fall"]
       .map(s => new ArchiveFilter("Season", s, (d) => d.season === s));
 
-    return {data: {full, filtered: full}, settings: {filters}};
+    return {data: {full, filtered: full, preFabricFilter: full}, settings: {filters}};
 
   },
   _applyFilters: (full, filters) => {
     const onFilters = filterCategoryFilteredMap(filters, (f) => f.isOn);
+    // We treat the fabric filters differently
     const filterCategories = Object.keys(onFilters);
-    const filtered = (filterCategories.length) > 0 ?
-      full.filter(d => {
-        return filterCategories.map(k =>
-          onFilters[k].map(f => f.isHit(d)).some(b=>b)).every(b=>b)
-      }) :
-      full;
-
-    return {data: {full, filtered}, settings: {filters}};
+    let filtered = full, preFabricFilter = full;
+    if (filterCategories.length > 0) {
+      const preFabricCategories = filterCategories.filter(c => c !== 'Fabrics');
+      preFabricFilter = full.filter(row => {
+        // For every category, check that at least one filter matches the row
+        return preFabricCategories.map(cat =>
+          onFilters[cat].map(f => f.isHit(row)).some(b=>b)).every(b=>b)
+      });
+      const fabricFilters = onFilters['Fabrics']
+      if (fabricFilters != null) {
+        filtered = preFabricFilter.filter(row => fabricFilters.map(f => f.isHit(row)).some(b=>b));
+      } else {
+        filtered = preFabricFilter;
+      }
+    }
+    return {data: {full, filtered, preFabricFilter}, settings: {filters}};
   },
   _applyClear: (archiveData, filters) => {
     const toggledFilters = ArchiveFilters._filterCategoryMap(filters, (f) => f.asOff());
@@ -162,7 +172,7 @@ const ArchiveState = {
   filters: ArchiveFilters,
   reduce: (state, action) => {
     if (state == null) return {
-      data: {full: [], filtered: []},
+      data: {full: [], filtered: [], preFabricFilter: []},
       settings: {
         display: {showImages: true, listing: "chronological"},
         filters: {}
