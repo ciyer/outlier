@@ -74,7 +74,7 @@ class ProductSummary extends Component {
     const releaseGap = releaseGapWeeks.every(d => d.count < 1) ?
       <div></div> :
       <div>
-        <h3 key="releaseDurationHeader">Release Gap</h3>
+        <h3 key="releaseDurationHeader">Release Gap <span style={{fontSize: 'small', fontWeight: 'normal'}}>(weeks)</span></h3>
         <BinnedScatter key="releaseDuration" data={releaseGapWeeks} />
       </div>
 

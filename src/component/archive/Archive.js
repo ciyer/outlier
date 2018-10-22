@@ -186,7 +186,7 @@ class ArchiveSummary extends Component {
           <Histogram key="priceHistogram" data={priceHistogram} labellength={-1} width={175} />
         </div>
         <div>
-          <h3 key="releaseDurationHeader">Release Gap</h3>
+          <h3 key="releaseDurationHeader">Release Gap <span style={{fontSize: 'small', fontWeight: 'normal'}}>(weeks)</span></h3>
           <BinnedScatter key="releaseDuration" data={releaseGapWeeks} width={175} />
         </div>
       </div>
