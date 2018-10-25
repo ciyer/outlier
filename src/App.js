@@ -31,7 +31,7 @@ class AppNavBar extends Component {
   render() {
     return (
       <header>
-        <Navbar expand="sm" light>
+        <Navbar expand="sm" color="light" light>
           <NavbarToggler onClick={this.onToggleNavbar} className="mr-2" />
           <Collapse isOpen={!this.state.collapsed} navbar>
             <Nav navbar>
