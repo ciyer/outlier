@@ -76,12 +76,21 @@ class ReleaseSummary {
     rawPriceHist.forEach((d, i) => {
       priceHistMap[d.x0] = {min: d.x0, max: d.x1, count: d.length}
     });
+    // Make sure the keys in the priceHistMap are from the bins, otherwise adjust
+    Object.keys(priceHistMap).forEach(k => {
+      const diffs = priceBins.map((b, i) => ({idx: i, bin: b, origBin: k, diff: Math.abs(b - k)}))
+      diffs.sort((a, b) => a.diff - b.diff);
+      if (diffs[0].diff !== 0) {
+        const diff = diffs[0];
+        priceHistMap[diff.bin] = priceHistMap[diff.origBin];
+      }
+    });
     length = priceBins.length;
     const priceHistogram = priceBins.slice(0, length-1).map((d, i) => {
       const name = (i > 0) ?
         (i === length - 2) ? `<=${priceBins[i+1]}` : `<${priceBins[i+1]}`
         : `$${d}-${priceBins[i+1]}`;
-      const bin = {min: priceBins[i], max: priceBins[i+1], count: 0}; ;
+      const bin = {min: priceBins[i], max: priceBins[i+1], count: 0};
       if (priceHistMap[d] != null) bin['count'] = priceHistMap[d]['count']
       return {name, ...bin}
     });
