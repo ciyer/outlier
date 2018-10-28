@@ -62,13 +62,13 @@ class FabricFilter extends Component {
   }
 
   onSuggestionsClearRequested() {
-    this.setState({suggestions: [] });
+    this.setState({suggestions: this.suggestionsForInput('')});
   }
 
   render() {
     const { value, suggestions } = this.state;
     const inputProps = {
-      placeholder: "Fabric",
+      placeholder: "Fabric Name or ↓ for List",
       value,
       onChange: this.handlers.onChange
     };
