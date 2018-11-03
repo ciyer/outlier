@@ -13,6 +13,8 @@ import FabricFilters from './fabric';
 import { groupedData, urlStringForProductName } from '../../utils';
 import { FilterSummary } from '../../state';
 
+import ldcollection from 'lodash/collection';
+
 class ArchiveDisplayControls extends Component {
 
   buttonClicked(option) {
@@ -117,13 +119,22 @@ class ArchiveFabricFilterGroup extends Component {
         {f.filter.type} ({f.count})
       </Button>
     );
-    return <div>
-      <span style={{fontWeight: "bold"}}>Fabrics</span>
-      <ButtonToolbar role="toolbar" style={{paddingBottom: '5px'}}>
+    // Grouping the fabric buttons does not always prevent overflow.
+    const groupSize = 3;
+    const buttonGroups = ldcollection.groupBy(
+      filterButtons.map((button, index) => ({index, button})),
+      (d) => Math.floor(d.index / groupSize)
+    );
+    const buttonToolbars = Object.keys(buttonGroups).sort().map(idx =>
+      <ButtonToolbar key={idx} role="toolbar" style={{paddingBottom: '5px'}}>
         <ButtonGroup style={{width: "100%"}} size="sm">
-          {filterButtons}
+          {buttonGroups[idx].map(d => d.button)}
         </ButtonGroup>
       </ButtonToolbar>
+    )
+    return <div>
+      <span style={{fontWeight: "bold"}}>Fabrics</span>
+      {buttonToolbars}
       <FabricFilters filters={availableFilters.filter(f => !f.filter.isOn)} onSelect={this.handlers.onClick} />
     </div>
   }
