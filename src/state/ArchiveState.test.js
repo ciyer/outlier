@@ -78,7 +78,7 @@ describe('store update', () => {
         expect(store.getState().archive.data.full.length).toEqual(fullDataLength);
         expect(store.getState().archive.data.filtered.length).toEqual(fullDataLength);
         let filters = store.getState().archive.settings.filters;
-        expect(Object.keys(filters).length).toEqual(5);
+        expect(Object.keys(filters).length).toEqual(6);
         expect(store.getState().archive.summary.baseline.priceBins).toEqual(baselinePriceBins);
         expect(store.getState().archive.settings.display).toEqual({showImages: true, listing: "chronological"});
 
@@ -115,6 +115,16 @@ describe('store update', () => {
         expect(store.getState().archive.settings.filters.Category[1].isOn).toEqual(true);
         expect(store.getState().archive.data.filtered.length).toEqual(4);
         expect(new FilterSummary(store.getState().archive.settings.filters).compute()).toEqual("(Outerwear or Pants) and Spring");
+
+        // Add yet another filter
+        const shortsFilter = store.getState().archive.settings.filters.GarmentTypes[2];
+        expect(shortsFilter.category).toEqual("Garment Type");
+        expect(shortsFilter.type).toEqual("Shorts");
+        expect(shortsFilter.isOn).toEqual(false);
+        store.dispatch(ArchiveState.filters.toggleFilter(shortsFilter));
+        expect(store.getState().archive.settings.filters.GarmentTypes[2].isOn).toEqual(true);
+        expect(store.getState().archive.data.filtered.length).toEqual(2);
+        expect(new FilterSummary(store.getState().archive.settings.filters).compute()).toEqual("(Outerwear or Pants) and Shorts and Spring");
 
         // Clear all filters
         store.dispatch(ArchiveState.filters.clearAll());

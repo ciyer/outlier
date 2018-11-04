@@ -110,12 +110,14 @@ const ArchiveFilters = {
   },
   _initializeFiltersAndData: (full) => {
     const filters = {};
-    const fabricMap = {}, categoryMap = {}, mwuMap = {};
+    const fabricMap = {}, categoryMap = {}, mwuMap = {}, typeMap = {};
     // Compile the categories, fabrics, etc. from the data
     full.forEach(function(d) {
       categoryMap[d["subcategory"]] = true;
       fabricMap[d["Fabric"]] = true;
       mwuMap[d["MWU"]] = true;
+      // only track garment types
+      if (d["Category"] === "Clothes") typeMap[d["Type"]] = true;
     });
 
     const categories = ArchiveFilters._asFilterCodes(categoryMap);
@@ -126,6 +128,9 @@ const ArchiveFilters = {
 
     const mwu = ArchiveFilters._asFilterCodes(mwuMap);
     filters["Male/Female/Unisex"] = mwu.map(o => new ArchiveFilter("Male/Female/Unisex", o, (d) => o === d["MWU"]));
+
+    const types = ArchiveFilters._asFilterCodes(typeMap);
+    filters["GarmentTypes"] = types.map(f => new ArchiveFilter("Garment Type", f, (d) => f === d["Type"]));
 
     filters["Experiment"] = ["Experiment", "Public Prototype"]
       .map(o => new ArchiveFilter("Experiment", o, (d) => d["Product"].startsWith(o)));
