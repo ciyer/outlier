@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 
 import { ReleaseImagesTitled } from '../ReleaseImages';
 import { Histogram, BinnedScatter } from '../chart';
-import FabricFilters from './fabric';
+import AutocompleteImput from './autocomplete-input';
 
 import { groupedData, urlStringForProductName } from '../../utils';
 import { FilterSummary } from '../../state';
@@ -94,6 +94,48 @@ class ArchiveFilterGroup extends Component {
   }
 }
 
+class GarmentTypeFilterGroup extends Component {
+  constructor(props) {
+    super(props);
+    this.handlers = {
+      onClick: this.onClick.bind(this)
+    }
+  }
+  onClick(filter) { this.props.onToggle(filter); }
+
+  render() {
+    const filters = this.props.filters.map(f =>
+      ({name: f.type, displayName: f.type, filter: f}))
+    const filterButtons = filters.filter(f => f.filter.isOn).map(f =>
+      <Button key={f.filter.type} style={{width: "100%"}}
+        onClick={() => this.onClick(f.filter)}  // Use a function here to capture the
+        active={f.filter.isOn}
+        color={(f.filter.isOn) ? "primary" : "secondary"}>
+        {f.filter.type}
+      </Button>
+    );
+    // Grouping the fabric buttons does not always prevent overflow.
+    const groupSize = 3;
+    const buttonGroups = ldcollection.groupBy(
+      filterButtons.map((button, index) => ({index, button})),
+      (d) => Math.floor(d.index / groupSize)
+    );
+    const buttonToolbars = Object.keys(buttonGroups).sort().map(idx =>
+      <ButtonToolbar key={idx} role="toolbar" style={{paddingBottom: '5px'}}>
+        <ButtonGroup style={{width: "100%"}} size="sm">
+          {buttonGroups[idx].map(d => d.button)}
+        </ButtonGroup>
+      </ButtonToolbar>
+    )
+    return <div>
+      <span style={{fontWeight: "bold"}}>Garment Types</span>
+      {buttonToolbars}
+      <AutocompleteImput fieldName="Garment Types" filters={filters.filter(f => !f.filter.isOn)} onSelect={this.handlers.onClick} />
+    </div>
+  }
+}
+
+
 class ArchiveFabricFilterGroup extends Component {
   constructor(props) {
     super(props);
@@ -109,7 +151,7 @@ class ArchiveFabricFilterGroup extends Component {
     const filterMap = {};
     this.props.filters.forEach(f => { filterMap[f['type']] = f });
     const availableFilters = Object.keys(summary)
-      .map(name => ({name, count: summary[name], filter: filterMap[name]}))
+      .map(name => ({name, count: summary[name], displayName: (`${name} (${summary[name]})`), filter: filterMap[name]}))
       .sort((a, b) => b.count - a.count);   // Sort in reverse order
     const filterButtons = availableFilters.filter(f => f.filter.isOn).map(f =>
       <Button key={f.filter.type} style={{width: "100%"}}
@@ -135,7 +177,7 @@ class ArchiveFabricFilterGroup extends Component {
     return <div>
       <span style={{fontWeight: "bold"}}>Fabrics</span>
       {buttonToolbars}
-      <FabricFilters filters={availableFilters.filter(f => !f.filter.isOn)} onSelect={this.handlers.onClick} />
+      <AutocompleteImput fieldName="Fabric name" filters={availableFilters.filter(f => !f.filter.isOn)} onSelect={this.handlers.onClick} />
     </div>
   }
 }
@@ -172,8 +214,13 @@ class ArchiveFilters extends Component {
         <ArchiveFilterGroup key={g} name={g} filters={filterMap[g]} onToggle={onToggle} />
       ) :
       null;
+    // Garment-type filter works a bit differently.
+    const garmentTypeFilterUI = (expanded) ?
+      <GarmentTypeFilterGroup filters={filters.GarmentTypes} onToggle={onToggle} />
+      :
+      null;
     // Fabrics filter works a bit differently.
-    const postFiltersUI = (expanded) ?
+    const fabricFilterUI = (expanded) ?
       <ArchiveFabricFilterGroup filters={filters.Fabrics} onToggle={onToggle}
         summary={this.props.summary.fabricUseCount} />
       :
@@ -189,7 +236,8 @@ class ArchiveFilters extends Component {
       <a href="" onClick={this.onExpand}><p><b>{filterHeader}</b></p></a>
       {clearButton}
       {filtersUI}
-      {postFiltersUI}
+      {garmentTypeFilterUI}
+      {fabricFilterUI}
     </div>
   }
 }

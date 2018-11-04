@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import Autosuggest from 'react-autosuggest';
 
-import './fabric.css';
+import './autocomplete.css';
 
 // https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
 function escapeRegexCharacters(str) {
@@ -15,11 +15,11 @@ function getSuggestionValue(suggestion) {
 
 function renderSuggestion(suggestion) {
   return (
-    <span>{suggestion.name} ({suggestion.count})</span>
+    <span>{suggestion.displayName}</span>
   );
 }
 
-class FabricFilter extends Component {
+class Autocomplete extends Component {
   constructor() {
     super();
 
@@ -67,8 +67,9 @@ class FabricFilter extends Component {
 
   render() {
     const { value, suggestions } = this.state;
+    const placeholder = `${this.props.fieldName} or ↓ for List`;
     const inputProps = {
-      placeholder: "Fabric Name or ↓ for List",
+      placeholder,
       value,
       onChange: this.handlers.onChange
     };
@@ -109,4 +110,4 @@ class FabricFilter extends Component {
   }
 }
 
-export default FabricFilter;
+export default Autocomplete;
