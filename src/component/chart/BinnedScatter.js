@@ -129,7 +129,7 @@ componentDidUpdate(prevProps, prevState) {
             "update": {
               "x": {"scale": "xscale", "signal": "tooltip.year"},
               "y": {"scale": "yscale", "signal": "tooltip.bin"},
-              "text": {"signal": "tooltip.count"},
+              "text": {"signal": "(tooltip.bin != null) ? toString(tooltip.bin) + '(' + tooltip.count + ')' : ''"},
               "fillOpacity": [
                 {"test": "datum === tooltip", "value": 0},
                 {"value": 1}
