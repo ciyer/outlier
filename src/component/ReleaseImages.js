@@ -43,8 +43,8 @@ class ReleaseImageTitled extends Component {
     // Return img and text
     return <div className="p-2" style={{width: "calc(15%)", height:"calc(15%)", minWidth: "100px", minHeight: "100px"}}>
       <Link to={`${this.props.productUrl}/${urlStringForProductName(r.Product)}`}>
-        <p key="title">{r.Product}</p>
-        <img key="image" src={src} alt={r.Product} style={{width: "100%", height:"100%"}} />
+        <p key={`${r.Product}-${r.Release}-title`}>{r.Product}</p>
+        <img key={`${r.Product}-${r.Release}-image`} src={src} alt={r.Product} style={{width: "100%", height:"100%"}} />
       </Link>
     </div>
   }
