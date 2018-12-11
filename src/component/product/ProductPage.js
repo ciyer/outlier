@@ -34,7 +34,7 @@ class ProductPageHeader extends Component {
     const outlierCcUrl = this.props.outlierCcUrl;
     const outlierNycUrl = this.props.outlierNycUrl;
     const productUrlString = encodeURI(productName);
-    const googleUrl = `https://google.com/search?q=${productUrlString}`;
+    const googleUrl = `https://google.com/search?q=Outlier+${productUrlString}`;
     const redditUrl = `https://www.reddit.com/r/Outlier/search?q=${productUrlString}`;
     const archiveUrls = [];
     if (outlierCcUrl != null) {
