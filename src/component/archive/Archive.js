@@ -364,7 +364,7 @@ class ArchiveTextGroupRows extends Component {
     const entries = group.entries;
     return entries.map((d, i) =>
       <ArchiveTextGroupRow key={i} entry={d} name={group.name} showTitle={showTitle}
-        index={i} /> )
+        productUrl={this.props.productUrl} index={i} /> )
   }
 }
 
