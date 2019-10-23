@@ -2,6 +2,10 @@ import * as d3Array from 'd3-array';
 import * as d3Time from 'd3-time';
 import * as d3Collection from 'd3-collection';
 
+function toIntegerString(num) {
+  return num.toFixed(0);
+}
+
 function toPrices(releases) {
   return releases
     .filter(d => ("FALSE" === d["Historic"]) && (d["Price"] > 0))
@@ -87,9 +91,10 @@ class ReleaseSummary {
     });
     length = priceBins.length;
     const priceHistogram = priceBins.slice(0, length-1).map((d, i) => {
+      const priceBinAmt = toIntegerString(priceBins[i+1]);
       const name = (i > 0) ?
-        (i === length - 2) ? `<=${priceBins[i+1]}` : `<${priceBins[i+1]}`
-        : `$${d}-${priceBins[i+1]}`;
+        (i === length - 2) ? `<=${priceBinAmt}` : `<${priceBinAmt}`
+        : `$${d}-${priceBinAmt}`;
       const bin = {min: priceBins[i], max: priceBins[i+1], count: 0};
       if (priceHistMap[d] != null) bin['count'] = priceHistMap[d]['count']
       return {name, ...bin}
