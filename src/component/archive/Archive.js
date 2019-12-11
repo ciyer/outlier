@@ -395,9 +395,23 @@ class ArchiveWithText extends Component {
   }
 }
 
+// Spinner from https://loading.io/css/
+class LoadingSpinner extends Component {
+  render() {
+    return <Row>
+      <Col xs={{offset: 6}}>
+        <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+      </Col>
+    </Row>
+  }
+}
+
 class ArchiveBody extends Component {
   render() {
     const data = this.props.data;
+    if (data.full.length < 1) {
+      return <LoadingSpinner />
+    }
     const settings = this.props.settings;
     if (settings.display.showImages === true)
       return <ArchiveWithImages
