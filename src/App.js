@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route, Switch, NavLink as RRNavLink }  from 'r
 import { Collapse, Nav, Navbar, NavbarToggler, NavLink } from 'reactstrap';
 
 // Components
-import { About, Archive, ProductPage } from './component';
+import { About, Archive, Article, ProductPage } from './component';
 
 class NavItem extends Component {
   render() {
@@ -36,6 +36,7 @@ class AppNavBar extends Component {
           <Collapse isOpen={!this.state.collapsed} navbar>
             <Nav navbar>
               <NavItem to="/" title="Archive" />
+              <NavItem to="/2019review" title="2019 Review" />
             </Nav>
             <Nav navbar className="ml-auto">
               { // Add later
@@ -84,6 +85,9 @@ class App extends Component {
             <Switch>
               <Route exact path="/"
                 render={p => <Archive key="archive" {...p} />} />
+              <Route exact path="/2019review"
+                render={p => <Article key="2019review"
+                  source="/articles/2019-review/2019-review.ipynb" {...p} />} />
               <Route exact path="/about"
                 render={p => <About key="about"
                   source="/pages/about.md" latestEntry={latestEntry} {...p} />} /> />

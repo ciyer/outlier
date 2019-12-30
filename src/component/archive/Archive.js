@@ -10,7 +10,7 @@ import { ReleaseImagesTitled } from '../ReleaseImages';
 import { Histogram, BinnedScatter } from '../chart';
 import AutocompleteImput from './autocomplete-input';
 
-import { groupedData, urlStringForProductName } from '../../utils';
+import { groupedData, urlStringForProductName, LoadingSpinner } from '../../utils';
 import { FilterSummary } from '../../state';
 
 import ldcollection from 'lodash/collection';
@@ -390,17 +390,6 @@ class ArchiveWithText extends Component {
             {rows}
           </tbody>
         </Table>
-      </Col>
-    </Row>
-  }
-}
-
-// Spinner from https://loading.io/css/
-class LoadingSpinner extends Component {
-  render() {
-    return <Row>
-      <Col xs={{offset: 6}}>
-        <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
       </Col>
     </Row>
   }
