@@ -4,10 +4,8 @@ import MarkdownPage from './MarkdownPage.container';
 
 // Test data
 import { createGlobalStore } from '../../state'
-import { Provider, connect } from 'react-redux';
+import { Provider } from 'react-redux';
 const store = createGlobalStore();
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
 
 import { simplePageData } from '../../state/MarkdownPageState.test';
 
