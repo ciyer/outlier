@@ -2,9 +2,10 @@ import thunk from 'redux-thunk';
 import { combineReducers } from 'redux'
 import { createStore, applyMiddleware, compose } from 'redux';
 
-import MarkdownPageState from './MarkdownPageState';
 import ArchiveState from './ArchiveState';
-import FilterSummary from './FilterSummary'
+import FilterSummary from './FilterSummary';
+import MarkdownPageState from './MarkdownPageState';
+import NotebookState from './NotebookState';
 
 
 let composeEnhancers;
@@ -16,8 +17,10 @@ else
 function createGlobalStore() {
 
   return createStore(
-    combineReducers({archive: ArchiveState.reduce, pages: MarkdownPageState.reduce}),
+    combineReducers({archive: ArchiveState.reduce,
+                     pages: MarkdownPageState.reduce,
+                     notebooks: NotebookState.reduce}),
     composeEnhancers(applyMiddleware(thunk)));
 }
 
-export { ArchiveState, FilterSummary, MarkdownPageState, createGlobalStore }
+export { ArchiveState, FilterSummary, NotebookState, MarkdownPageState, createGlobalStore }
