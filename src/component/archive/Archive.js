@@ -68,6 +68,17 @@ class ArchiveDisplayControls extends Component {
 //   }
 // }
 
+function FilterButtonToolbar(props) {
+  const buttonGroups = props.groups;
+  return Object.keys(buttonGroups).sort().map(idx =>
+    <ButtonToolbar key={idx} role="toolbar" style={{paddingBottom: '5px'}}>
+      <ButtonGroup style={{width: "100%"}} size="sm">
+        {buttonGroups[idx].map(d => d.button)}
+      </ButtonGroup>
+    </ButtonToolbar>
+  )
+}
+
 class ArchiveFilterGroup extends Component {
   onClick(filter) { this.props.onToggle(filter); }
 
@@ -111,7 +122,7 @@ class GarmentTypeFilterGroup extends Component {
         onClick={() => this.onClick(f.filter)}  // Use a function here to capture the
         active={f.filter.isOn}
         color={(f.filter.isOn) ? "primary" : "secondary"}>
-        {f.filter.type}
+        {f.filter.type} &nbsp;<b>x</b>
       </Button>
     );
     // Grouping the fabric buttons does not always prevent overflow.
@@ -120,16 +131,10 @@ class GarmentTypeFilterGroup extends Component {
       filterButtons.map((button, index) => ({index, button})),
       (d) => Math.floor(d.index / groupSize)
     );
-    const buttonToolbars = Object.keys(buttonGroups).sort().map(idx =>
-      <ButtonToolbar key={idx} role="toolbar" style={{paddingBottom: '5px'}}>
-        <ButtonGroup style={{width: "100%"}} size="sm">
-          {buttonGroups[idx].map(d => d.button)}
-        </ButtonGroup>
-      </ButtonToolbar>
-    )
+
     return <div>
       <span style={{fontWeight: "bold"}}>Garment Types</span>
-      {buttonToolbars}
+      <FilterButtonToolbar groups={buttonGroups} />
       <AutocompleteImput fieldName="Garment Types" filters={filters.filter(f => !f.filter.isOn)} onSelect={this.handlers.onClick} />
     </div>
   }
@@ -158,7 +163,7 @@ class ArchiveFabricFilterGroup extends Component {
         onClick={() => this.onClick(f.filter)}  // Use a function here to capture the filter
         active={f.filter.isOn}
         color={(f.filter.isOn) ? "primary" : "secondary"}>
-        {f.filter.type} ({f.count})
+        {f.filter.type} ({f.count}) &nbsp;<b>x</b>
       </Button>
     );
     // Grouping the fabric buttons does not always prevent overflow.
@@ -167,16 +172,10 @@ class ArchiveFabricFilterGroup extends Component {
       filterButtons.map((button, index) => ({index, button})),
       (d) => Math.floor(d.index / groupSize)
     );
-    const buttonToolbars = Object.keys(buttonGroups).sort().map(idx =>
-      <ButtonToolbar key={idx} role="toolbar" style={{paddingBottom: '5px'}}>
-        <ButtonGroup style={{width: "100%"}} size="sm">
-          {buttonGroups[idx].map(d => d.button)}
-        </ButtonGroup>
-      </ButtonToolbar>
-    )
+
     return <div>
       <span style={{fontWeight: "bold"}}>Fabrics</span>
-      {buttonToolbars}
+      <FilterButtonToolbar groups={buttonGroups} />
       <AutocompleteImput fieldName="Fabric name" filters={availableFilters.filter(f => !f.filter.isOn)} onSelect={this.handlers.onClick} />
     </div>
   }
