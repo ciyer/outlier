@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import './App.css';
 
 // Navigation
 import { BrowserRouter as Router, Route, Switch, NavLink as RRNavLink }  from 'react-router-dom'
 import { Collapse, Nav, Navbar, NavbarToggler, NavLink } from 'reactstrap';
+import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
 
 // Components
 import { About, Archive, Article, ProductPage } from './component';
@@ -16,39 +17,37 @@ class NavItem extends Component {
   }
 }
 
-class AppNavBar extends Component {
+function AppNavBar(props) {
+  const [navbarOpen, setNavbarOpen] = useState(false);
+  const navbarToggle = () => setNavbarOpen(!navbarOpen);
 
-  constructor(props) {
-    super(props);
-    this.onToggleNavbar = this.toggleNavbar.bind(this);
-    this.state = { collapsed: true };
-  }
+  const [articleOpen, setArticleOpen] = useState(false);
+  const articleToggle = () => setArticleOpen(!articleOpen);
 
-  toggleNavbar() {
-    this.setState({ collapsed: !this.state.collapsed });
-  }
+  return (
+    <header>
+      <Navbar expand="sm" color="light" light>
+        <NavbarToggler onClick={navbarToggle} className="mr-2" />
+        <Collapse isOpen={navbarOpen} navbar>
+          <Nav navbar>
+            <NavItem to="/" title="Archive" />
+            <Dropdown nav isOpen={articleOpen} toggle={articleToggle}>
+              <DropdownToggle nav caret>
+                Articles
+              </DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem><NavItem to="/articles/2019review" title="2019 Review" /></DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
 
-  render() {
-    return (
-      <header>
-        <Navbar expand="sm" color="light" light>
-          <NavbarToggler onClick={this.onToggleNavbar} className="mr-2" />
-          <Collapse isOpen={!this.state.collapsed} navbar>
-            <Nav navbar>
-              <NavItem to="/" title="Archive" />
-              <NavItem to="/2019review" title="2019 Review" />
-            </Nav>
-            <Nav navbar className="ml-auto">
-              { // Add later
-                // <NavItem to="/2017review" title="2017 Review"/>
-              }
-              <NavItem to="/about" title="About"/>
-            </Nav>
-          </Collapse>
-        </Navbar>
-      </header>
-    )
-  }
+          </Nav>
+          <Nav navbar className="ml-auto">
+            <NavItem to="/about" title="About"/>
+          </Nav>
+        </Collapse>
+      </Navbar>
+    </header>
+  )
 }
 
 class AppFooter extends Component {
@@ -85,7 +84,7 @@ class App extends Component {
             <Switch>
               <Route exact path="/"
                 render={p => <Archive key="archive" {...p} />} />
-              <Route exact path="/2019review"
+              <Route path="/articles/:article?"
                 render={p => <Article key="2019review"
                   source="/articles/2019-review/2019-review.ipynb" {...p} />} />
               <Route exact path="/about"
