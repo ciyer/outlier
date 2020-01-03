@@ -1,23 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import MarkdownPage from './MarkdownPage.container';
+import Article from './ArticleNotebook.container';
 
 // Test data
 import { createGlobalStore } from '../../state'
 import { Provider } from 'react-redux';
 const store = createGlobalStore();
 
-import { simplePageData } from '../../state/MarkdownPageState.test';
+import { simpleNotebookData } from '../../state/NotebookState.test';
 
-describe('MarkdownPage', () => {
+describe('Article', () => {
   beforeEach(() => {
       fetch.resetMocks();
   });
 
   it('renders without crashing', () => {
     const div = document.createElement('div');
-    fetch.mockResponseOnce(simplePageData);
-    ReactDOM.render(<Provider store={store}><MarkdownPage /></Provider>, div);
+    fetch.mockResponseOnce(simpleNotebookData);
+    ReactDOM.render(<Provider store={store}><Article /></Provider>, div);
     ReactDOM.unmountComponentAtNode(div);
   });
 

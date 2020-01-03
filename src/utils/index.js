@@ -1,5 +1,8 @@
 import * as d3Collection from 'd3-collection';
 
+import React, { Component } from 'react';
+import { Col, Row } from 'reactstrap';
+
 
 function groupedByYearQuarter(data) {
   if (data.length < 1) return [{name:"Chronological", entries: data}];
@@ -43,4 +46,16 @@ function productNameFromUrlString(urlString) {
   return urlString.replace(/%2F/g, "/").replace(/\+/g, " ");
 }
 
-export { groupedData, urlStringForProductName, productNameFromUrlString }
+
+// Spinner from https://loading.io/css/
+class LoadingSpinner extends Component {
+  render() {
+    return <Row>
+      <Col xs={{offset: 6}}>
+        <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+      </Col>
+    </Row>
+  }
+}
+
+export { groupedData, urlStringForProductName, productNameFromUrlString, LoadingSpinner }
