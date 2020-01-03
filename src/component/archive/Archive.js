@@ -233,7 +233,7 @@ class ArchiveFilters extends Component {
       null;
 
     return <div>
-      <a href="" onClick={this.onExpand}><p><b>{filterHeader}</b></p></a>
+      <Button color="link" onClick={this.onExpand}><p><b>{filterHeader}</b></p></Button>
       {clearButton}
       {filtersUI}
       {garmentTypeFilterUI}
