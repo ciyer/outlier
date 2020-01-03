@@ -3,3 +3,10 @@
 
 // Bootstrap base
 @import 'bootstrap/scss/bootstrap';
+
+
+.dataframe {
+  @extend .table;
+  @extend .table-sm;
+  width: 60%;
+}

@@ -7,8 +7,11 @@ import vegaEmbed from 'vega-embed';
 class CodeOutputCell extends Component {
   render() {
     const output = this.props.output;
-    if (output.data['application/vnd.vegalite.v3+json'] == null) return null;
-    return <VegaOutputCell spec={output.data['application/vnd.vegalite.v3+json']} />
+    if (output.data['application/vnd.vegalite.v3+json'] != null)
+      return <VegaOutputCell spec={output.data['application/vnd.vegalite.v3+json']} />
+    if (output.data['text/html'] != null)
+      return <HtmlOutputCell data={output.data['text/html']} />
+    return null;
   }
 }
 
@@ -41,6 +44,11 @@ class VegaOutputCell extends Component {
   render() {
     return <div ref={(e) => this._container = e} />
   }
+}
+
+function HtmlOutputCell(props) {
+  console.log(props.data);
+  return <div dangerouslySetInnerHTML={{__html: props.data.join("")}} />
 }
 
 class MarkdownCell extends Component {
