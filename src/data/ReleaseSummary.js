@@ -104,10 +104,12 @@ class ReleaseSummary {
   }
 
   releaseGapWeeks() {
-    // Only look at releases since 2012
+    const thisYear = new Date().getFullYear();
+    // Only look at releases in the last 7 years
+    const cutoffYear = thisYear - 8;
     const releases = this.releases.filter(d => ("FALSE" === d["Historic"]) &&
       (null != d.releaseDate) &&
-      (2011 < d.releaseDate.getFullYear()));
+      (cutoffYear < d.releaseDate.getFullYear()));
     // Get all number of weeks between releases
     const durations = [];
     const seenYears = {};
@@ -119,10 +121,9 @@ class ReleaseSummary {
       }
       return earlier;
     });
-    // Ensure all years since 2012 are represented
-    const thisYear = new Date().getFullYear();
-    for (let i = 0; i < thisYear - 2011; ++i) {
-      const year = 2012 + i;
+    // Ensure all years since cutoff are represented
+    for (let i = 0; i < thisYear - cutoffYear; ++i) {
+      const year = cutoffYear + 1 + i;
       if (seenYears[year] == null) {
         durations.push({year: year, durationWeeks: -1})
       }
