@@ -32,6 +32,8 @@ function cleanCsvRow(d) {
     d.releaseDate = releaseDate;
     d["Release"] = dateFormatter(releaseDate);
     d.season = dateToSeason(releaseDate);
+    let colors = d["Colors"].split(",").map(c => c.trim());
+    d["Colors"] = colors.sort().join(", ");
   } else {
     d.releaseDate = null;
   }
