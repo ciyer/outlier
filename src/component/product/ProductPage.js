@@ -96,8 +96,14 @@ class ProductReleasesTable extends Component {
   render() {
     const releases = this.props.releases;
     const showReleaseNames = this.props.showReleaseNames;
+    function rowReleaseNameTd(r) {
+      if (!showReleaseNames) return null;
+      const releaseName =  (r['Release Name'] === '') ? r.Product : r['Release Name'];
+      console.log(r);
+      return <td>{releaseName}</td>
+    }
     const releaseRows = releases.map((r, i) =>
-    <tr key={i}><td>{r.Price}</td><td>{r.Colors}</td><td>{r.Release}</td>{(showReleaseNames) ? <td>{r.Product}</td> : null}</tr>)
+    <tr key={i}><td>{r.Price}</td><td>{r.Colors}</td><td>{r.Release}</td>{rowReleaseNameTd(r)}</tr>)
     return <Table>
         <thead>
           <tr><th>Price</th><th>Colors</th><th>Release</th>{(showReleaseNames) ? <th>Release Name</th> : null}</tr>
