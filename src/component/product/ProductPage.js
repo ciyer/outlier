@@ -99,7 +99,6 @@ class ProductReleasesTable extends Component {
     function rowReleaseNameTd(r) {
       if (!showReleaseNames) return null;
       const releaseName =  (r['Release Name'] === '') ? r.Product : r['Release Name'];
-      console.log(r);
       return <td>{releaseName}</td>
     }
     const releaseRows = releases.map((r, i) =>
