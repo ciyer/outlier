@@ -5,34 +5,15 @@ import { Table } from 'reactstrap';
 
 import { ReleaseImagesUnique } from '../ReleaseImages';
 import { Histogram, BinnedScatter } from '../chart';
+import { outlierProductUrls } from '../../data';
 
-function urlToHttps(url) { return url.replace(/^http:\/\//, "https://") }
-
-function siteUrl(productUrl, filteredReleases, tld) {
-  if (filteredReleases.length < 1) return null;
-  let search = null, replace = null;
-  if (tld === ".cc") { search = /outlier\.nyc/; replace = "outlier.cc" }
-  if (tld === ".nyc") { search = /outlier\.cc/; replace = "outlier.nyc" }
-
-  return productUrl.replace(search, replace);
-}
-
-function outlierProductUrls(releases) {
-  // The switch to .nyc happened 2016-07-07 was the first .nyc url
-  const cutoffDate = new Date(2016, 7, 7);
-  const productUrl = urlToHttps(releases[0]['InSitu']);
-  const ccReleases = releases.filter(r => r.releaseDate < cutoffDate);
-  const nycReleases = releases.filter(r => r.releaseDate >= cutoffDate);
-  const outlierCcUrl = siteUrl(productUrl, ccReleases, '.cc');
-  const outlierNycUrl = siteUrl(productUrl, nycReleases, '.nyc');
-  return {outlierCcUrl, outlierNycUrl}
-}
 
 class ProductPageHeader extends Component {
   render() {
     const productName = this.props.productName;
     const outlierCcUrl = this.props.outlierCcUrl;
     const outlierNycUrl = this.props.outlierNycUrl;
+    const archiveUrl = this.props.archiveUrl;
     const productUrlString = encodeURI(productName);
     const googleUrl = `https://google.com/search?q=Outlier+${productUrlString}`;
     const redditUrl = `https://www.reddit.com/r/Outlier/search?q=${productUrlString}`;
@@ -43,9 +24,16 @@ class ProductPageHeader extends Component {
     }
     if (outlierNycUrl != null)
       archiveUrls.push(<a key="outliernycurl" href={`https://web.archive.org/web/*/${outlierNycUrl}`}>Archive.org [outlier.nyc]</a>);
-    const linkUrl = (outlierNycUrl != null) ? outlierNycUrl : outlierCcUrl;
+    let linkUrl = null, linkDesc = null;
+    if (archiveUrl != null) {
+      linkUrl = archiveUrl;
+      linkDesc = "archive-m2"
+    } else {
+      linkUrl = (outlierNycUrl != null) ? outlierNycUrl : outlierCcUrl;;
+      linkDesc = "outlier.nyc"
+    }
     return [
-      <h3 key="heading"><a href={linkUrl}>{productName} [outlier.nyc]</a></h3>,
+      <h3 key="heading"><a href={linkUrl}>{productName} [{linkDesc}]</a></h3>,
       <p key="refs">
         <a href={googleUrl}>Google</a> &nbsp;
         <a href={redditUrl}>Reddit</a> &nbsp;
@@ -131,7 +119,7 @@ class ProductPage extends Component {
     const releases = this.props.releases;
     if (releases.length < 1) return [];
     const productName = this.props.productName;
-    const {outlierCcUrl, outlierNycUrl} = outlierProductUrls(releases);
+    const {outlierCcUrl, outlierNycUrl, archiveUrl} = outlierProductUrls(releases);
     var prices = releases.map(function(d) { return d["Price"] });
     var minPrice = Math.min(...prices);
     var maxPrice = Math.max(...prices);
@@ -140,7 +128,7 @@ class ProductPage extends Component {
       <Row key="header"><Col>
         <ProductPageHeader
           productName={productName} priceString={priceString}
-          outlierCcUrl={outlierCcUrl} outlierNycUrl={outlierNycUrl} />
+          outlierCcUrl={outlierCcUrl} outlierNycUrl={outlierNycUrl} archiveUrl={archiveUrl} />
       </Col></Row>,
       <Row key="summary">
         <Col md={6}><ProductImages releases={releases} /></Col>

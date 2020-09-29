@@ -24,4 +24,32 @@ function releasesForProduct(fullReleases, productName) {
   return {filteredReleases, numberOfReleaseNames: releaseNames.size()}
 }
 
-export { releasesForProduct };
+function urlToHttps(url) { return url.replace(/^http:\/\//, "https://") }
+
+function siteUrl(productUrl, filteredReleases, tld) {
+  if (filteredReleases.length < 1) return null;
+  let search = null, replace = null;
+  if (tld === ".cc") { search = /outlier\.nyc/; replace = "outlier.cc" }
+  if (tld === ".nyc") { search = /outlier\.cc/; replace = "outlier.nyc" }
+
+  return productUrl.replace(search, replace);
+}
+
+function outlierProductUrls(releases) {
+  // The switch to .nyc happened 2016-07-07 was the first .nyc url
+  const dotNycCutoffDate = new Date(2016, 7, 7);
+  const productUrl = urlToHttps(releases[0]['InSitu']);
+  const ccReleases = releases.filter(r => r.releaseDate < dotNycCutoffDate);
+  const nycReleases = releases.filter(r => r.releaseDate >= dotNycCutoffDate);
+  const outlierCcUrl = siteUrl(productUrl, ccReleases, '.cc');
+  const outlierNycUrl = siteUrl(productUrl, nycReleases, '.nyc');
+
+  const siteCutoffDate = new Date(2020, 8, 14);
+  const postSiteReleases = releases.filter(r => r.releaseDate >= siteCutoffDate);
+  let archiveUrl = null;
+  if (postSiteReleases.length < 1)
+    archiveUrl = releases.map(r => r['Archive']).filter(u => u !== '').find(e => true);
+  return {outlierCcUrl, outlierNycUrl, archiveUrl}
+}
+
+export { releasesForProduct, outlierProductUrls};
