@@ -23,7 +23,7 @@ describe('chronological grouping', () => {
         expect(groups.length).toEqual(1);
         const group = groups[0];
         expect(group.name).toEqual("'18 Spring");
-        expect(group.entries.length).toEqual(6);
+        expect(group.entries.length).toEqual(12);
     });
   });
 });
