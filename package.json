@@ -25,6 +25,7 @@
     "vega-lite": "^3.4.0"
   },
   "devDependencies": {
+    "jest-canvas-mock": "^2.3.0",
     "jest-fetch-mock": "^1.5.0",
     "react-scripts": "^3.3.0",
     "redux-mock-store": "^1.5.4",
