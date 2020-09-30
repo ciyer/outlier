@@ -45,10 +45,8 @@ function outlierProductUrls(releases) {
   const outlierNycUrl = siteUrl(productUrl, nycReleases, '.nyc');
 
   const siteCutoffDate = new Date(2020, 8, 14);
-  const postSiteReleases = releases.filter(r => r.releaseDate >= siteCutoffDate);
-  let archiveUrl = null;
-  if (postSiteReleases.length < 1)
-    archiveUrl = releases.map(r => r['Archive']).filter(u => u !== '').find(e => true);
+  // use the most recent release as a reference for this
+  const archiveUrl = (releases[0]['Archive'] !== '') ? releases[0]['Archive'] : null;
   return {outlierCcUrl, outlierNycUrl, archiveUrl}
 }
 
