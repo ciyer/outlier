@@ -110,6 +110,7 @@ class ReleaseSummary {
     const releases = this.releases.filter(d => ("FALSE" === d["Historic"]) &&
       (null != d.releaseDate) &&
       (cutoffYear < d.releaseDate.getFullYear()));
+    if (releases.length < 1) return [];
     // Get all number of weeks between releases
     const durations = [];
     const seenYears = {};

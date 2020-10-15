@@ -44,7 +44,7 @@ function outlierProductUrls(releases) {
   const outlierCcUrl = siteUrl(productUrl, ccReleases, '.cc');
   const outlierNycUrl = siteUrl(productUrl, nycReleases, '.nyc');
 
-  const siteCutoffDate = new Date(2020, 8, 14);
+  // The new site was turned on on after the 2020-08-14 drop const siteCutoffDate = new Date(2020, 8, 14);
   // use the most recent release as a reference for this
   const archiveUrl = (releases[0]['Archive'] !== '') ? releases[0]['Archive'] : null;
   return {outlierCcUrl, outlierNycUrl, archiveUrl}
