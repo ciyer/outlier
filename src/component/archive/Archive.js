@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 
 import { Col, Row } from 'reactstrap';
-import { Button, ButtonGroup, ButtonToolbar } from 'reactstrap';
+import { Button, ButtonGroup, ButtonToolbar, FormText } from 'reactstrap';
 import { Table } from 'reactstrap';
 
 import { Link } from 'react-router-dom'
 
 import { ReleaseImagesTitled } from '../ReleaseImages';
 import { Histogram, BinnedScatter } from '../chart';
-import AutocompleteImput from './autocomplete-input';
+import AutocompleteInput from './autocomplete-input';
 
 import { groupedData, urlStringForProductName, LoadingSpinner } from '../../utils';
 import { FilterSummary } from '../../state';
@@ -23,22 +23,33 @@ class ArchiveDisplayControls extends Component {
   }
 
   render() {
-    return <ButtonToolbar role="toolbar">
-      <ButtonGroup style={{width: "100%"}} size="sm">
-        <Button style={{width: "100%"}}
-          onClick={() => this.buttonClicked("images")}
-          active={this.props.settings.showImages}
-          color={(this.props.settings.showImages) ? "primary" : "secondary"}>
-          Images
-        </Button>
-        <Button style={{width: "100%"}}
-          onClick={() => this.buttonClicked("text")}
-          active={!this.props.settings.showImages}
-          color={(!this.props.settings.showImages) ? "primary" : "secondary"}>
-          Text Only
-        </Button>
-      </ButtonGroup>
-    </ButtonToolbar>
+    return <React.Fragment>
+      <ButtonToolbar role="toolbar">
+        <ButtonGroup style={{width: "100%"}} size="sm">
+          <Button style={{width: "100%"}}
+            onClick={() => this.buttonClicked("images")}
+            active={this.props.settings.showImages}
+            color={(this.props.settings.showImages) ? "primary" : "secondary"}>
+            Images
+          </Button>
+          <Button style={{width: "100%"}}
+            onClick={() => this.buttonClicked("text")}
+            active={!this.props.settings.showImages}
+            color={(!this.props.settings.showImages) ? "primary" : "secondary"}>
+            Text
+          </Button>
+        </ButtonGroup>
+      </ButtonToolbar>
+      {
+        (this.props.settings.showImages) ?
+          <FormText color="muted">
+            Switch to <i>Text</i> mode to see the drops as a textual table.
+          </FormText> :
+          <FormText color="muted">
+            <i>Images</i> mode shows the archive as an image grid.
+          </FormText>
+      }
+    </React.Fragment>
   }
 }
 
@@ -135,7 +146,7 @@ class GarmentTypeFilterGroup extends Component {
     return <div>
       <span style={{fontWeight: "bold"}}>Garment Types</span>
       <FilterButtonToolbar groups={buttonGroups} />
-      <AutocompleteImput fieldName="Garment Types" filters={filters.filter(f => !f.filter.isOn)} onSelect={this.handlers.onClick} />
+      <AutocompleteInput fieldName="Garment Types" filters={filters.filter(f => !f.filter.isOn)} onSelect={this.handlers.onClick} />
     </div>
   }
 }
@@ -176,7 +187,42 @@ class ArchiveFabricFilterGroup extends Component {
     return <div>
       <span style={{fontWeight: "bold"}}>Fabrics</span>
       <FilterButtonToolbar groups={buttonGroups} />
-      <AutocompleteImput fieldName="Fabric name" filters={availableFilters.filter(f => !f.filter.isOn)} onSelect={this.handlers.onClick} />
+      <AutocompleteInput fieldName="Fabric name" filters={availableFilters.filter(f => !f.filter.isOn)} onSelect={this.handlers.onClick} />
+    </div>
+  }
+}
+
+class TextFilterGroup extends Component {
+  constructor(props) {
+    super(props);
+    this.handlers = {
+      onClick: this.onClick.bind(this)
+    }
+  }
+  onClick(filter) { this.props.onToggle(filter); }
+
+  render() {
+    const filters = this.props.filters.map(f =>
+      ({name: f.type, displayName: f.type, filter: f}))
+    const filterButtons = filters.filter(f => f.filter.isOn).map(f =>
+      <Button key={f.filter.type} style={{width: "100%"}}
+        onClick={() => this.onClick(f.filter)}  // Use a function here to capture the
+        active={f.filter.isOn}
+        color={(f.filter.isOn) ? "primary" : "secondary"}>
+        {f.filter.type} &nbsp;<b>x</b>
+      </Button>
+    );
+    // Grouping the fabric buttons does not always prevent overflow.
+    const groupSize = 3;
+    const buttonGroups = ldcollection.groupBy(
+      filterButtons.map((button, index) => ({index, button})),
+      (d) => Math.floor(d.index / groupSize)
+    );
+
+    return <div>
+      <span style={{fontWeight: "bold"}}>Text</span>
+      <FilterButtonToolbar groups={buttonGroups} />
+      <AutocompleteInput fieldName="Text" filters={filters.filter(f => !f.filter.isOn)} onSelect={this.handlers.onClick} />
     </div>
   }
 }
@@ -224,6 +270,11 @@ class ArchiveFilters extends Component {
         summary={this.props.summary.fabricUseCount} />
       :
       null;
+    // Name filter works a bit differently.
+    const textFilterUI = (expanded) ?
+      <TextFilterGroup filters={filters.Text} onToggle={onToggle} />
+      :
+      null;
     const clearButton = (filterSummary !== "(show all)") ?
       <Button key="clearAll" style={{width: "100%"}} size="sm"
           onClick={() => this.onClearAll()}>
@@ -231,12 +282,14 @@ class ArchiveFilters extends Component {
       </Button> :
       null;
 
-    return <div>
-      <Button color="link" onClick={this.onExpand}><p><b>{filterHeader}</b></p></Button>
+    return <div style={{paddingBottom: 20}}>
+      <Button color="link" style={{paddingLeft: 0, paddingBottom: 0}} onClick={this.onExpand}><b>{filterHeader}</b></Button>
+      <FormText color="muted">Use filters to focus on a specific set of drops by <i>Category</i>, <i>Season</i>, etc.</FormText>
       {clearButton}
       {filtersUI}
       {garmentTypeFilterUI}
       {fabricFilterUI}
+      {textFilterUI}
     </div>
   }
 }

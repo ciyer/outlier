@@ -1,5 +1,6 @@
 import { Data, ReleaseBaselineStats } from '../data';
 import * as d3Array from 'd3-array';
+import _ from 'lodash/collection';
 
 const ActionType = {
   CONTENT_REQUEST: 'ArchiveState.CONTENT_REQUEST',
@@ -80,6 +81,16 @@ class ArchiveFilter {
   }
 }
 
+/**
+ * Return false on words that should be included in the index.
+ * @param {string} d
+ */
+function stopWords(d) {
+  const w = d.toLowerCase();
+  const hits = ["the", "a", "+", "-"].filter(s => s === w);
+  return hits.length === 0;
+}
+
 const ArchiveFilters = {
   clearAll: () => {
     return (dispatch) => {
@@ -92,6 +103,19 @@ const ArchiveFilters = {
     }
   },
   _asFilterCodes: (codesMap) => Object.keys(codesMap).sort(d3Array.ascending),
+  _asTextFilterCodes: (codesMap) => {
+    // Move numbers etc to the end of the list
+    const numRe = /^\d+/;
+    const wordRe = /^\w.+/;
+    const [numbers, words] =
+      _.partition(Object.keys(codesMap), (k) => k.match(numRe));
+    const [wordWords, wordExtras] =
+      _.partition(words, (k) => k.match(wordRe));
+    return wordWords.sort(d3Array.ascending).concat(
+      wordExtras.sort(d3Array.ascending),
+      numbers.sort(d3Array.ascending)
+    );
+  },
   _filterCategoryMap: (filterMap, func) => {
     const result = {}
     Object.keys(filterMap).forEach((k) => {
@@ -111,6 +135,7 @@ const ArchiveFilters = {
   _initializeFiltersAndData: (full) => {
     const filters = {};
     const fabricMap = {}, categoryMap = {}, mwuMap = {}, typeMap = {};
+    const wordMap = {}
     // Compile the categories, fabrics, etc. from the data
     full.forEach(function(d) {
       categoryMap[d["subcategory"]] = true;
@@ -118,6 +143,10 @@ const ArchiveFilters = {
       mwuMap[d["MWU"]] = true;
       // only track garment types
       if (d["Category"] === "Clothes") typeMap[d["Type"]] = true;
+      d["Product"].split(" ")
+        .map(w => w.trim())
+        .filter(stopWords)
+        .forEach(w => wordMap[w] = true);
     });
 
     const categories = ArchiveFilters._asFilterCodes(categoryMap);
@@ -134,8 +163,14 @@ const ArchiveFilters = {
 
     filters["Experiment"] = ["Experiment", "Public Prototype"]
       .map(o => new ArchiveFilter("Experiment", o, (d) => d["Product"].startsWith(o)));
+    filters["Experiment"].push(
+      new ArchiveFilter("Experiment", "Non-Exp",
+        (d) => !(d["Product"].startsWith("Experiment") || d["Product"].startsWith("Public Prototype"))));
     filters["Season"] = ["Winter", "Spring", "Summer", "Fall"]
       .map(s => new ArchiveFilter("Season", s, (d) => d.season === s));
+
+    const words = ArchiveFilters._asTextFilterCodes(wordMap);
+    filters["Text"] = words.map(f => new ArchiveFilter("Text", f, (d) => d["Product"].match(f)));
 
     return {data: {full, filtered: full, preFabricFilter: full}, settings: {filters}};
 
