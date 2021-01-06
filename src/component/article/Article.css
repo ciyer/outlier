@@ -1,0 +1,35 @@
+table.dataframe {
+  font-size: 9pt;
+  border: 0px;
+  border-color: transparent;
+  min-width: 250px;
+}
+
+table.dataframe thead {
+  visibility: hidden;
+  font-size: 0px;
+}
+
+table.dataframe tbody tr th {
+  width: 30%;
+}
+
+div.year-products {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+div.product {
+  padding: 0 10px;
+}
+
+div.product div {
+  flex-basis: auto;
+  width: 400px;
+  padding: 0 0px;
+}
+
+div.product-table {
+  flex-grow: 0;
+  flex-shrink: 1;
+}

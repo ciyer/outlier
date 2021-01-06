@@ -3,6 +3,7 @@ import { LoadingSpinner } from '../../utils';
 import { Col, Row } from 'reactstrap';
 import ReactMarkdown from 'react-markdown';
 import vegaEmbed from 'vega-embed';
+import './Article.css';
 
 class CodeOutputCell extends Component {
   render() {
