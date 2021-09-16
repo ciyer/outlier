@@ -9,6 +9,9 @@ import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap
 // Components
 import { About, Archive, Article, ProductPage } from './component';
 
+// Images
+import logo from './oia.svg';
+
 class NavItem extends Component {
   render() {
     const to = this.props.to;
@@ -30,6 +33,7 @@ function AppNavBar(props) {
         <NavbarToggler onClick={navbarToggle} className="mr-2" />
         <Collapse isOpen={navbarOpen} navbar>
           <Nav navbar>
+            <NavItem to="/" title={<img src={logo} alt="OIA Logo" width="30" height="27"/>} />
             <NavItem to="/" title="Archive" />
             <Dropdown nav isOpen={articleOpen} toggle={articleToggle}>
               <DropdownToggle nav caret>
