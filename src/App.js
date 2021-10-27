@@ -43,6 +43,8 @@ function AppNavBar(props) {
                 <DropdownItem><NavItem to="/articles/2019review" title="2019 Review" /></DropdownItem>
                 <DropdownItem><NavItem to="/articles/2020review" title="2020 Review" /></DropdownItem>
                 <DropdownItem><NavItem to="/articles/2020fabrics" title="2020 Fabrics" /></DropdownItem>
+                <DropdownItem><NavItem to="/articles/2021review" title="2021 Review" /></DropdownItem>
+                <DropdownItem><NavItem to="/articles/2021fabrics" title="2021 Fabrics" /></DropdownItem>
               </DropdownMenu>
             </Dropdown>
 
@@ -99,6 +101,12 @@ class App extends Component {
               <Route path="/articles/2020fabrics"
                 render={p => <Article key="2020fabrics"
                   source="/articles/2020-review/2020-fabrics.ipynb" {...p} />} />
+              <Route path="/articles/2021review"
+                render={p => <Article key="2021review"
+                  source="/articles/2021-review/2021-review.ipynb" {...p} />} />
+              <Route path="/articles/2021fabrics"
+                render={p => <Article key="2021fabrics"
+                  source="/articles/2021-review/2021-fabrics.ipynb" {...p} />} />
               <Route exact path="/about"
                 render={p => <About key="about"
                   source="/pages/about.md" latestEntry={latestEntry} {...p} />} /> />

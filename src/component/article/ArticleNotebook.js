@@ -10,8 +10,11 @@ class CodeOutputCell extends Component {
     const output = this.props.output;
     if (output.data['application/vnd.vegalite.v3+json'] != null)
       return <VegaOutputCell spec={output.data['application/vnd.vegalite.v3+json']} />
+      if (output.data['application/vnd.vegalite.v4+json'] != null)
+      return <VegaOutputCell spec={output.data['application/vnd.vegalite.v4+json']} />
     if (output.data['text/html'] != null)
       return <HtmlOutputCell data={output.data['text/html']} />
+    console.log(output);
     return null;
   }
 }
@@ -48,7 +51,6 @@ class VegaOutputCell extends Component {
 }
 
 function HtmlOutputCell(props) {
-  console.log(props.data);
   return <div dangerouslySetInnerHTML={{__html: props.data.join("")}} />
 }
 
