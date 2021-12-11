@@ -1,6 +1,6 @@
 import Data from './Data';
-import { ReleaseSummary, ReleaseBaselineStats, ReleaseFabricSummary } from './ReleaseSummary';
+import { ReleaseSummary, ReleaseBaselineStats, ReleaseColorSummary, ReleaseFabricSummary } from './ReleaseSummary';
 import { releasesForProduct, outlierProductUrls } from './Utils'
 
 
-export { Data, ReleaseSummary, ReleaseBaselineStats, ReleaseFabricSummary, releasesForProduct, outlierProductUrls }
+export { Data, ReleaseSummary, ReleaseBaselineStats, ReleaseColorSummary, ReleaseFabricSummary, releasesForProduct, outlierProductUrls }

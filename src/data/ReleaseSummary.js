@@ -183,4 +183,34 @@ class ReleaseFabricSummary {
   }
 }
 
-export {ReleaseSummary, ReleaseBaselineStats, ReleaseFabricSummary};
+function colorsArrayFromField(colors) {
+  return colors.split(",").map(w => w.trim()).filter(w => w.length > 0)
+}
+
+/**
+ * Summarize Colors in the releases
+ */
+ class ReleaseColorSummary {
+  constructor(releases, stats) {
+    this.releases = releases;
+  }
+
+  colorUseCount() {
+    const releases = this.releases;
+    const result = {};
+    releases.forEach(r => {
+      colorsArrayFromField(r["Colors"]).forEach(c => {
+        const count = (result[c]) ? result[c] + 1 : 1;
+        result[c] = count;
+      })
+    });
+    return result;
+  }
+
+  compute() {
+    const colorUseCount = this.colorUseCount();
+    return { colorUseCount }
+  }
+}
+
+export { ReleaseSummary, ReleaseBaselineStats, ReleaseFabricSummary, ReleaseColorSummary };

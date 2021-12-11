@@ -227,6 +227,46 @@ class TextFilterGroup extends Component {
   }
 }
 
+class ColorFilterGroup extends Component {
+  constructor(props) {
+    super(props);
+    this.handlers = {
+      onClick: this.onClick.bind(this)
+    }
+  }
+  onClick(filter) { this.props.onToggle(filter); }
+
+  render() {
+    // The labels for the colors should be [color name] ([count]), sorted by count.
+    const summary = this.props.summary;
+    const filterMap = {};
+    this.props.filters.forEach(f => { filterMap[f['type']] = f });
+    const availableFilters = Object.keys(summary)
+      .map(name => ({name, count: summary[name], displayName: (`${name} (${summary[name]})`), filter: filterMap[name]}))
+      .sort((a, b) => b.count - a.count);   // Sort in reverse order
+    const filterButtons = availableFilters.filter(f => f.filter.isOn).map(f =>
+      <Button key={f.filter.type} style={{width: "100%"}}
+        onClick={() => this.onClick(f.filter)}  // Use a function here to capture the filter
+        active={f.filter.isOn}
+        color={(f.filter.isOn) ? "primary" : "secondary"}>
+        {f.filter.type} ({f.count}) &nbsp;<b>x</b>
+      </Button>
+    );
+    // Grouping the fabric buttons does not always prevent overflow.
+    const groupSize = 3;
+    const buttonGroups = ldcollection.groupBy(
+      filterButtons.map((button, index) => ({index, button})),
+      (d) => Math.floor(d.index / groupSize)
+    );
+
+    return <div>
+      <span style={{fontWeight: "bold"}}>Color</span>
+      <FilterButtonToolbar groups={buttonGroups} />
+      <AutocompleteInput fieldName="Color" filters={availableFilters.filter(f => !f.filter.isOn)} onSelect={this.handlers.onClick} />
+    </div>
+  }
+}
+
 class ArchiveFilters extends Component {
   constructor(props) {
     super(props);
@@ -275,6 +315,12 @@ class ArchiveFilters extends Component {
       <TextFilterGroup filters={filters.Text} onToggle={onToggle} />
       :
       null;
+    // Name filter works a bit differently.
+    const colorFilterUI = (expanded) ?
+    <ColorFilterGroup filters={filters.Color} onToggle={onToggle}
+      summary={this.props.summary.colorUseCount}  />
+    :
+    null;
     const clearButton = (filterSummary !== "(show all)") ?
       <Button key="clearAll" style={{width: "100%"}} size="sm"
           onClick={() => this.onClearAll()}>
@@ -290,6 +336,7 @@ class ArchiveFilters extends Component {
       {garmentTypeFilterUI}
       {fabricFilterUI}
       {textFilterUI}
+      {colorFilterUI}
     </div>
   }
 }
@@ -308,7 +355,9 @@ class ArchiveControls extends Component {
       // </Col></Row>,
       <Row key="filters">
         <Col>
-          <ArchiveFilters filters={this.props.settings.filters} summary={this.props.summary} handlers={this.props.handlers} />
+          <ArchiveFilters
+            filters={this.props.settings.filters}
+            summary={this.props.summary} handlers={this.props.handlers} />
         </Col>
       </Row>,
     ]
@@ -473,7 +522,8 @@ class Archive extends Component {
     return [
       <Row key="dash">
         <Col md={4}>
-          <ArchiveControls settings={settings} summary={fabricSummary} handlers={handlers.displaySettingHandlers}/>
+          <ArchiveControls settings={settings} summary={fabricSummary}
+            handlers={handlers.displaySettingHandlers}/>
         </Col>
         <Col md={8}>
           <ArchiveSummary data={data} summary={summary} />

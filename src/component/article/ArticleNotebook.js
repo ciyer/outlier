@@ -14,7 +14,6 @@ class CodeOutputCell extends Component {
       return <VegaOutputCell spec={output.data['application/vnd.vegalite.v4+json']} />
     if (output.data['text/html'] != null)
       return <HtmlOutputCell data={output.data['text/html']} />
-    console.log(output);
     return null;
   }
 }

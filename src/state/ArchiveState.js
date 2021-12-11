@@ -135,7 +135,7 @@ const ArchiveFilters = {
   _initializeFiltersAndData: (full) => {
     const filters = {};
     const fabricMap = {}, categoryMap = {}, mwuMap = {}, typeMap = {};
-    const wordMap = {}
+    const wordMap = {}, colorMap = {};
     // Compile the categories, fabrics, etc. from the data
     full.forEach(function(d) {
       categoryMap[d["subcategory"]] = true;
@@ -147,6 +147,9 @@ const ArchiveFilters = {
         .map(w => w.trim())
         .filter(stopWords)
         .forEach(w => wordMap[w] = true);
+      d["Colors"].split(",")
+      .map(w => w.trim()).filter(w => w.length > 0)
+      .forEach(w => colorMap[w] = true);
     });
 
     const categories = ArchiveFilters._asFilterCodes(categoryMap);
@@ -171,6 +174,9 @@ const ArchiveFilters = {
 
     const words = ArchiveFilters._asTextFilterCodes(wordMap);
     filters["Text"] = words.map(f => new ArchiveFilter("Text", f, (d) => d["Product"].match(f)));
+
+    const colors = ArchiveFilters._asTextFilterCodes(colorMap);
+    filters["Color"] = colors.map(f => new ArchiveFilter("Color", f, (d) => d["Colors"].match(f)));
 
     return {data: {full, filtered: full, preFabricFilter: full}, settings: {filters}};
 

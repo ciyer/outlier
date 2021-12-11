@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { ArchiveState } from '../../state';
 import ArchivePresent from './Archive';
-import { ReleaseSummary, ReleaseFabricSummary } from '../../data';
+import { ReleaseSummary, ReleaseColorSummary, ReleaseFabricSummary } from '../../data';
 
 function mapStateToProps(state, ownProps) {
   const archive = state.archive;
@@ -13,6 +13,12 @@ function mapStateToProps(state, ownProps) {
   const fabricSummary = (archive.summary.baseline.priceBins == null) ?
     null :
     (new ReleaseFabricSummary(archive.data.preFabricFilter)).compute();
+  const colorSummary = (archive.summary.baseline.priceBins == null) ?
+    null :
+    (new ReleaseColorSummary(archive.data.filtered)).compute();
+  if (fabricSummary != null) {
+    fabricSummary.colorUseCount = colorSummary.colorUseCount;
+  }
   return {archive, summary, fabricSummary}
 }
 

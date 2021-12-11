@@ -1,4 +1,4 @@
-import { ReleaseSummary, ReleaseBaselineStats, ReleaseFabricSummary } from './ReleaseSummary';
+import { ReleaseSummary, ReleaseBaselineStats, ReleaseColorSummary, ReleaseFabricSummary } from './ReleaseSummary';
 
 import Data from './Data';
 import { simpleData } from './Data.test';
@@ -42,7 +42,6 @@ describe('summary', () => {
         { min: 185.4, max: 495, count: 3, "name": "<=495" }
       ]);
       expect(summary.releaseGapWeeks.filter(d => d.year < 2019)).toEqual([
-        { year: 2013, bin: 0, count: 0},
         { year: 2014, bin: 0, count: 0},
         { year: 2015, bin: 0, count: 0},
         { year: 2016, bin: 0, count: 0},
@@ -69,7 +68,6 @@ describe('summary', () => {
         { min: 185.4, max: 495, count: 3, "name": "<=495" }
       ]);
       expect(summary.releaseGapWeeks.filter(d => d.year < 2019)).toEqual([
-        { year: 2013, bin: 0, count: 0},
         { year: 2014, bin: 0, count: 0},
         { year: 2015, bin: 0, count: 0},
         { year: 2016, bin: 0, count: 0},
@@ -89,8 +87,6 @@ describe('summary', () => {
         { min: 185.4, max: 495, count: 2, "name": "<=495" }
       ]);
       expect(summary.releaseGapWeeks.filter(d => d.year < 2019)).toEqual([
-
-        { year: 2013, bin: 0, count: 0},
         { year: 2014, bin: 0, count: 0},
         { year: 2015, bin: 0, count: 0},
         { year: 2016, bin: 0, count: 0},
@@ -129,7 +125,68 @@ describe('summary', () => {
         'Strongtwill': 1,
         'Ultra Ultra': 1,
          "“60/30”": 1
+      });
+    });
+  });
 
+  it('computes color use summary', () => {
+    fetch.mockResponseOnce(simpleData);
+    return Data.read().then(releases => {
+      const summary = new ReleaseColorSummary(releases).compute();
+      expect(summary.colorUseCount).toEqual({
+        "Artificial Grape": 3,
+        "Black": 4,
+        "Black Rock": 3,
+        "Blade Gray": 4,
+        "Blue AF": 4,
+        "Brick": 1,
+        "Charcoal": 2,
+        "Charcoal Brown": 1,
+        "Dark Marine": 1,
+        "Deep Gray": 4,
+        "Dry Rose": 4,
+        "Earth Taupe": 1,
+        "Flat Black": 4,
+        "Gray Rock": 3,
+        "Gray Space": 1,
+        "Lemon": 3,
+        "Magenta": 1,
+        "Matte Navy": 1,
+        "Navy": 2,
+        "Olive": 1,
+        "Orange": 3,
+        "Purple": 1,
+        "Refraction": 4,
+        "Sand": 1,
+        "Sky Blue": 3,
+        "Teal": 1,
+        "Titian Blue": 4,
+        "White": 1,
+      });
+    });
+  });
+
+  it('computes filtered fabric use summary', () => {
+    fetch.mockResponseOnce(simpleData);
+    return Data.read().then(releases => {
+      const pants = releases.filter(d => d.subcategory === 'Pants');
+      const summary = new ReleaseColorSummary(pants).compute();
+      expect(summary.colorUseCount).toEqual({
+        "Black": 2,
+        "Blade Gray": 4,
+        "Blue AF": 4,
+        "Brick": 1,
+        "Charcoal": 2,
+        "Dark Marine": 1,
+        "Deep Gray": 4,
+        "Dry Rose": 4,
+        "Earth Taupe": 1,
+        "Flat Black": 4,
+        "Gray Space": 1,
+        "Matte Navy": 1,
+        "Navy": 1,
+        "Refraction": 4,
+        "Titian Blue": 4,
       });
     });
   });
