@@ -27,7 +27,7 @@
   "devDependencies": {
     "jest-canvas-mock": "^2.3.0",
     "jest-fetch-mock": "^1.5.0",
-    "react-scripts": "^3.3.0",
+    "react-scripts": "^5.0.1",
     "redux-mock-store": "^1.5.4",
     "sass": "^1.24.1",
     "typescript": "^3.2.4"
