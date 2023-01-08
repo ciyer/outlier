@@ -1,25 +1,37 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './styles/index.css';
-import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+import React from "react";
+import { createRoot } from "react-dom/client";
+import { Provider, connect } from "react-redux";
+
+import "./styles/index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { ArchiveState, createGlobalStore } from "./state";
 
 // State
-import { Provider, connect } from 'react-redux';
-import { ArchiveState, createGlobalStore } from './state'
-
 const store = createGlobalStore();
 
-
 function mapStateToProps(state, ownProps) {
-  return {archive: state.archive}
+  return { archive: state.archive };
 }
 
 function mapDispatchToProps(dispatch) {
-  return {doRetrieve: () => dispatch(ArchiveState.data.retrieve()) }
+  return { doRetrieve: () => dispatch(ArchiveState.data.retrieve()) };
 }
 
-const VisibleApp = connect(mapStateToProps, mapDispatchToProps)(App)
+const VisibleApp = connect(mapStateToProps, mapDispatchToProps)(App);
 
-ReactDOM.render(<Provider store={store}><VisibleApp /></Provider>, document.getElementById('root'));
-registerServiceWorker();
+const container = document.getElementById("root");
+const root = createRoot(container);
+
+root.render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <VisibleApp />
+    </Provider>
+  </React.StrictMode>
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();

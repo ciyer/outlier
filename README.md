@@ -2,4 +2,4 @@
 
 An interactive archive of releases by the clothing company [Outlier](https://outlier.nyc).
 
-Running at https://illposed.com/outlier
+Running at https://outlier.illposed.com/
