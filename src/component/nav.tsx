@@ -52,13 +52,16 @@ function AppNavBar() {
               </DropdownToggle>
               <DropdownMenu>
                 <DropdownItem>
+                  <NavItem to="/articles/2022review" title="2022 Review" />
+                </DropdownItem>
+                <DropdownItem>
                   <NavItem to="/articles/2022fabrics" title="2022 Fabrics" />
                 </DropdownItem>
                 <DropdownItem>
-                  <NavItem to="/articles/2021fabrics" title="2021 Fabrics" />
+                  <NavItem to="/articles/2021review" title="2021 Review" />
                 </DropdownItem>
                 <DropdownItem>
-                  <NavItem to="/articles/2021review" title="2021 Review" />
+                  <NavItem to="/articles/2021fabrics" title="2021 Fabrics" />
                 </DropdownItem>
                 <DropdownItem>
                   <NavItem to="/articles/2020review" title="2020 Review" />

@@ -8,6 +8,7 @@ import "./Article.css";
 class CodeOutputCell extends Component {
   render() {
     const output = this.props.output;
+    if (output?.data == null) return null;
     if (output.data["application/vnd.vegalite.v3+json"] != null)
       return (
         <VegaOutputCell
@@ -22,6 +23,8 @@ class CodeOutputCell extends Component {
       );
     if (output.data["text/html"] != null)
       return <HtmlOutputCell data={output.data["text/html"]} />;
+    if (output.data["text/markdown"] != null)
+      return <HtmlOutputCell data={output.data["text/markdown"]} />;
     return null;
   }
 }

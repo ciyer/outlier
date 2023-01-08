@@ -84,6 +84,16 @@ class App extends Component {
                 )}
               />
               <Route
+                path="/articles/2022review"
+                render={(p) => (
+                  <Article
+                    key="2022review"
+                    source="/articles/2022-review/2022-review.ipynb"
+                    {...p}
+                  />
+                )}
+              />
+              <Route
                 path="/articles/2022fabrics"
                 render={(p) => (
                   <Article
