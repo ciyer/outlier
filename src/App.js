@@ -114,7 +114,6 @@ class App extends Component {
                     {...p}
                   />
                 )}
-              />{" "}
               />
               <Route
                 exact
@@ -126,7 +125,6 @@ class App extends Component {
                     {...p}
                   />
                 )}
-              />{" "}
               />
             </Switch>
           </main>
