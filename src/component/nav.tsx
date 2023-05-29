@@ -35,6 +35,9 @@ function AppNavBar() {
   const [articleOpen, setArticleOpen] = useState(false);
   const articleToggle = () => setArticleOpen(!articleOpen);
 
+  const [collectionOpen, setCollectionOpen] = useState(false);
+  const collectionToggle = () => setCollectionOpen(!collectionOpen);
+
   return (
     <header>
       <Navbar expand="sm" color="light" light>
@@ -46,6 +49,17 @@ function AppNavBar() {
               title={<img src={logo} alt="OIA Logo" width="30" height="27" />}
             />
             <NavItem to="/" title="Archive" />
+            <Dropdown nav isOpen={collectionOpen} toggle={collectionToggle}>
+              <DropdownToggle nav caret>
+                Collections
+              </DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem>
+                  <NavItem to="/collections/ideas/ideas-1" title="Ideas 1" />
+                  <NavItem to="/collections/ideas/ideas-2" title="Ideas 2" />
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
             <Dropdown nav isOpen={articleOpen} toggle={articleToggle}>
               <DropdownToggle nav caret>
                 Articles

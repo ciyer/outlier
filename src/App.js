@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 // Components
 import { About, Archive, Article, ProductPage } from "./component";
 import { AppFooter, AppNavBar } from "./component";
+import { Ideas1, Ideas2 } from "./component/collections";
 
 class App extends Component {
   componentDidMount() {
@@ -114,6 +115,28 @@ class App extends Component {
                     {...p}
                   />
                 )}
+              />
+              <Route
+                exact
+                path="/collections"
+                render={(p) => (
+                  <About
+                    key="about"
+                    source="/pages/about.md"
+                    latestEntry={latestEntry}
+                    {...p}
+                  />
+                )}
+              />
+              <Route
+                exact
+                path="/collections/ideas/ideas-1"
+                render={(p) => <Ideas1 />}
+              />
+              <Route
+                exact
+                path="/collections/ideas/ideas-2"
+                render={(p) => <Ideas2 />}
               />
               <Route
                 exact
