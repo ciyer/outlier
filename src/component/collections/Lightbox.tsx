@@ -18,11 +18,19 @@ type LightboxProps = {
   close: () => void;
 };
 function Lightbox(props: LightboxProps) {
-  const slides = props.images.map(({ original, width, height }) => ({
-    src: original,
-    width,
-    height,
-  }));
+  const slides = props.images.map(({ src, original, width, height }) => {
+    const thumbnailHeight = 640;
+    const thumbnailWidth = (width * thumbnailHeight) / height;
+    return {
+      src: original,
+      width,
+      height,
+      srcSet: [
+        { src: src, width: thumbnailWidth, height: thumbnailHeight },
+        { src: original, width, height },
+      ],
+    };
+  });
   return (
     <LightboxYa
       plugins={[Thumbnails]}
