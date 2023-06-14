@@ -59,6 +59,7 @@ function AppNavBar() {
                   <NavItem to="/collections/ideas/ideas-2" title="Ideas 2" />
                   <NavItem to="/collections/ideas/ideas-3" title="Ideas 3" />
                   <NavItem to="/collections/ideas/ideas-4" title="Ideas 4" />
+                  <NavItem to="/collections/ideas/ideas-5" title="Ideas 5" />
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
