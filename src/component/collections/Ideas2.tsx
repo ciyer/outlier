@@ -210,6 +210,10 @@ function Ideas2Credits() {
         <table className="credits-table table table-borderless table-sm">
           <tbody>
             <tr>
+              <th scope="row">Design/Creative Direction</th>
+              <td>Willie Norris</td>
+            </tr>
+            <tr>
               <th scope="row">Photography</th>
               <td>Jon-Paul Rodriguez</td>
             </tr>
