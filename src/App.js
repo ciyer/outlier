@@ -13,6 +13,7 @@ import {
   Ideas3,
   Ideas4,
   Ideas5,
+  Ideas6,
 } from "./component/collections";
 
 class App extends Component {
@@ -158,6 +159,11 @@ class App extends Component {
                 exact
                 path="/collections/ideas/ideas-5"
                 render={(p) => <Ideas5 />}
+              />
+              <Route
+                exact
+                path="/collections/ideas/ideas-6"
+                render={(p) => <Ideas6 />}
               />
               <Route
                 exact
