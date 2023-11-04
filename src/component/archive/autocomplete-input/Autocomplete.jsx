@@ -47,7 +47,7 @@ class Autocomplete extends Component {
     return this.props.filters.filter(f => regex.test(f.name));
   }
 
-  onChange(event, { newValue, method }) {
+  onChange(event, { newValue }) {
     this.setState({value: newValue});
   }
 
@@ -99,7 +99,7 @@ class Autocomplete extends Component {
         suggestions={suggestions}
         theme={theme}
         highlightFirstSuggestion={true}
-        shouldRenderSuggestions={(v) => true}
+        shouldRenderSuggestions={() => true}
         onSuggestionsFetchRequested={this.handlers.onSuggestionsFetchRequested}
         onSuggestionsClearRequested={this.handlers.onSuggestionsClearRequested}
         onSuggestionSelected={this.handlers.onSuggestionSelected}

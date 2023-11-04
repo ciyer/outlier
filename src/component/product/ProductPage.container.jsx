@@ -16,7 +16,7 @@ function mapStateToProps(state, ownProps) {
     productUrlString: ownProps.product };
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps() {
   return {}
 }
 

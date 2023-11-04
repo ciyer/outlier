@@ -7,8 +7,9 @@ import FilterSummary from "./FilterSummary";
 import MarkdownPageState from "./MarkdownPageState";
 import NotebookState from "./NotebookState";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let composeEnhancers;
-if (process.env.NODE_ENV === "development")
+if (import.meta.env.MODE === "development")
   composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 else composeEnhancers = compose;
 
