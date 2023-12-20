@@ -1,13 +1,14 @@
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
+import thunk from "redux-thunk";
+import configureMockStore from "redux-mock-store";
 
-import NotebookState from './NotebookState';
-import { createGlobalStore } from './'
+import { beforeEach, describe, expect, it } from "vitest";
+
+import NotebookState from "./NotebookState";
+import { createGlobalStore } from "./";
 
 const createMockStore = configureMockStore([thunk]);
 
-const simpleNotebookData =
-`{
+const simpleNotebookData = `{
   "cells": [
    {
     "cell_type": "markdown",
@@ -40,32 +41,39 @@ const simpleNotebookData =
   "nbformat_minor": 4
  }`;
 
- const simpleNotebook = JSON.parse(simpleNotebookData);
+const simpleNotebook = JSON.parse(simpleNotebookData);
 
-
-describe('page retrieval', () => {
-  beforeEach(() => { fetch.resetMocks() });
-
-  it('invokes expected actions', () => {
-    fetch.mockResponseOnce(simpleNotebookData);
-    const store = createMockStore({simpleNotebook: null});
-    const expectedActions = [
-      {"source": "simpleNotebook", "type": "NotebookState.CONTENT_REQUEST"},
-      {"payload": {"simpleNotebook": simpleNotebook}, "type": "NotebookState.CONTENT_RETURN"}];
-    return store.dispatch(NotebookState.retrieve('simpleNotebook')).then(() => {
-        // return of async actions
-        expect(store.getActions()).toEqual(expectedActions)
-      })
+describe("page retrieval", () => {
+  beforeEach(() => {
+    fetch.resetMocks();
   });
 
-  it('updates store', () => {
+  it("invokes expected actions", () => {
+    fetch.mockResponseOnce(simpleNotebookData);
+    const store = createMockStore({ simpleNotebook: null });
+    const expectedActions = [
+      { source: "simpleNotebook", type: "NotebookState.CONTENT_REQUEST" },
+      {
+        payload: { simpleNotebook: simpleNotebook },
+        type: "NotebookState.CONTENT_RETURN",
+      },
+    ];
+    return store.dispatch(NotebookState.retrieve("simpleNotebook")).then(() => {
+      // return of async actions
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it("updates store", () => {
     fetch.mockResponseOnce(simpleNotebookData);
     const store = createGlobalStore();
-    store.dispatch(NotebookState.retrieve('simpleNotebook')).then(() => {
-        // return of async actions
-        expect(store.getState().notebooks).toEqual({"simpleNotebook": simpleNotebook})
-      })
+    store.dispatch(NotebookState.retrieve("simpleNotebook")).then(() => {
+      // return of async actions
+      expect(store.getState().notebooks).toEqual({
+        simpleNotebook: simpleNotebook,
+      });
+    });
   });
 });
 
-export { simpleNotebookData }
+export { simpleNotebookData };

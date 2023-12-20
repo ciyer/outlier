@@ -1,14 +1,14 @@
 import { groupedData } from './';
 
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
+import { beforeEach, describe, expect, it } from "vitest";
 
-import * as d3dsv from 'd3-dsv';
+import thunk from "redux-thunk";
+import configureMockStore from "redux-mock-store";
 
-import Data from '../data/Data';
 import { simpleData } from '../data/Data.test';
 import { createGlobalStore, ArchiveState } from '../state'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const createMockStore = configureMockStore([thunk]);
 
 describe('chronological grouping', () => {
