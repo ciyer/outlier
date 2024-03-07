@@ -72,6 +72,9 @@ function AppNavBar() {
                 <DropdownItem>
                   <NavItem to="/collections/ideas/ideas-6" title="IDEAS 6" />
                 </DropdownItem>
+                <DropdownItem>
+                  <NavItem to="/collections/ideas/ideas-7" title="IDEAS 7" />
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
             <Dropdown nav isOpen={articleOpen} toggle={articleToggle}>
