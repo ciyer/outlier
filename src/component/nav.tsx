@@ -83,6 +83,9 @@ function AppNavBar() {
               </DropdownToggle>
               <DropdownMenu>
                 <DropdownItem>
+                  <NavItem to="/articles/2024fabrics" title="2024 Fabrics" />
+                </DropdownItem>
+                <DropdownItem>
                   <NavItem to="/articles/2023fabrics" title="2023 Fabrics" />
                 </DropdownItem>
                 <DropdownItem>
