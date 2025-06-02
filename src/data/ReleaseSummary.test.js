@@ -50,11 +50,24 @@ describe("summary", () => {
         { min: 130, max: 185.4, count: 3, name: "<185" },
         { min: 185.4, max: 495, count: 3, name: "<=495" },
       ]);
-      expect(summary.releaseGapWeeks.filter((d) => d.year < 2019)).toEqual([
-        { year: 2016, bin: 0, count: 0 },
-        { year: 2017, bin: 0, count: 0 },
+      expect(summary.releaseGapWeeks.filter((d) => d.year < 2022)).toEqual([
         { year: 2018, bin: 0, count: 8 },
         { year: 2018, bin: 1, count: 3 },
+        {
+          bin: 0,
+          count: 0,
+          year: 2019,
+        },
+        {
+          bin: 0,
+          count: 0,
+          year: 2020,
+        },
+        {
+          bin: 0,
+          count: 0,
+          year: 2021,
+        },
       ]);
     });
   });
@@ -75,8 +88,6 @@ describe("summary", () => {
         { min: 185.4, max: 495, count: 3, name: "<=495" },
       ]);
       expect(summary.releaseGapWeeks.filter((d) => d.year < 2019)).toEqual([
-        { bin: 0, count: 0, year: 2016 },
-        { bin: 0, count: 0, year: 2017 },
         { bin: 0, count: 8, year: 2018 },
         { bin: 1, count: 3, year: 2018 },
       ]);
@@ -91,12 +102,25 @@ describe("summary", () => {
         { min: 130, max: 185.4, count: 3, name: "<185" },
         { min: 185.4, max: 495, count: 2, name: "<=495" },
       ]);
-      expect(summary.releaseGapWeeks.filter((d) => d.year < 2019)).toEqual([
-        { bin: 0, count: 0, year: 2016 },
-        { bin: 0, count: 0, year: 2017 },
+      expect(summary.releaseGapWeeks.filter((d) => d.year < 2022)).toEqual([
         { bin: 0, count: 4, year: 2018 },
         { bin: 1, count: 1, year: 2018 },
         { bin: 2, count: 1, year: 2018 },
+        {
+          bin: 0,
+          count: 0,
+          year: 2019,
+        },
+        {
+          bin: 0,
+          count: 0,
+          year: 2020,
+        },
+        {
+          bin: 0,
+          count: 0,
+          year: 2021,
+        },
       ]);
     });
   });
