@@ -7,7 +7,7 @@ import { Table } from 'reactstrap';
 import { Link } from 'react-router-dom'
 
 import { ReleaseImagesTitled } from '../ReleaseImages';
-import { Histogram, BinnedScatter } from '../chart';
+// import { Histogram, BinnedScatter } from '../chart';
 import AutocompleteInput from './autocomplete-input';
 
 import { groupedData, urlStringForProductName, LoadingSpinner } from '../../utils';
@@ -364,44 +364,59 @@ class ArchiveControls extends Component {
   }
 }
 
-class ArchiveSummary extends Component {
+// class ArchiveSummary extends Component {
+//   render() {
+//     const summary = this.props.summary;
+//     if (summary == null) return <p></p>;
+//     const data = this.props.data;
+//     const totalNumberOfEntries = (data.full) ? data.full.length : 0;
+//     const numberOfEntries = (data.filtered) ? data.filtered.length : 0;
+//     const sizeText =
+//       (numberOfEntries === totalNumberOfEntries) ?
+//         `${totalNumberOfEntries} entries` :
+//         `${numberOfEntries} of ${totalNumberOfEntries} entries`;
+//     const monthHistogram = summary.monthHistogram;
+//     const seasonHistogram = summary.seasonHistogram;
+//     const priceHistogram = summary.priceHistogram;
+//     const releaseGapWeeks = summary.releaseGapWeeks;
+//     return [
+//       <p key="sizetext">{sizeText}</p>,
+//       <div key="summary" className="d-flex flex-wrap">
+//         <div>
+//           <h3 key="seasonHeader">Season</h3>
+//           <Histogram key="seasonHistogram" data={seasonHistogram} width={175} />
+//         </div>
+//         <div>
+//           <h3 key="monthHeader">Month</h3>
+//           <Histogram key="monthHistogram" data={monthHistogram} width={175}  />
+//         </div>
+//         <div>
+//           <h3 key="priceHeader">Price
+//             <span style={{fontSize: 'small', fontWeight: 'normal'}}> (Median ${`${summary.priceMedian}`})</span>
+//           </h3>
+//           <Histogram key="priceHistogram" data={priceHistogram} labellength={-1} width={175} />
+//         </div>
+//         <div>
+//           <h3 key="releaseDurationHeader">Release Gap <span style={{fontSize: 'small', fontWeight: 'normal'}}>(weeks)</span></h3>
+//           <BinnedScatter key="releaseDuration" data={releaseGapWeeks} width={175} />
+//         </div>
+//       </div>
+//     ]
+//   }
+// }
+
+class ArchiveSummaryMinimal extends Component {
   render() {
     const summary = this.props.summary;
     if (summary == null) return <p></p>;
     const data = this.props.data;
-    const totalNumberOfEntries = (data.full) ? data.full.length : 0;
-    const numberOfEntries = (data.filtered) ? data.filtered.length : 0;
+    const totalNumberOfEntries = data.full ? data.full.length : 0;
+    const numberOfEntries = data.filtered ? data.filtered.length : 0;
     const sizeText =
-      (numberOfEntries === totalNumberOfEntries) ?
-        `${totalNumberOfEntries} entries` :
-        `${numberOfEntries} of ${totalNumberOfEntries} entries`;
-    const monthHistogram = summary.monthHistogram;
-    const seasonHistogram = summary.seasonHistogram;
-    const priceHistogram = summary.priceHistogram;
-    const releaseGapWeeks = summary.releaseGapWeeks;
-    return [
-      <p key="sizetext">{sizeText}</p>,
-      <div key="summary" className="d-flex flex-wrap">
-        <div>
-          <h3 key="seasonHeader">Season</h3>
-          <Histogram key="seasonHistogram" data={seasonHistogram} width={175} />
-        </div>
-        <div>
-          <h3 key="monthHeader">Month</h3>
-          <Histogram key="monthHistogram" data={monthHistogram} width={175}  />
-        </div>
-        <div>
-          <h3 key="priceHeader">Price
-            <span style={{fontSize: 'small', fontWeight: 'normal'}}> (Median ${`${summary.priceMedian}`})</span>
-          </h3>
-          <Histogram key="priceHistogram" data={priceHistogram} labellength={-1} width={175} />
-        </div>
-        <div>
-          <h3 key="releaseDurationHeader">Release Gap <span style={{fontSize: 'small', fontWeight: 'normal'}}>(weeks)</span></h3>
-          <BinnedScatter key="releaseDuration" data={releaseGapWeeks} width={175} />
-        </div>
-      </div>
-    ]
+      numberOfEntries === totalNumberOfEntries
+        ? `${totalNumberOfEntries} entries`
+        : `${numberOfEntries} of ${totalNumberOfEntries} entries`;
+    return [<p key="sizetext">{sizeText}</p>];
   }
 }
 
@@ -409,25 +424,33 @@ class ArchiveImageGroup extends Component {
   render() {
     const group = this.props.group;
     const showTitle = this.props.showTitle;
-    const title = (showTitle) ? <h3>{group.name}</h3> : <span></span>;
-    return <Row>
-      <Col>
-        {title}
-        <ReleaseImagesTitled releases={group.entries} productUrl={this.props.productUrl} />
-      </Col>
-    </Row>
+    const title = showTitle ? <h3>{group.name}</h3> : <span></span>;
+    return (
+      <Row>
+        <Col>
+          {title}
+          <ReleaseImagesTitled
+            releases={group.entries}
+            productUrl={this.props.productUrl}
+          />
+        </Col>
+      </Row>
+    );
   }
 }
 
 class ArchiveWithImages extends Component {
   render() {
     const groups = groupedData(this.props.data, this.props.settings);
-    const children =
-      groups.map(g =>
-        <ArchiveImageGroup
-          key={g.name} group={g} showTitle={groups.length > 1}
-          productUrl={this.props.productUrl} />);
-    return children
+    const children = groups.map((g) => (
+      <ArchiveImageGroup
+        key={g.name}
+        group={g}
+        showTitle={groups.length > 1}
+        productUrl={this.props.productUrl}
+      />
+    ));
+    return children;
   }
 }
 
@@ -437,35 +460,45 @@ class ArchiveTextGroupRow extends Component {
     const name = this.props.name;
     const showTitle = this.props.showTitle;
     const index = this.props.index;
-    const price = (entry.Price !== "") ? `$${entry.Price}` : "";
+    const price = entry.Price !== "" ? `$${entry.Price}` : "";
     let groupTitle = null;
     if (showTitle) {
-      groupTitle = (index < 1) ?
-        <th scope="row">{name}</th> :
-        <td></td>
+      groupTitle = index < 1 ? <th scope="row">{name}</th> : <td></td>;
     }
-    return <tr key={index}>
-      {groupTitle}
-      <td>
-        <Link to={`${this.props.productUrl}/${urlStringForProductName(entry.Product)}`}>
-          {entry.Product}
-        </Link>
-      </td>
-      <td>{price}</td>
-      <td>{entry.Release}</td>
-    </tr>
+    return (
+      <tr key={index}>
+        {groupTitle}
+        <td>
+          <Link
+            to={`${this.props.productUrl}/${urlStringForProductName(
+              entry.Product
+            )}`}
+          >
+            {entry.Product}
+          </Link>
+        </td>
+        <td>{price}</td>
+        <td>{entry.Release}</td>
+      </tr>
+    );
   }
 }
-
 
 class ArchiveTextGroupRows extends Component {
   render() {
     const group = this.props.group;
     const showTitle = this.props.showTitle;
     const entries = group.entries;
-    return entries.map((d, i) =>
-      <ArchiveTextGroupRow key={i} entry={d} name={group.name} showTitle={showTitle}
-        productUrl={this.props.productUrl} index={i} /> )
+    return entries.map((d, i) => (
+      <ArchiveTextGroupRow
+        key={i}
+        entry={d}
+        name={group.name}
+        showTitle={showTitle}
+        productUrl={this.props.productUrl}
+        index={i}
+      />
+    ));
   }
 }
 
@@ -473,26 +506,38 @@ class ArchiveWithText extends Component {
   render() {
     const groups = groupedData(this.props.data, this.props.settings);
     const showTitle = groups.length > 1;
-    const tableHead = (showTitle) ?
-      <tr><th>Group</th><th>Product</th><th>Price</th><th>Release</th></tr> :
-      <tr><th>Product</th><th>Price</th><th>Release</th></tr>
-    const rows =
-      groups.map(g =>
-        <ArchiveTextGroupRows
-          key={g.name} group={g} showTitle={groups.length > 1}
-          productUrl={this.props.productUrl} />);
-    return <Row>
-      <Col>
-        <Table size="sm">
-          <thead>
-            {tableHead}
-          </thead>
-          <tbody>
-            {rows}
-          </tbody>
-        </Table>
-      </Col>
-    </Row>
+    const tableHead = showTitle ? (
+      <tr>
+        <th>Group</th>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Release</th>
+      </tr>
+    ) : (
+      <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Release</th>
+      </tr>
+    );
+    const rows = groups.map((g) => (
+      <ArchiveTextGroupRows
+        key={g.name}
+        group={g}
+        showTitle={groups.length > 1}
+        productUrl={this.props.productUrl}
+      />
+    ));
+    return (
+      <Row>
+        <Col>
+          <Table size="sm">
+            <thead>{tableHead}</thead>
+            <tbody>{rows}</tbody>
+          </Table>
+        </Col>
+      </Row>
+    );
   }
 }
 
@@ -500,15 +545,25 @@ class ArchiveBody extends Component {
   render() {
     const data = this.props.data;
     if (data.full.length < 1) {
-      return <LoadingSpinner />
+      return <LoadingSpinner />;
     }
     const settings = this.props.settings;
     if (settings.display.showImages === true)
-      return <ArchiveWithImages
-        data={data} settings={settings} productUrl={this.props.productUrl} />
+      return (
+        <ArchiveWithImages
+          data={data}
+          settings={settings}
+          productUrl={this.props.productUrl}
+        />
+      );
     else
-      return <ArchiveWithText
-        data={data} settings={settings} productUrl={this.props.productUrl} />
+      return (
+        <ArchiveWithText
+          data={data}
+          settings={settings}
+          productUrl={this.props.productUrl}
+        />
+      );
   }
 }
 
@@ -519,22 +574,31 @@ class Archive extends Component {
     const handlers = this.props.handlers;
     const summary = this.props.summary;
     const fabricSummary = this.props.fabricSummary;
-    return [
-      <Row key="dash">
-        <Col md={4}>
-          <ArchiveControls settings={settings} summary={fabricSummary}
-            handlers={handlers.displaySettingHandlers}/>
-        </Col>
-        <Col md={8}>
-          <ArchiveSummary data={data} summary={summary} />
-        </Col>
-      </Row>,
-      <Row key="data">
-        <Col xs={12}>
-          <ArchiveBody productUrl={this.props.productUrl} data={data} settings={settings} />
-        </Col>
-      </Row>
-    ]
+    return (
+      <>
+        <Row key="dash">
+          <Col md={{ size: 8, order: 1 }}>
+            <ArchiveSummaryMinimal data={data} summary={summary} />
+          </Col>
+          <Col md={{ size: 4, order: 0 }}>
+            <ArchiveControls
+              settings={settings}
+              summary={fabricSummary}
+              handlers={handlers.displaySettingHandlers}
+            />
+          </Col>
+        </Row>
+        <Row key="data">
+          <Col xs={12}>
+            <ArchiveBody
+              productUrl={this.props.productUrl}
+              data={data}
+              settings={settings}
+            />
+          </Col>
+        </Row>
+      </>
+    );
   }
 }
 
