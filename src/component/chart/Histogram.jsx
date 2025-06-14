@@ -42,7 +42,7 @@ componentDidUpdate(prevProps, prevState) {
     const hist = this.props.data;
     const counts = hist.map(d => d.count);
     const maxCount = Math.max(...counts);
-    const yTickCount = maxCount < 8 ? maxCount : 8;
+    const yTickCount = maxCount < 6 ? maxCount : 6;
     const labelLength = this.props.labellength || 1;
     const xLabelExpr =
       (labelLength > 0) ?
