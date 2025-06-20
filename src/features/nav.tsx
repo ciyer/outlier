@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 // Navigation
-import { NavLink as RRNavLink } from "react-router-dom";
+import { NavLink as RRNavLink } from "react-router";
 import { Collapse, Nav, Navbar, NavbarToggler, NavLink } from "reactstrap";
 import {
   Dropdown,
@@ -42,7 +42,11 @@ function AppNavBar() {
     <header>
       <Navbar expand="sm" color="light" light>
         <NavbarToggler onClick={navbarToggle} className="mr-2" />
-        <Collapse isOpen={navbarOpen} navbar>
+        <Collapse
+          className="flex-column flex-sm-row align-sm-items-baseline justify-content-sm-between"
+          isOpen={navbarOpen}
+          navbar
+        >
           <Nav navbar>
             <NavItem
               to="/"
@@ -112,9 +116,11 @@ function AppNavBar() {
               </DropdownMenu>
             </Dropdown>
           </Nav>
-          <Nav navbar className="ml-auto">
-            <NavItem to="/about" title="About" />
-          </Nav>
+          <div>
+            <Nav navbar>
+              <NavItem to="/about" title="About" />
+            </Nav>
+          </div>
         </Collapse>
       </Navbar>
     </header>
