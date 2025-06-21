@@ -22,7 +22,7 @@ function NavItem(props: NavItemProps) {
   const to = props.to;
   const title = props.title;
   return (
-    <NavLink exact to={to} tag={RRNavLink}>
+    <NavLink to={to} tag={RRNavLink}>
       {title}
     </NavLink>
   );
