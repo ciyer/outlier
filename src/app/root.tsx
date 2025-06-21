@@ -2,6 +2,8 @@ import { Outlet } from "react-router";
 
 import { AppFooter, AppNavBar } from "../features/nav";
 
+import "./App.css";
+
 export default function Root() {
   return (
     <div>
