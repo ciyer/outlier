@@ -9,7 +9,6 @@ export default function Root() {
     <div>
       <AppNavBar />
       <main role="main" className="container-fluid">
-        {/* will either be <Home> or <Settings> */}
         <Outlet />
       </main>
       <AppFooter />
