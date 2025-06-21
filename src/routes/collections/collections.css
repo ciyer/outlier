@@ -1,0 +1,8 @@
+table.credits-table tbody tr td {
+    padding: 0.1rem;
+}
+
+table.credits-table tbody tr th {
+    padding: 0.1rem 0.5rem 0.1rem 0.3rem;
+        white-space: nowrap;
+}
