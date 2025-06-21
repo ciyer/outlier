@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
 
-import { AppFooter, AppNavBar } from "./nav";
+import { AppFooter, AppNavBar } from "../features/nav";
 
 export default function Root() {
   return (
