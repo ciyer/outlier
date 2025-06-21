@@ -1,8 +1,20 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { setupListeners } from "@reduxjs/toolkit/query";
+
+import { articleApi } from "../features/article/article.api";
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    // Add the articleApi reducer to the store
+    [articleApi.reducerPath]: articleApi.reducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(articleApi.middleware),
+  // Enable the RTK Query DevTools extension
+  devTools: process.env.NODE_ENV !== "production",
 });
+
+setupListeners(store.dispatch);
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
