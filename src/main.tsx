@@ -5,6 +5,7 @@ import { Outlet, RouterProvider, createBrowserRouter } from "react-router";
 import { store } from "./app/store";
 
 import Root from "./app/root";
+import ArticleNotebook from "./features/article/ArticleNotebook";
 import About from "./routes/about.mdx";
 import {
   Collections,
@@ -44,6 +45,54 @@ const router = createBrowserRouter([
           { path: "ideas/ideas-5", Component: Ideas5 },
           { path: "ideas/ideas-6", Component: Ideas6 },
           { path: "ideas/ideas-7", Component: Ideas7 },
+        ],
+      },
+      {
+        path: "articles",
+        Component: Outlet,
+        children: [
+          {
+            path: "2019review",
+            element: <ArticleNotebook path="2019-review/2019-review.ipynb" />,
+          },
+          {
+            path: "2020review",
+            element: <ArticleNotebook path="2020-review/2020-review.ipynb" />,
+          },
+          {
+            path: "2021review",
+            element: <ArticleNotebook path="2021-review/2021-review.ipynb" />,
+          },
+          {
+            path: "2022review",
+            element: <ArticleNotebook path="2022-review/2022-review.ipynb" />,
+          },
+        ],
+      },
+      {
+        path: "fabrics",
+        Component: Outlet,
+        children: [
+          {
+            path: "2020fabrics",
+            element: <ArticleNotebook path="2020-review/2020-fabrics.ipynb" />,
+          },
+          {
+            path: "2021fabrics",
+            element: <ArticleNotebook path="2021-review/2021-fabrics.ipynb" />,
+          },
+          {
+            path: "2022fabrics",
+            element: <ArticleNotebook path="2022-review/2022-fabrics.ipynb" />,
+          },
+          {
+            path: "2023fabrics",
+            element: <ArticleNotebook path="2023-review/2023-fabrics.ipynb" />,
+          },
+          {
+            path: "2024fabrics",
+            element: <ArticleNotebook path="2024-review/2024-fabrics.ipynb" />,
+          },
         ],
       },
     ],

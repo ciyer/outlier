@@ -38,6 +38,9 @@ function AppNavBar() {
   const [collectionOpen, setCollectionOpen] = useState(false);
   const collectionToggle = () => setCollectionOpen(!collectionOpen);
 
+  const [fabricOpen, setFabricOpen] = useState(false);
+  const fabricToggle = () => setFabricOpen(!fabricOpen);
+
   return (
     <header>
       <Navbar expand="sm" color="light" light>
@@ -87,31 +90,38 @@ function AppNavBar() {
               </DropdownToggle>
               <DropdownMenu>
                 <DropdownItem>
-                  <NavItem to="/articles/2024fabrics" title="2024 Fabrics" />
-                </DropdownItem>
-                <DropdownItem>
-                  <NavItem to="/articles/2023fabrics" title="2023 Fabrics" />
-                </DropdownItem>
-                <DropdownItem>
                   <NavItem to="/articles/2022review" title="2022 Review" />
-                </DropdownItem>
-                <DropdownItem>
-                  <NavItem to="/articles/2022fabrics" title="2022 Fabrics" />
                 </DropdownItem>
                 <DropdownItem>
                   <NavItem to="/articles/2021review" title="2021 Review" />
                 </DropdownItem>
                 <DropdownItem>
-                  <NavItem to="/articles/2021fabrics" title="2021 Fabrics" />
-                </DropdownItem>
-                <DropdownItem>
                   <NavItem to="/articles/2020review" title="2020 Review" />
                 </DropdownItem>
                 <DropdownItem>
-                  <NavItem to="/articles/2020fabrics" title="2020 Fabrics" />
+                  <NavItem to="/articles/2019review" title="2019 Review" />
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+            <Dropdown nav isOpen={fabricOpen} toggle={fabricToggle}>
+              <DropdownToggle nav caret>
+                Fabrics
+              </DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem>
+                  <NavItem to="/fabrics/2024fabrics" title="2024 Fabrics" />
                 </DropdownItem>
                 <DropdownItem>
-                  <NavItem to="/articles/2019review" title="2019 Review" />
+                  <NavItem to="/fabrics/2023fabrics" title="2023 Fabrics" />
+                </DropdownItem>
+                <DropdownItem>
+                  <NavItem to="/fabrics/2022fabrics" title="2022 Fabrics" />
+                </DropdownItem>
+                <DropdownItem>
+                  <NavItem to="/fabrics/2021fabrics" title="2021 Fabrics" />
+                </DropdownItem>
+                <DropdownItem>
+                  <NavItem to="/fabrics/2020fabrics" title="2020 Fabrics" />
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
