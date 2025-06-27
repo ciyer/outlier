@@ -1,5 +1,6 @@
 import * as d3fetch from "d3-fetch";
 import * as d3time from "d3-time-format";
+import { csvParse } from "d3-dsv";
 
 const dateParser = d3time.timeParse("%Y-%m-%d");
 const dateFormatter = d3time.timeFormat("%b %d %Y");
@@ -91,6 +92,12 @@ async function read() {
   return rows;
 }
 
-const Data = { read, cleanCsvRow };
+function parseArchiveCsv(csv: string): DataRow[] {
+  const parsed = csvParse(csv, cleanCsvRow);
+  return parsed;
+}
+
+const Data = { read };
 export default Data;
+export { parseArchiveCsv };
 export type { DataRow };
