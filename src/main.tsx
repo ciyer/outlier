@@ -6,6 +6,7 @@ import { store } from "./app/store";
 
 import Root from "./app/root";
 import ArticleNotebook from "./features/article/ArticleNotebook";
+import Index from "./routes/_index";
 import About from "./routes/about.mdx";
 import {
   Collections,
@@ -31,7 +32,7 @@ const router = createBrowserRouter([
     path: "/",
     Component: Root,
     children: [
-      //      { index: true, Component: Home },
+      { index: true, Component: Index },
       { path: "about", Component: About },
       {
         path: "collections",

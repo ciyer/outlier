@@ -9,7 +9,13 @@ export const archiveApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "/" }),
   endpoints: (builder) => ({
     getArchiveData: builder.query<DataRow[], void>({
-      query: () => "/outlier-data.csv",
+      query: () => ({
+        url: "/outlier-data.csv",
+        headers: {
+          "content-type": "text/plain",
+        },
+        responseHandler: "text",
+      }),
       transformResponse: (response: string) => {
         return parseArchiveCsv(response);
       },

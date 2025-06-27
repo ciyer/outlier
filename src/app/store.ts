@@ -1,15 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 
+import { archiveApi } from "../features/archive/archive.api";
 import { articleApi } from "../features/article/article.api";
 
 export const store = configureStore({
   reducer: {
-    // Add the articleApi reducer to the store
+    [archiveApi.reducerPath]: archiveApi.reducer,
     [articleApi.reducerPath]: articleApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(articleApi.middleware),
+    getDefaultMiddleware()
+      .concat(archiveApi.middleware)
+      .concat(articleApi.middleware),
   // Enable the RTK Query DevTools extension
   devTools: process.env.NODE_ENV !== "production",
 });
