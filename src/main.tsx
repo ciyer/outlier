@@ -18,6 +18,8 @@ import {
   Ideas6,
   Ideas7,
 } from "./routes/collections";
+import ProductId from "./routes/products/product-id";
+import { PATH_STRUCTURE } from "./routes/route-paths";
 
 import "./styles/index.scss";
 import "./index.css";
@@ -33,6 +35,17 @@ const router = createBrowserRouter([
     Component: Root,
     children: [
       { index: true, Component: Index },
+      {
+        path: PATH_STRUCTURE.products.path,
+        Component: Outlet,
+        children: [
+          { index: true, element: <div>Select a product</div> },
+          {
+            path: PATH_STRUCTURE.products.children.product.path,
+            Component: ProductId,
+          },
+        ],
+      },
       { path: "about", Component: About },
       {
         path: "collections",

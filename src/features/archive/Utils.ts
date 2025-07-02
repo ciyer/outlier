@@ -1,15 +1,21 @@
 import * as d3Collection from "d3-collection";
 
-import type { DataRow } from "./Data";
+import type { DataRow, ReduxDataRow } from "./Data";
 
-function productMatchesNames(product: DataRow, productNames: d3Collection.Set) {
+function productMatchesNames(
+  product: ReduxDataRow,
+  productNames: d3Collection.Set
+) {
   if (productNames.has(product.Product)) return true;
   if (productNames.has(product["Release Name"])) return true;
   if (productNames.has(product["Previous Iteration"])) return true;
   return false;
 }
 
-function releasesForProduct(fullReleases: DataRow[], productName: string) {
+function releasesForProduct<T extends ReduxDataRow>(
+  fullReleases: T[],
+  productName: string
+) {
   // N.b. the current implementation does not fully resolve earlier names, in particular when
   // the depth of names exceeds 2.
   const releaseNames = d3Collection.set().add(productName);
@@ -31,7 +37,11 @@ function urlToHttps(url: string) {
   return url.replace(/^http:\/\//, "https://");
 }
 
-function siteUrl(productUrl: string, filteredReleases: DataRow[], tld: string) {
+function siteUrl(
+  productUrl: string,
+  filteredReleases: ReduxDataRow[],
+  tld: string
+) {
   if (filteredReleases.length < 1) return null;
   let search = null,
     replace = null;
