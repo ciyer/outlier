@@ -246,7 +246,6 @@ function ProductBody({ data, productName }: ProductBodyProps) {
     releasesForProduct(data, productName);
   const filteredReleases = rawFilteredReleases.map(augmentWithReleaseDate);
   const baseline = new ReleaseBaselineStats(data).compute();
-  console.log({ filteredReleases, numberOfReleaseNames, productName });
   const summary =
     baseline.priceBins == null
       ? null
