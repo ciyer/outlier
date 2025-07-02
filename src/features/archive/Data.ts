@@ -3,6 +3,7 @@ import * as d3time from "d3-time-format";
 import { csvParse } from "d3-dsv";
 
 const dateParser = d3time.timeParse("%Y-%m-%d");
+const releaseDateFormatter = d3time.timeFormat("%Y-%m-%d");
 const dateFormatter = d3time.timeFormat("%b %d %Y");
 
 interface FileDataRow {
@@ -26,11 +27,25 @@ interface FileDataRow {
   Archive: string;
 }
 
-interface DataRow extends Omit<FileDataRow, "Price"> {
+interface ReduxDataRow extends Omit<FileDataRow, "Price"> {
   Price: number | undefined;
-  releaseDate: Date | null;
+  releaseDateString: string | null;
   season: string;
   subcategory: string;
+}
+
+interface DataRow extends ReduxDataRow {
+  releaseDate: Date | null;
+}
+
+function augmentWithReleaseDate(row: ReduxDataRow): DataRow {
+  const result: DataRow = { ...row, releaseDate: null };
+  if (row.releaseDateString != null) {
+    const releaseDate = dateParser(row.releaseDateString);
+    result.releaseDate = releaseDate;
+  }
+
+  return result;
 }
 
 function dateToSeason(date: Date) {
@@ -52,7 +67,7 @@ function dataToSubcategory(category: string, dropType: string) {
   return "Outerwear";
 }
 
-function cleanCsvRow(row: FileDataRow): DataRow {
+function cleanCsvRow(row: FileDataRow): ReduxDataRow {
   const {
     Category: category,
     Colors: colors,
@@ -61,18 +76,18 @@ function cleanCsvRow(row: FileDataRow): DataRow {
     Type: dropType,
     ...rest
   } = row;
-  const d = { category, Type: dropType, ...rest } as Partial<DataRow>;
+  const d = { category, Type: dropType, ...rest } as Partial<ReduxDataRow>;
   d["Price"] = price.length > 0 ? +price : undefined;
 
   d.subcategory = dataToSubcategory(category, dropType);
   if (release.length > 0) {
     const releaseDate = dateParser(release);
     if (releaseDate != null) {
-      d.releaseDate = releaseDate;
+      d.releaseDateString = releaseDateFormatter(releaseDate);
       d["Release"] = dateFormatter(releaseDate);
       d.season = dateToSeason(releaseDate);
     } else {
-      d.releaseDate = null;
+      d.releaseDateString = null;
       d.season = "Unknown";
     }
     d["Colors"] = colors
@@ -81,23 +96,24 @@ function cleanCsvRow(row: FileDataRow): DataRow {
       .sort()
       .join(", ");
   } else {
-    d.releaseDate = null;
+    d.releaseDateString = null;
   }
 
-  return d as DataRow;
+  return d as ReduxDataRow;
 }
 
 async function read() {
-  const rows = await d3fetch.csv("/outlier-data.csv", cleanCsvRow);
+  const rawRows = await d3fetch.csv("/outlier-data.csv", cleanCsvRow);
+  const rows = rawRows.map(augmentWithReleaseDate);
   return rows;
 }
 
-function parseArchiveCsv(csv: string): DataRow[] {
+function parseArchiveCsv(csv: string): ReduxDataRow[] {
   const parsed = csvParse(csv, cleanCsvRow);
   return parsed;
 }
 
 const Data = { read };
 export default Data;
-export { parseArchiveCsv };
-export type { DataRow };
+export { augmentWithReleaseDate, parseArchiveCsv };
+export type { DataRow, ReduxDataRow };
