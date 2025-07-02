@@ -2,19 +2,18 @@ import * as d3Array from "d3-array";
 import * as d3Time from "d3-time";
 import * as d3Collection from "d3-collection";
 
-import { type DataRow } from "./Data";
+import type { DataRow, ReduxDataRow } from "./Data";
 
 type Duration = {
   year: number;
   durationWeeks: number;
 };
-type IReleases = DataRow[];
 
 function toIntegerString(num: number) {
   return num.toFixed(0);
 }
 
-function toPrices(releases: IReleases) {
+function toPrices(releases: ReduxDataRow[]) {
   return releases
     .filter(
       (d) => "FALSE" === d["Historic"] && d["Price"] != null && d["Price"] > 0
@@ -26,9 +25,9 @@ function toPrices(releases: IReleases) {
  * Compute the global price bins for releases
  */
 class ReleaseBaselineStats {
-  releases: IReleases;
+  releases: ReduxDataRow[];
 
-  constructor(releases: IReleases) {
+  constructor(releases: ReduxDataRow[]) {
     this.releases = releases;
   }
 
@@ -55,11 +54,11 @@ class ReleaseBaselineStats {
  * Summarize releases by price, season, month, and release frequency.
  */
 class ReleaseSummary {
-  releases: IReleases;
+  releases: DataRow[];
   stats: { priceBins: number[] };
   histogramData: DataRow[];
 
-  constructor(releases: IReleases, stats: { priceBins: number[] }) {
+  constructor(releases: DataRow[], stats: { priceBins: number[] }) {
     this.releases = releases;
     this.stats = stats;
     this.histogramData = releases.filter(
@@ -250,8 +249,8 @@ class ReleaseSummary {
  * Summarize Fabrics in the releases
  */
 class ReleaseFabricSummary {
-  releases: IReleases;
-  constructor(releases: IReleases) {
+  releases: ReduxDataRow[];
+  constructor(releases: ReduxDataRow[]) {
     this.releases = releases;
   }
 
@@ -282,8 +281,8 @@ function colorsArrayFromField(colors: string): string[] {
  * Summarize Colors in the releases
  */
 class ReleaseColorSummary {
-  releases: IReleases;
-  constructor(releases: IReleases) {
+  releases: ReduxDataRow[];
+  constructor(releases: ReduxDataRow[]) {
     this.releases = releases;
   }
 

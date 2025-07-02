@@ -1,5 +1,6 @@
 export { useGetArchiveDataQuery } from "./archive.api";
-export { type DataRow } from "./Data";
+export { type DataRow, type ReduxDataRow } from "./Data";
+export { augmentWithReleaseDate } from "./Data";
 
 export {
   ReleaseSummary,
