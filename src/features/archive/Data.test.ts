@@ -5,6 +5,8 @@ import Data from "./Data";
 
 const fetch = global.fetch as FetchMock;
 
+/* eslint-disable max-len */
+
 const simpleData = `Product,Type,Category,Fabric,Release,Colors,Price,Re-up,Historic,MWU,InSitu,Image,Release Name,Previous Iteration,Family,Notes,Archive
 New Way Longs,Shorts,Clothes,F. Cloth,2018-04-10,"Blade Gray, Blue AF, Deep Gray, Dry Rose, Flat Black, Refraction, Titian Blue",130,TRUE,FALSE,Men,http://shop.outlier.cc/shop/retail/new-way-longs.html,https://mt2.outlier.nyc/productentries/products/newwaylongs/206-Outlier-NewWayLongs-blueaf.jpg,,,,,https://archive-m2.outlier.nyc/shop/retail/new-way-longs.html
 New Way Shorts,Shorts,Clothes,F. Cloth,2018-04-10,"Blade Gray, Blue AF, Deep Gray, Dry Rose, Flat Black, Refraction, Titian Blue",120,TRUE,FALSE,Men,http://shop.outlier.cc/shop/retail/new-way-shorts.html,https://mt2.outlier.nyc/productentries/products/newwayshorts/203-Outlier-NewWayShorts-bladegray.jpg,,,,,

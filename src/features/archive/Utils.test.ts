@@ -6,6 +6,8 @@ import { releasesForProduct, outlierProductUrls } from "./Utils.js";
 
 const fetch = global.fetch as FetchMock;
 
+/* eslint-disable max-len */
+
 // A version of the data with names fudged to test following the release name chain
 const simpleData = `Product,Type,Category,Fabric,Release,Colors,Price,Re-up,Historic,MWU,InSitu,Image,Release Name,Previous Iteration,Family,Notes,Archive
 Latest Name,Pants,Clothes,Strongtwill,2018-04-10,"Black, Gray Space, Navy",188,TRUE,FALSE,Men,http://shop.outlier.nyc/shop/retail/strong-dungarees.html,https://outlier.nyc/productentries/products/strongdungarees/202-Outlier-StrongDungarees-grayspace.jpg,,Previous Name,,,http://archive-url

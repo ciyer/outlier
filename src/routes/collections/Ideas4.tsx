@@ -3,6 +3,8 @@ import { Gallery } from "react-grid-gallery";
 import Lightbox from "./Lightbox";
 import "./collections.css";
 
+/* eslint-disable @cspell/spellchecker */
+
 const images = [
   {
     original:
