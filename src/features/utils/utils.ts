@@ -1,5 +1,5 @@
 import * as d3Collection from "d3-collection";
-import { type DataRow } from "./archive";
+import { type DataRow } from "../archive";
 
 export function groupedByYearQuarter(data: DataRow[]) {
   if (data.length < 1) return [{ name: "Chronological", entries: data }];
@@ -22,6 +22,10 @@ export function groupedByYearQuarter(data: DataRow[]) {
     .entries(data)
     .map((g) => ({ name: g.key, entries: g.values as DataRow[] }));
   return groups;
+}
+
+export function productNameFromUrlString(urlString: string) {
+  return urlString.replace(/%2F/g, "/").replace(/\+/g, " ");
 }
 
 export function urlStringForProductName(name: string): string {
