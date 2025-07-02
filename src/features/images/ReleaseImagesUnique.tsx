@@ -7,15 +7,15 @@ import { type DataRow } from "../archive/";
 
 function ReleaseImageUnique({
   release,
-  seenmap,
+  seenMap,
 }: {
   release: DataRow;
-  seenmap: Record<string, boolean>;
+  seenMap: Record<string, boolean>;
 }) {
   const r = release;
   const src = r["Image"];
-  const notSeen = seenmap[src] == null;
-  if (notSeen) seenmap[src] = true;
+  const notSeen = seenMap[src] == null;
+  if (notSeen) seenMap[src] = true;
   // Return just the image once
   if (notSeen)
     return (
@@ -33,9 +33,9 @@ export default function ReleaseImagesUnique({
 }: {
   releases: DataRow[];
 }) {
-  const seenmap: Record<string, boolean> = {};
+  const seenMap: Record<string, boolean> = {};
   const images = releases.map((r, i) => (
-    <ReleaseImageUnique key={i} release={r} seenmap={seenmap} />
+    <ReleaseImageUnique key={i} release={r} seenMap={seenMap} />
   ));
   return <div className="d-flex flex-wrap p-2">{images}</div>;
 }
