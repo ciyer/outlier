@@ -46,7 +46,6 @@ function VegaOutputCell({ spec }: { spec: object }) {
     if (ref.current == null) return;
     // Ensure spec is extensible
     const mutableSpec = structuredClone(spec);
-    console.log(mutableSpec);
     const opts = {
       defaultStyle: false,
       actions: {
@@ -58,6 +57,7 @@ function VegaOutputCell({ spec }: { spec: object }) {
     };
     // Should be more careful about the async code in an effect, but for now...
     vegaEmbed(ref.current, mutableSpec, opts).catch((err) => {
+      // eslint-disable-next-line no-console
       console.error("Error rendering Vega spec:", err);
     });
   }, [spec]);

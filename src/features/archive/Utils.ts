@@ -26,9 +26,8 @@ function releasesForProduct<T extends ReduxDataRow>(
       if (p["Previous Iteration"] !== "")
         releaseNames.add(p["Previous Iteration"]);
       return true;
-    } else {
-      return false;
     }
+    return false;
   });
   return { filteredReleases, numberOfReleaseNames: releaseNames.size() };
 }
