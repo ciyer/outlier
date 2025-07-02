@@ -13,6 +13,8 @@ import { simpleData } from "./Data.test";
 
 const fetch = global.fetch as FetchMock;
 
+/* eslint-disable max-nested-callbacks */
+
 describe("summary", () => {
   beforeEach(() => {
     fetch.resetMocks();
