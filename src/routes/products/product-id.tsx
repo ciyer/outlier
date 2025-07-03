@@ -18,7 +18,7 @@ import { useEffect } from "react";
 
 import ReleaseImagesUnique from "../../features/images/ReleaseImagesUnique";
 import Histogram from "../../features/chart/Histogram";
-// import BinnedScatter from "../../features/chart/BinnedScatter";
+import BinnedScatter from "../../features/chart/BinnedScatter";
 
 type ComputedReleaseSummary = ReturnType<ReleaseSummary["compute"]>;
 
@@ -161,9 +161,7 @@ function ProductSummary({
         Release Gap{" "}
         <span style={{ fontSize: "small", fontWeight: "normal" }}>(weeks)</span>
       </h3>
-      {/*
       <BinnedScatter key="releaseDuration" data={releaseGapWeeks} />
-      */}
     </div>
   );
 

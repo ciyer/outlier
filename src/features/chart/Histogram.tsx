@@ -1,21 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-
 import * as vega from "vega";
 
-type ChartBounds = {
-  width?: number;
-  height?: number;
-};
-
-type ChartColors = {
-  fill?: string;
-  hover?: string;
-};
-
-type HistogramData = Array<{
-  name: string;
-  count: number;
-}>;
+import type { ChartBounds, ChartColors, HistogramData } from "./chart.types";
 
 function _spec(
   data: HistogramData,
