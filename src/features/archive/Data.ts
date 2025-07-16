@@ -29,6 +29,7 @@ interface FileDataRow {
 
 interface ReduxDataRow extends Omit<FileDataRow, "Price"> {
   Price: number | undefined;
+  category: string;
   releaseDateString: string | null;
   season: string;
   subcategory: string;

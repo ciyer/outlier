@@ -48,50 +48,16 @@ function howItFitsSearchString(searchName: string): string {
 }
 
 type ProductPageHeaderProps = {
-  archiveUrl: string | null;
-  category: string;
   productName: string;
-  outlierCcUrl: string | null;
-  outlierNycUrl: string | null;
-  priceString: string;
+  releases: DataRow[];
 };
 
-function ProductPageHeader({
-  archiveUrl,
-  category,
-  outlierCcUrl,
-  outlierNycUrl,
-  priceString,
-  productName,
-}: ProductPageHeaderProps) {
-  const productUrlString = encodeURI(productName);
-  const searchName = howItFitsSearchName(productName);
-  const howItFitsUrl = `https://www.reddit.com/r/Outlier/search?q=${howItFitsSearchString(
-    searchName
-  )}`;
-  const googleUrl = `https://google.com/search?q=Outlier+${productUrlString}`;
-  const redditUrl = `https://www.reddit.com/r/Outlier/search?q=${productUrlString}`;
-  const archiveUrls = [];
-  if (outlierCcUrl != null) {
-    archiveUrls.push(
-      <a
-        key="outlierccurl"
-        href={`https://web.archive.org/web/*/${outlierCcUrl}`}
-      >
-        Archive.org [outlier.cc]
-      </a>
-    );
-    archiveUrls.push(<span key="outlierccurl_space">&nbsp;</span>);
-  }
-  if (outlierNycUrl != null)
-    archiveUrls.push(
-      <a
-        key="outliernycurl"
-        href={`https://web.archive.org/web/*/${outlierNycUrl}`}
-      >
-        Archive.org [outlier.nyc]
-      </a>
-    );
+function ProductPageHeader({ productName, releases }: ProductPageHeaderProps) {
+  if (releases.length < 1)
+    return <div>No releases found for {productName}</div>;
+  const { outlierCcUrl, outlierNycUrl, archiveUrl } =
+    outlierProductUrls(releases);
+
   const { linkUrl, linkDesc } =
     archiveUrl != null
       ? { linkUrl: archiveUrl, linkDesc: "archive-m2" }
@@ -106,19 +72,124 @@ function ProductPageHeader({
           {productName} [{linkDesc}]
         </a>
       </h3>
-      <p key="refs">
-        <a href={googleUrl}>Google</a> &nbsp;
-        <a href={redditUrl}>Reddit</a> &nbsp;
-        {archiveUrls}
-        {category === "Clothes" && (
-          <>
-            <br />
-            <a href={howItFitsUrl}>How It Fits - {searchName}</a>
-          </>
-        )}
-      </p>
-      <p key="prices">{priceString}</p>
+      <ProductPageHeaderLinks productName={productName} releases={releases} />
+      <ProductPageHeaderDetails releases={releases} />
     </>
+  );
+}
+
+function ProductPageHeaderLinks({
+  productName,
+  releases,
+}: ProductPageHeaderProps) {
+  const category = releases[0].category;
+  const { outlierCcUrl, outlierNycUrl } = outlierProductUrls(releases);
+
+  const productUrlString = encodeURI(productName);
+  const searchName = howItFitsSearchName(productName);
+  const howItFitsUrl = `https://www.reddit.com/r/Outlier/search?q=${howItFitsSearchString(
+    searchName
+  )}`;
+  const googleUrl = `https://google.com/search?q=Outlier+${productUrlString}`;
+  const redditUrl = `https://www.reddit.com/r/Outlier/search?q=${productUrlString}`;
+  const bothUrls = outlierCcUrl != null && outlierNycUrl != null;
+  const archiveUrls = [];
+  if (outlierCcUrl != null) {
+    archiveUrls.push(
+      <a
+        key="outlierccurl"
+        href={`https://web.archive.org/web/*/${outlierCcUrl}`}
+      >
+        Archive.org{bothUrls && <span className="ps-1">[outlier.cc]</span>}
+      </a>
+    );
+    archiveUrls.push(<span key="outlierccurl_space">&nbsp;</span>);
+  }
+  if (outlierNycUrl != null)
+    archiveUrls.push(
+      <a
+        key="outliernycurl"
+        href={`https://web.archive.org/web/*/${outlierNycUrl}`}
+      >
+        Archive.org{bothUrls && <span className="ps-1">[outlier.nyc]</span>}
+      </a>
+    );
+  return (
+    <p key="refs">
+      <a href={googleUrl}>Google</a> &nbsp;
+      <a href={redditUrl}>Reddit</a> &nbsp;
+      {archiveUrls}
+      {category === "Clothes" && (
+        <>
+          <br />
+          <a href={howItFitsUrl}>How It Fits - {searchName}</a>
+        </>
+      )}
+    </p>
+  );
+}
+
+function ProductPageHeaderDetails({
+  releases,
+}: Pick<ProductPageHeaderProps, "releases">) {
+  const prices = releases
+    .map(function (d) {
+      return d["Price"];
+    })
+    .filter((p) => p != null);
+  const minPrice = Math.min(...prices);
+  const maxPrice = Math.max(...prices);
+  const colors = releases
+    .map(function (d) {
+      return d["Colors"];
+    })
+    .filter((c) => c != null);
+  const colorSet = new Set<string>();
+  colors.forEach((c) => {
+    c.split(",").forEach((color) => {
+      colorSet.add(color.trim());
+    });
+  });
+  const colorCount = colorSet.size;
+  const fabric = releases[0]["Fabric"];
+  const webStyle = releases[0]["Web Style"];
+  const style =
+    webStyle != null && webStyle.length > 0 ? webStyle.split("-")[0] : null;
+
+  return (
+    <Row>
+      <Col xs={6} md={8} lg={6}>
+        <table className="table table-sm table-borderless">
+          <tbody>
+            <tr>
+              <th scope="row">
+                {minPrice === maxPrice ? "Price" : "Price Range"}
+              </th>
+              <td>
+                $
+                {minPrice === maxPrice
+                  ? "" + minPrice
+                  : "" + minPrice + " - " + maxPrice}
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">Fabric</th>
+              <td>{fabric}</td>
+            </tr>
+            {style != null ? (
+              <tr>
+                <th scope="row">Style</th>
+                <td>{style}</td>
+              </tr>
+            ) : null}
+            <tr>
+              <th scope="row">Colors</th>
+              <td>{colorCount}</td>
+            </tr>
+          </tbody>
+        </table>
+      </Col>
+    </Row>
   );
 }
 
@@ -252,39 +323,19 @@ function ProductBody({ data, productName }: ProductBodyProps) {
   const releases = filteredReleases;
   if (releases.length < 1)
     return <div>No releases found for {productName}</div>;
-  const category = releases[0].Category;
-  const { outlierCcUrl, outlierNycUrl, archiveUrl } =
-    outlierProductUrls(releases);
-  const prices = releases
-    .map(function (d) {
-      return d["Price"];
-    })
-    .filter((p) => p != null);
-  const minPrice = Math.min(...prices);
-  const maxPrice = Math.max(...prices);
-  const priceString =
-    "Price: $" +
-    (minPrice === maxPrice ? "" + minPrice : "" + minPrice + " - " + maxPrice);
   return (
     <>
       <Row key="header">
-        <Col>
-          <ProductPageHeader
-            category={category}
-            productName={productName}
-            priceString={priceString}
-            outlierCcUrl={outlierCcUrl}
-            outlierNycUrl={outlierNycUrl}
-            archiveUrl={archiveUrl}
-          />
+        <Col md={6}>
+          <ProductPageHeader productName={productName} releases={releases} />
+        </Col>
+        <Col md={6}>
+          <ProductSummary summary={summary} />
         </Col>
       </Row>
       <Row key="summary">
         <Col md={6}>
           <ProductImages releases={releases} />
-        </Col>
-        <Col md={6}>
-          <ProductSummary summary={summary} />
         </Col>
       </Row>
       <Row key="releases">
