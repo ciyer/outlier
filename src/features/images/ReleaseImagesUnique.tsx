@@ -5,27 +5,16 @@ import { type DataRow } from "../archive/";
 //   return releases.every(r => r['Product'] === productName);
 // }
 
-function ReleaseImageUnique({
-  release,
-  seenMap,
-}: {
-  release: DataRow;
-  seenMap: Record<string, boolean>;
-}) {
+function ReleaseImage({ release }: { release: DataRow }) {
   const r = release;
   const src = r["Image"];
-  const notSeen = seenMap[src] == null;
-  if (notSeen) seenMap[src] = true;
-  // Return just the image once
-  if (notSeen)
-    return (
-      <img
-        src={src}
-        alt={r["Product"]}
-        style={{ width: "calc(20%)", height: "calc(20%)" }}
-      />
-    );
-  return <span></span>;
+  return (
+    <img
+      src={src}
+      alt={r["Product"]}
+      style={{ width: "calc(20%)", height: "calc(20%)" }}
+    />
+  );
 }
 
 export default function ReleaseImagesUnique({
@@ -34,8 +23,13 @@ export default function ReleaseImagesUnique({
   releases: DataRow[];
 }) {
   const seenMap: Record<string, boolean> = {};
-  const images = releases.map((r, i) => (
-    <ReleaseImageUnique key={i} release={r} seenMap={seenMap} />
-  ));
+  const images = releases
+    .map((r, i) => {
+      if (seenMap[r["Image"]]) return null;
+      // If the image has not been seen, render it
+      seenMap[r["Image"]] = true;
+      return <ReleaseImage key={i} release={r} />;
+    })
+    .filter((img) => img !== null);
   return <div className="d-flex flex-wrap p-2">{images}</div>;
 }
