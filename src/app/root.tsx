@@ -6,7 +6,7 @@ import "./App.css";
 
 export default function Root() {
   return (
-    <div>
+    <>
       <AppNavBar />
       <div className="mt-3">
         <main role="main" className="container-fluid">
@@ -14,6 +14,6 @@ export default function Root() {
         </main>
       </div>
       <AppFooter />
-    </div>
+    </>
   );
 }
