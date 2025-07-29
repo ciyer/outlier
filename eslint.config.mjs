@@ -35,6 +35,7 @@ export default [
               "outlierccurl",
               "outliernycurl",
               "Ramielust",
+              "sizetext",
               "Strongtwill",
               "TTFB",
               "vegalite",
