@@ -5,6 +5,7 @@ import {
   useGetArchiveDataQuery,
   type DataRow,
 } from "../features/archive";
+import ArchiveSummary from "../features/archive/ArchiveSummary";
 import ArchiveWithText from "../features/archive/ArchiveWithText";
 import LoadingSpinner from "../features/LoadingSpinner";
 
@@ -21,17 +22,20 @@ function ArchiveBody({ data }: ArchiveProps) {
 export default function Archive() {
   const { data: rawData, isLoading } = useGetArchiveDataQuery();
   const data = rawData ? rawData.map(augmentWithReleaseDate) : null;
-
+  const summaryData =
+    data == null
+      ? null
+      : {
+          filtered: data,
+          full: data,
+        };
   return (
     <>
-      {/* <Row>
+      <Row>
         <Col md={{ size: 8, order: 1 }}>
-          {useMinimalSummary ? (
-            <ArchiveSummaryMinimal data={data} summary={summary} />
-          ) : (
-            <ArchiveSummary data={data} summary={summary} />
-          )}
+          <ArchiveSummary data={summaryData} />
         </Col>
+        {/*
         <Col md={{ size: 4, order: 0 }}>
           <ArchiveControls
             settings={settings}
@@ -39,7 +43,8 @@ export default function Archive() {
             handlers={handlers.displaySettingHandlers}
           />
         </Col>
-      </Row> */}
+        */}
+      </Row>
       <Row>
         <Col xs={12}>
           {isLoading || data == null ? (
