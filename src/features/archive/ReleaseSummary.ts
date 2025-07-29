@@ -4,6 +4,25 @@ import * as d3Collection from "d3-collection";
 
 import type { DataRow, ReduxDataRow } from "./Data";
 
+type DetailedHistogramData = {
+  min: number;
+  max: number;
+  count: number;
+  name: string;
+};
+
+type ComputedReleaseSummary = {
+  monthHistogram: (DetailedHistogramData & { month: number })[];
+  priceHistogram: DetailedHistogramData[];
+  priceMedian: number | undefined;
+  seasonHistogram: Pick<DetailedHistogramData, "count" | "name">[];
+  releaseGapWeeks: {
+    year: number;
+    bin: number;
+    count: number;
+  }[];
+};
+
 type Duration = {
   year: number;
   durationWeeks: number;
@@ -230,7 +249,7 @@ class ReleaseSummary {
     return result;
   }
 
-  compute() {
+  compute(): ComputedReleaseSummary {
     const monthHistogram = this.monthHistogram();
     const { priceHistogram, priceMedian } = this.priceStats();
     const seasonHistogram = this.seasonHistogram();
@@ -310,3 +329,5 @@ export {
   ReleaseFabricSummary,
   ReleaseColorSummary,
 };
+
+export type { ComputedReleaseSummary };
