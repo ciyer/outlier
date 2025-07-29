@@ -1,3 +1,4 @@
+import cx from "classnames";
 import { Col, Row, Table } from "reactstrap";
 import { useMatch, useNavigate } from "react-router";
 
@@ -19,6 +20,8 @@ import { useEffect } from "react";
 import ReleaseImagesUnique from "../../features/images/ReleaseImagesUnique";
 import Histogram from "../../features/chart/Histogram";
 import BinnedScatter from "../../features/chart/BinnedScatter";
+
+import styles from "./product-styles.module.css";
 
 type ComputedReleaseSummary = ReturnType<ReleaseSummary["compute"]>;
 
@@ -159,7 +162,12 @@ function ProductPageHeaderDetails({
   return (
     <Row>
       <Col xs={6} md={8} lg={6}>
-        <table className="table table-sm table-borderless">
+        <table
+          className={cx(
+            "table table-sm table-borderless",
+            styles.productHeaderTable
+          )}
+        >
           <tbody>
             <tr>
               <th scope="row">
