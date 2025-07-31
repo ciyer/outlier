@@ -42,6 +42,7 @@ export const controls = createSlice({
   reducers: {
     clearAllFilters: (state) => {
       state.filters.category = [];
+      state.filters.fabric = [];
       state.filters.experiment = [];
       state.filters.text = [];
       state.filters.color = [];
