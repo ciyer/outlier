@@ -3,11 +3,13 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 
 import { archiveApi } from "../features/archive/archive.api";
 import { articleApi } from "../features/article/article.api";
+import { controls } from "../features/controls/controls.slice";
 
 export const store = configureStore({
   reducer: {
     [archiveApi.reducerPath]: archiveApi.reducer,
     [articleApi.reducerPath]: articleApi.reducer,
+    controls: controls.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
