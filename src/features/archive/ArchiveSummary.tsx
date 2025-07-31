@@ -1,19 +1,15 @@
 import Histogram from "../chart/Histogram";
 
-import type { DataRow } from "./Data";
 import {
-  //  ReleaseColorSummary,
-  //  ReleaseFabricSummary,
   ReleaseBaselineStats,
   ReleaseSummary,
   type ComputedReleaseSummary,
 } from "./ReleaseSummary";
 
+import { type FilterArchiveResult } from "../controls/filter";
+
 export type ArchiveSummaryProps = {
-  data: {
-    full: DataRow[];
-    filtered: DataRow[];
-  } | null;
+  data: FilterArchiveResult | null;
 };
 
 type ArchiveSummaryMaximalProps = {
@@ -89,17 +85,6 @@ export default function ArchiveSummary({ data }: ArchiveSummaryProps) {
     baseline.priceBins == null
       ? null
       : new ReleaseSummary(data.filtered, baseline).compute();
-  //   const fabricSummary =
-  //     archive.summary.baseline.priceBins == null
-  //       ? null
-  //       : new ReleaseFabricSummary(archive.data.preFabricFilter).compute();
-  //   const colorSummary =
-  //     archive.summary.baseline.priceBins == null
-  //       ? null
-  //       : new ReleaseColorSummary(archive.data.filtered).compute();
-  //   if (fabricSummary != null) {
-  //     fabricSummary.colorUseCount = colorSummary.colorUseCount;
-  //   }
   const useMinimalSummary = false;
   if (useMinimalSummary)
     return <ArchiveSummaryMinimal data={data} summary={summary} />;

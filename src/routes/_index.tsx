@@ -7,6 +7,8 @@ import {
 } from "../features/archive";
 import ArchiveSummary from "../features/archive/ArchiveSummary";
 import ArchiveControls from "../features/controls/ArchiveControls";
+import { useControlsStateSelector } from "../features/controls/controls.slice";
+import { filterArchive } from "../features/controls/filter";
 import ArchiveWithText from "../features/archive/ArchiveWithText";
 import LoadingSpinner from "../features/LoadingSpinner";
 
@@ -22,14 +24,9 @@ function ArchiveBody({ data }: ArchiveProps) {
 
 export default function Archive() {
   const { data: rawData, isLoading } = useGetArchiveDataQuery();
+  const { filters } = useControlsStateSelector((state) => state.controls);
   const data = rawData ? rawData.map(augmentWithReleaseDate) : null;
-  const summaryData =
-    data == null
-      ? null
-      : {
-          filtered: data,
-          full: data,
-        };
+  const summaryData = data == null ? null : filterArchive(data, filters);
   return (
     <>
       <Row>
@@ -42,10 +39,10 @@ export default function Archive() {
       </Row>
       <Row>
         <Col xs={12}>
-          {isLoading || data == null ? (
+          {isLoading || summaryData == null ? (
             <LoadingSpinner />
           ) : (
-            <ArchiveBody data={data} />
+            <ArchiveBody data={summaryData.filtered} />
           )}
         </Col>
       </Row>
