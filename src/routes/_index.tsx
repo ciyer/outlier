@@ -6,6 +6,7 @@ import {
   type DataRow,
 } from "../features/archive";
 import ArchiveSummary from "../features/archive/ArchiveSummary";
+import ArchiveControls from "../features/controls/ArchiveControls";
 import ArchiveWithText from "../features/archive/ArchiveWithText";
 import LoadingSpinner from "../features/LoadingSpinner";
 
@@ -35,15 +36,9 @@ export default function Archive() {
         <Col md={{ size: 8, order: 1 }}>
           <ArchiveSummary data={summaryData} />
         </Col>
-        {/*
         <Col md={{ size: 4, order: 0 }}>
-          <ArchiveControls
-            settings={settings}
-            summary={fabricSummary}
-            handlers={handlers.displaySettingHandlers}
-          />
+          <ArchiveControls data={summaryData} />
         </Col>
-        */}
       </Row>
       <Row>
         <Col xs={12}>

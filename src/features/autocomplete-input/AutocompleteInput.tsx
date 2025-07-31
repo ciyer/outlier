@@ -7,7 +7,6 @@ import "./autocomplete.css";
 export type Suggestion = {
   name: string;
   displayName: string;
-  filter: any;
 };
 
 // https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
@@ -26,7 +25,7 @@ function renderSuggestion(suggestion: Suggestion) {
 type AutocompleteInputProps = {
   fieldName: string;
   filters: Suggestion[];
-  onSelect: (suggestion: Suggestion) => void;
+  onSelect: (name: string) => void;
 };
 
 export default function AutocompleteInput({
@@ -61,7 +60,7 @@ export default function AutocompleteInput({
   const onSuggestionSelected = useCallback(
     (_event: unknown, info: { suggestion: Suggestion }) => {
       const { suggestion } = info;
-      onSelect(suggestion.filter);
+      onSelect(suggestion.name);
       setValue("");
     },
     [onSelect, setValue]
