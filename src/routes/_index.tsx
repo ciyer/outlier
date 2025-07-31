@@ -9,6 +9,7 @@ import ArchiveSummary from "../features/archive/ArchiveSummary";
 import ArchiveControls from "../features/controls/ArchiveControls";
 import { useControlsStateSelector } from "../features/controls/controls.slice";
 import { filterArchive } from "../features/controls/filter";
+import ArchiveWithImages from "../features/archive/ArchiveWithImages";
 import ArchiveWithText from "../features/archive/ArchiveWithText";
 import LoadingSpinner from "../features/LoadingSpinner";
 
@@ -17,9 +18,12 @@ type ArchiveProps = {
 };
 
 function ArchiveBody({ data }: ArchiveProps) {
-  //    return <ArchiveWithImages data={data} settings={settings} />;
-  //else return <ArchiveWithText data={data} settings={settings} />;
-  return <ArchiveWithText data={data} />;
+  const { showImages } = useControlsStateSelector((state) => state.controls);
+  return showImages ? (
+    <ArchiveWithImages data={data} />
+  ) : (
+    <ArchiveWithText data={data} />
+  );
 }
 
 export default function Archive() {
