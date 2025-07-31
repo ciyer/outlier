@@ -9,7 +9,7 @@ import {
   type ComputedReleaseSummary,
 } from "./ReleaseSummary";
 
-type ArchiveSummaryProps = {
+export type ArchiveSummaryProps = {
   data: {
     full: DataRow[];
     filtered: DataRow[];
