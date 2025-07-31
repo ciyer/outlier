@@ -154,13 +154,19 @@ function ArchiveFilters({ summary }: ArchiveFiltersProps) {
 export default function ArchiveControls({ data }: ArchiveSummaryProps) {
   let summary = { colorUseCount: {}, fabricUseCount: {}, textUseCount: {} };
   if (data != null) {
-    const fabricSummary = new ReleaseColorSummary(data.filtered).compute() ?? {
+    const fabricSummary = new ReleaseColorSummary(
+      data.topLevelFiltered
+    ).compute() ?? {
       colorUseCount: {},
     };
-    const colorSummary = new ReleaseFabricSummary(data.filtered).compute() ?? {
+    const colorSummary = new ReleaseFabricSummary(
+      data.topLevelFiltered
+    ).compute() ?? {
       fabricUseCount: {},
     };
-    const textUseCount = new ReleaseTextSummary(data.filtered).compute();
+    const textUseCount = new ReleaseTextSummary(
+      data.topLevelFiltered
+    ).compute();
     summary = {
       ...colorSummary,
       ...fabricSummary,
