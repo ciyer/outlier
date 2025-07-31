@@ -1,6 +1,7 @@
 import * as d3Array from "d3-array";
 import * as d3Time from "d3-time";
 import * as d3Collection from "d3-collection";
+import _ from "lodash";
 
 import type { DataRow, ReduxDataRow } from "./Data";
 
@@ -11,7 +12,7 @@ type DetailedHistogramData = {
   name: string;
 };
 
-type ComputedReleaseSummary = {
+export type ComputedReleaseSummary = {
   monthHistogram: (DetailedHistogramData & { month: number })[];
   priceHistogram: DetailedHistogramData[];
   priceMedian: number | undefined;
@@ -43,7 +44,7 @@ function toPrices(releases: ReduxDataRow[]) {
 /**
  * Compute the global price bins for releases
  */
-class ReleaseBaselineStats {
+export class ReleaseBaselineStats {
   releases: ReduxDataRow[];
 
   constructor(releases: ReduxDataRow[]) {
@@ -72,7 +73,7 @@ class ReleaseBaselineStats {
 /**
  * Summarize releases by price, season, month, and release frequency.
  */
-class ReleaseSummary {
+export class ReleaseSummary {
   releases: DataRow[];
   stats: { priceBins: number[] };
   histogramData: DataRow[];
@@ -267,7 +268,7 @@ class ReleaseSummary {
 /**
  * Summarize Fabrics in the releases
  */
-class ReleaseFabricSummary {
+export class ReleaseFabricSummary {
   releases: ReduxDataRow[];
   constructor(releases: ReduxDataRow[]) {
     this.releases = releases;
@@ -299,7 +300,7 @@ function colorsArrayFromField(colors: string): string[] {
 /**
  * Summarize Colors in the releases
  */
-class ReleaseColorSummary {
+export class ReleaseColorSummary {
   releases: ReduxDataRow[];
   constructor(releases: ReduxDataRow[]) {
     this.releases = releases;
@@ -309,6 +310,7 @@ class ReleaseColorSummary {
     const releases = this.releases;
     const result: Record<string, number> = {};
     releases.forEach((r) => {
+      if (r["Colors"] == null || r["Colors"].length === 0) return;
       colorsArrayFromField(r["Colors"]).forEach((c) => {
         const count = result[c] ? result[c] + 1 : 1;
         result[c] = count;
@@ -323,11 +325,39 @@ class ReleaseColorSummary {
   }
 }
 
-export {
-  ReleaseSummary,
-  ReleaseBaselineStats,
-  ReleaseFabricSummary,
-  ReleaseColorSummary,
-};
+function stopWords(d: string): boolean {
+  const w = d.toLowerCase();
+  const hits = ["the", "a", "+", "-"].filter((s) => s === w);
+  return hits.length === 0;
+}
 
-export type { ComputedReleaseSummary };
+/**
+ * Summarize Text in the releases
+ */
+export class ReleaseTextSummary {
+  releases: ReduxDataRow[];
+  constructor(releases: ReduxDataRow[]) {
+    this.releases = releases;
+  }
+
+  textUseCount() {
+    const releases = this.releases;
+    const result: Record<string, number> = {};
+    releases.forEach((r) => {
+      r["Product"]
+        .split(" ")
+        .map((w) => w.trim())
+        .filter(stopWords)
+        .forEach((w) => {
+          const count = result[w] ? result[w] + 1 : 1;
+          result[w] = count;
+        });
+    });
+    return result;
+  }
+
+  compute() {
+    const textUseCount = this.textUseCount();
+    return { textUseCount };
+  }
+}
