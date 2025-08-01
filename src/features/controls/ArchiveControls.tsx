@@ -77,13 +77,14 @@ function ArchiveDisplayControls() {
 }
 
 type ArchiveFiltersProps = {
+  showCategoryFilters: boolean;
   summary: {
     colorUseCount: Record<string, number>;
     fabricUseCount: Record<string, number>;
     textUseCount: Record<string, number>;
   };
 };
-function ArchiveFilters({ summary }: ArchiveFiltersProps) {
+function ArchiveFilters({ showCategoryFilters, summary }: ArchiveFiltersProps) {
   const [expanded, setExpanded] = React.useState(false);
   const onExpand = React.useCallback(() => {
     // e.preventDefault();
@@ -96,11 +97,12 @@ function ArchiveFilters({ summary }: ArchiveFiltersProps) {
   }, [dispatch]);
   const filterSummary = computeFilterSummary(filters);
   const filterHeader = `Filters: ${filterSummary}`;
-  const filtersUI = !expanded ? null : (
-    <>
-      <CategoryFilterGroup />
-    </>
-  );
+  const filtersUI =
+    !expanded || !showCategoryFilters ? null : (
+      <>
+        <CategoryFilterGroup />
+      </>
+    );
   // Fabrics filter works a bit differently.
   const fabricFilterUI = expanded ? (
     <FabricFilterGroup summary={summary.fabricUseCount} />
@@ -138,8 +140,17 @@ function ArchiveFilters({ summary }: ArchiveFiltersProps) {
       </div>
       <div>
         <FormText color="muted">
-          Use filters to focus on a specific set of drops by <i>Category</i>,{" "}
-          <i>Fabric</i>, etc.
+          {showCategoryFilters ? (
+            <span>
+              Use filters to focus on a specific set of drops by <i>Category</i>
+              , <i>Fabric</i>, etc.
+            </span>
+          ) : (
+            <span>
+              Use filters to focus on a specific set of drops by <i>Fabric</i>,{" "}
+              <i>Color</i>, etc.
+            </span>
+          )}
         </FormText>
       </div>
       {clearButton}
@@ -151,7 +162,17 @@ function ArchiveFilters({ summary }: ArchiveFiltersProps) {
   );
 }
 
-export default function ArchiveControls({ data }: ArchiveSummaryProps) {
+interface ArchiveControlsProps extends ArchiveSummaryProps {
+  showCategoryFilters?: boolean;
+}
+
+export default function ArchiveControls({
+  data,
+  showCategoryFilters,
+}: ArchiveControlsProps) {
+  if (showCategoryFilters == null) {
+    showCategoryFilters = true;
+  }
   let summary = { colorUseCount: {}, fabricUseCount: {}, textUseCount: {} };
   if (data != null) {
     const fabricSummary = new ReleaseColorSummary(
@@ -182,7 +203,10 @@ export default function ArchiveControls({ data }: ArchiveSummaryProps) {
       </Row>
       <Row key="filters">
         <Col>
-          <ArchiveFilters summary={summary} />
+          <ArchiveFilters
+            showCategoryFilters={showCategoryFilters}
+            summary={summary}
+          />
         </Col>
       </Row>
     </>
