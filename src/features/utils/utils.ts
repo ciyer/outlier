@@ -10,8 +10,8 @@ export function groupedByYearQuarter(data: DataRow[]) {
     const year =
       d.season === "Winter"
         ? d.releaseDate.getMonth() < 3
-          ? `${yearNum - 1}-'${yearNum}`
-          : `${yearNum}-'${yearNum + 1}`
+          ? `${yearNum - 1}-'${yearNum} ${d.season}`
+          : `${yearNum}-'${yearNum + 1} ${d.season}`
         : `'${yearNum} ${d.season}`;
     return year;
   };
