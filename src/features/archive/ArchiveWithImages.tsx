@@ -1,5 +1,5 @@
 import { Link, generatePath } from "react-router";
-import { Col, Row, Table } from "reactstrap";
+import { Col, Row } from "reactstrap";
 
 import { type DataRow } from "./Data";
 import { PATHS } from "../../routes/route-paths";
