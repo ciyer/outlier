@@ -20,6 +20,11 @@ function matchFabrics(row: DataRow, fabrics: string[]): boolean {
   );
 }
 
+function matchStyle(row: DataRow, styleId: string): boolean {
+  const rowStyle = row["Web Style"].trim().toUpperCase();
+  return styleId.length === 0 || rowStyle.startsWith(styleId);
+}
+
 function matchText(row: DataRow, text: string[]): boolean {
   const rowText = row.Product;
   return text.length === 0 || text.some((txt) => rowText.includes(txt));
@@ -46,4 +51,14 @@ export function filterArchive(
   filtered = filtered.filter((row) => matchText(row, filters.text));
 
   return { full, filtered, topLevelFiltered };
+}
+
+export function filterArchiveForStyle(
+  full: DataRow[],
+  inputStyleId: string
+): FilterArchiveResult {
+  const styleId = inputStyleId.trim().toUpperCase();
+  const filtered = full.filter((row) => matchStyle(row, styleId));
+
+  return { full: filtered, filtered, topLevelFiltered: filtered };
 }

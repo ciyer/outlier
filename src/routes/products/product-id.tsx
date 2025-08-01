@@ -1,6 +1,7 @@
 import cx from "classnames";
+import { useEffect } from "react";
 import { Col, Row, Table } from "reactstrap";
-import { useMatch, useNavigate } from "react-router";
+import { Link, generatePath, useMatch, useNavigate } from "react-router";
 
 import {
   ReleaseBaselineStats,
@@ -12,14 +13,13 @@ import {
   type DataRow,
   type ReduxDataRow,
 } from "../../features/archive";
-import LoadingSpinner from "../../features/LoadingSpinner";
-import { PATHS } from "../route-paths";
-import { productNameFromUrlString } from "../../features/utils";
-import { useEffect } from "react";
-
-import ReleaseImagesUnique from "../../features/images/ReleaseImagesUnique";
 import Histogram from "../../features/chart/Histogram";
 import BinnedScatter from "../../features/chart/BinnedScatter";
+import ReleaseImagesUnique from "../../features/images/ReleaseImagesUnique";
+import LoadingSpinner from "../../features/LoadingSpinner";
+import { productNameFromUrlString } from "../../features/utils";
+
+import { PATHS } from "../route-paths";
 
 import styles from "./product-styles.module.css";
 
@@ -187,7 +187,15 @@ function ProductPageHeaderDetails({
             {style != null ? (
               <tr>
                 <th scope="row">Style</th>
-                <td>{style}</td>
+                <td>
+                  <Link
+                    to={`${generatePath(PATHS.style, {
+                      styleId: style,
+                    })}`}
+                  >
+                    {style}
+                  </Link>
+                </td>
               </tr>
             ) : null}
             <tr>
