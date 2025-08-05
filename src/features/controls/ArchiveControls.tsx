@@ -29,7 +29,30 @@ import {
   TextFilterGroup,
 } from "./autocomplete-controls";
 
-function ArchiveDisplayControls() {
+type ArchiveDisplayControlsExplanationsProps = {
+  showImages: boolean;
+};
+function ArchiveDisplayControlsExplanations({
+  showImages,
+}: ArchiveDisplayControlsExplanationsProps) {
+  return showImages ? (
+    <FormText color="muted">
+      Switch to <i>Text</i> mode to see the drops as a textual table.
+    </FormText>
+  ) : (
+    <FormText color="muted">
+      <i>Images</i> mode shows the archive as an image grid.
+    </FormText>
+  );
+}
+
+type ArchiveDisplayControlsProps = {
+  showExplanations: boolean;
+};
+
+function ArchiveDisplayControls({
+  showExplanations,
+}: ArchiveDisplayControlsProps) {
   const dispatch = useControlsStateDispatch();
   const { showImages } = useControlsStateSelector((state) => state.controls);
   const buttonClicked = React.useCallback(
@@ -63,20 +86,14 @@ function ArchiveDisplayControls() {
           </Button>
         </ButtonGroup>
       </ButtonToolbar>
-      {showImages ? (
-        <FormText color="muted">
-          Switch to <i>Text</i> mode to see the drops as a textual table.
-        </FormText>
-      ) : (
-        <FormText color="muted">
-          <i>Images</i> mode shows the archive as an image grid.
-        </FormText>
+      {showExplanations && (
+        <ArchiveDisplayControlsExplanations showImages={showImages} />
       )}
     </>
   );
 }
 
-type ArchiveFiltersProps = {
+type ArchiveFiltersProps = Pick<ArchiveControlsProps, "showExplanations"> & {
   showCategoryFilters: boolean;
   summary: {
     colorUseCount: Record<string, number>;
@@ -84,8 +101,12 @@ type ArchiveFiltersProps = {
     textUseCount: Record<string, number>;
   };
 };
-function ArchiveFilters({ showCategoryFilters, summary }: ArchiveFiltersProps) {
-  const [expanded, setExpanded] = React.useState(false);
+function ArchiveFilters({
+  showCategoryFilters,
+  showExplanations,
+  summary,
+}: ArchiveFiltersProps) {
+  const [expanded, setExpanded] = React.useState(!showExplanations);
   const onExpand = React.useCallback(() => {
     // e.preventDefault();
     setExpanded(!expanded);
@@ -140,7 +161,7 @@ function ArchiveFilters({ showCategoryFilters, summary }: ArchiveFiltersProps) {
       </div>
       <div>
         <FormText color="muted">
-          {showCategoryFilters ? (
+          {expanded ? null : showCategoryFilters ? (
             <span>
               Use filters to focus on a specific set of drops by <i>Category</i>
               , <i>Fabric</i>, etc.
@@ -164,14 +185,19 @@ function ArchiveFilters({ showCategoryFilters, summary }: ArchiveFiltersProps) {
 
 interface ArchiveControlsProps extends ArchiveSummaryProps {
   showCategoryFilters?: boolean;
+  showExplanations?: boolean;
 }
 
 export default function ArchiveControls({
   data,
   showCategoryFilters,
+  showExplanations,
 }: ArchiveControlsProps) {
   if (showCategoryFilters == null) {
     showCategoryFilters = true;
+  }
+  if (showExplanations == null) {
+    showExplanations = true;
   }
   let summary = { colorUseCount: {}, fabricUseCount: {}, textUseCount: {} };
   if (data != null) {
@@ -198,13 +224,14 @@ export default function ArchiveControls({
     <>
       <Row key="display">
         <Col>
-          <ArchiveDisplayControls />
+          <ArchiveDisplayControls showExplanations={showExplanations} />
         </Col>
       </Row>
       <Row key="filters">
         <Col>
           <ArchiveFilters
             showCategoryFilters={showCategoryFilters}
+            showExplanations={showExplanations}
             summary={summary}
           />
         </Col>
