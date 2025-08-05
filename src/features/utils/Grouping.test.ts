@@ -18,7 +18,7 @@ describe("chronological grouping", () => {
       const groups = groupedByYearQuarter(releases);
       expect(groups.length).toEqual(1);
       const group = groups[0];
-      expect(group.name).toEqual("'18 Spring");
+      expect(group.name).toEqual("'25 Summer");
       expect(group.entries.length).toEqual(12);
     });
   });
