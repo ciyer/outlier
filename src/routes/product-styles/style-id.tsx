@@ -43,7 +43,11 @@ function StyleBody({ data, styleId }: StyleBodyProps) {
           <ArchiveSummary data={summaryData} />
         </Col>
         <Col md={{ size: 4, order: 0 }}>
-          <ArchiveControls data={summaryData} showCategoryFilters={false} />
+          <ArchiveControls
+            data={summaryData}
+            showCategoryFilters={false}
+            showExplanations={false}
+          />
         </Col>
       </Row>
       <Row>
