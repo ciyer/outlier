@@ -10,7 +10,7 @@ import js from "@eslint/js";
 
 export default [
   {
-    ignores: ["dist/**", "src-old/**"],
+    ignores: ["dist/**", "src-old/**", "vite.config.ts", "vitest.config.ts"],
   },
   cspellConfigs.recommended,
   js.configs.recommended,
