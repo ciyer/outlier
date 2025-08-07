@@ -55,7 +55,8 @@ function AppNavBar() {
               to="/"
               title={<img src={logo} alt="OIA Logo" width="30" height="27" />}
             />
-            <NavItem to="/" title="Archive" />
+            <NavItem to="/" title="Chronological" />
+            <NavItem to="/style/" title="Style" />
             <Dropdown nav isOpen={collectionOpen} toggle={collectionToggle}>
               <DropdownToggle nav caret>
                 Collections

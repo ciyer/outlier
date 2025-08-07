@@ -20,6 +20,7 @@ import {
   Ideas7,
 } from "./routes/collections";
 import ProductId from "./routes/products/product-id";
+import Styles from "./routes/product-styles/styles";
 import StyleId from "./routes/product-styles/style-id";
 import { PATH_STRUCTURE } from "./routes/route-paths";
 
@@ -52,7 +53,7 @@ const router = createBrowserRouter([
         path: PATH_STRUCTURE.styles.path,
         Component: Outlet,
         children: [
-          { index: true, element: <div>Select a style</div> },
+          { index: true, Component: Styles },
           {
             path: PATH_STRUCTURE.styles.children.style.path,
             Component: StyleId,

@@ -12,6 +12,7 @@ import { filterArchive } from "../features/controls/filter";
 import ArchiveWithImages from "../features/archive/ArchiveWithImages";
 import ArchiveWithText from "../features/archive/ArchiveWithText";
 import LoadingSpinner from "../features/LoadingSpinner";
+import { groupedByYearQuarter } from "../features/utils";
 
 type ArchiveProps = {
   data: DataRow[];
@@ -19,10 +20,11 @@ type ArchiveProps = {
 
 function ArchiveBody({ data }: ArchiveProps) {
   const { showImages } = useControlsStateSelector((state) => state.controls);
+  const groups = groupedByYearQuarter(data);
   return showImages ? (
-    <ArchiveWithImages data={data} />
+    <ArchiveWithImages groups={groups} />
   ) : (
-    <ArchiveWithText data={data} />
+    <ArchiveWithText groups={groups} />
   );
 }
 
