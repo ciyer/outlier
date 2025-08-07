@@ -3,7 +3,7 @@ import { Col, Row, Table } from "reactstrap";
 
 import { type DataRow } from "./Data";
 import { PATHS } from "../../routes/route-paths";
-import { groupedByYearQuarter, urlStringForProductName } from "../utils";
+import { urlStringForProductName } from "../utils";
 
 type ArchiveTextGroupRowProps = {
   entry: DataRow;
@@ -59,11 +59,13 @@ function ArchiveTextGroupRows({ group, showTitle }: ArchiveTextGroupRowsProps) {
 }
 
 interface ArchiveWithTextProps {
-  data: DataRow[];
+  groups: {
+    name: string;
+    entries: DataRow[];
+  }[];
 }
 
-export default function ArchiveWithText({ data }: ArchiveWithTextProps) {
-  const groups = groupedByYearQuarter(data);
+export default function ArchiveWithText({ groups }: ArchiveWithTextProps) {
   const showTitle = groups.length > 1;
   const tableHead = showTitle ? (
     <tr>

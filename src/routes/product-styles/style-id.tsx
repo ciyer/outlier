@@ -14,15 +14,17 @@ import ArchiveWithText from "../../features/archive/ArchiveWithText";
 import { useControlsStateSelector } from "../../features/controls/controls.slice";
 import { filterArchiveForStyle } from "../../features/controls/filter";
 import LoadingSpinner from "../../features/LoadingSpinner";
+import { groupedByYearQuarter } from "../../features/utils";
 
 import { PATHS } from "../route-paths";
 
 function ArchiveBody({ data }: Pick<StyleBodyProps, "data">) {
   const { showImages } = useControlsStateSelector((state) => state.controls);
+  const groups = groupedByYearQuarter(data);
   return showImages ? (
-    <ArchiveWithImages data={data} />
+    <ArchiveWithImages groups={groups} />
   ) : (
-    <ArchiveWithText data={data} />
+    <ArchiveWithText groups={groups} />
   );
 }
 

@@ -26,13 +26,18 @@ export function groupedByYearQuarter(data: DataRow[]) {
 
 export function groupedByStyle(data: DataRow[]) {
   if (data.length < 1) return [{ name: "Chronological", entries: data }];
-  const keyFunc = (d: DataRow) => d["Web Style"];
+  const keyFunc = (d: DataRow) => {
+    if (d["Web Style"] == null || d["Web Style"] === "") return "??";
+    const webStyle = d["Web Style"];
+    return webStyle.split("-")[0].trim(); // Remove any suffix like "-i2"
+  };
   // Group the data chronologically (by year, quarter)
   const groups = d3Collection
     .nest<DataRow, DataRow[]>()
     .key(keyFunc)
     .entries(data)
-    .map((g) => ({ name: g.key, entries: g.values as DataRow[] }));
+    .map((g) => ({ name: g.key, entries: g.values as DataRow[] }))
+    .filter((g) => g.name != null && g.name !== "??");
   return groups;
 }
 
