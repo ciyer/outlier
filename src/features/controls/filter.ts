@@ -14,7 +14,8 @@ function matchColor(row: DataRow, colors: string[]): boolean {
 }
 
 function matchFabrics(row: DataRow, fabrics: string[]): boolean {
-  const rowFabrics = row.Fabric?.split(",").map((f) => f.trim()) || [];
+  const rowFabrics =
+    row.Fabric?.split(",").map((f) => f.trim().toUpperCase()) || [];
   return (
     fabrics.length === 0 || fabrics.some((fab) => rowFabrics.includes(fab))
   );
@@ -52,6 +53,17 @@ export function filterArchive(
 
   return { full, filtered, topLevelFiltered };
 }
+
+export function filterArchiveForFabric(
+  full: DataRow[],
+  inputFabricId: string
+): FilterArchiveResult {
+  const fabricId = inputFabricId.trim().toUpperCase();
+  const filtered = full.filter((row) => matchFabrics(row, [fabricId]));
+
+  return { full: filtered, filtered, topLevelFiltered: filtered };
+}
+
 
 export function filterArchiveForStyle(
   full: DataRow[],

@@ -12,11 +12,11 @@ import ArchiveWithText from "../../features/archive/ArchiveWithText";
 import { useControlsStateSelector } from "../../features/controls/controls.slice";
 import { filterArchive } from "../../features/controls/filter";
 import LoadingSpinner from "../../features/LoadingSpinner";
-import { groupedByStyle } from "../../features/utils/utils";
+import { groupedByFabric } from "../../features/utils/utils";
 
-function ArchiveByStyle({ data }: Pick<StylesBodyProps, "data">) {
+function ArchiveByFabric({ data }: Pick<FabricsBodyProps, "data">) {
   const { showImages } = useControlsStateSelector((state) => state.controls);
-  const groups = groupedByStyle(data);
+  const groups = groupedByFabric(data);
   return showImages ? (
     <ArchiveWithImages groups={groups} />
   ) : (
@@ -24,11 +24,11 @@ function ArchiveByStyle({ data }: Pick<StylesBodyProps, "data">) {
   );
 }
 
-type StylesBodyProps = {
+type FabricsBodyProps = {
   data: DataRow[];
 };
 
-function StylesBody({ data }: StylesBodyProps) {
+function FabricsBody({ data }: FabricsBodyProps) {
   const { filters } = useControlsStateSelector((state) => state.controls);
   const summaryData = filterArchive(data, filters);
 
@@ -49,7 +49,7 @@ function StylesBody({ data }: StylesBodyProps) {
           {summaryData == null ? (
             <LoadingSpinner />
           ) : (
-            <ArchiveByStyle data={summaryData.filtered} />
+            <ArchiveByFabric data={summaryData.filtered} />
           )}
         </Col>
       </Row>
@@ -72,5 +72,5 @@ export default function ProductStyles() {
     );
   }
   const data = rawData.map(augmentWithReleaseDate);
-  return <StylesBody data={data} />;
+  return <FabricsBody data={data} />;
 }

@@ -41,6 +41,24 @@ export function groupedByStyle(data: DataRow[]) {
   return groups;
 }
 
+export function groupedByFabric(data: DataRow[]) {
+  if (data.length < 1) return [{ name: "Chronological", entries: data }];
+  const keyFunc = (d: DataRow) => {
+    if (d["Fabric"] == null || d["Fabric"] === "") return "??";
+    const fabric = d["Fabric"];
+    return fabric;
+  };
+  // Group the data chronologically (by year, quarter)
+  const groups = d3Collection
+    .nest<DataRow, DataRow[]>()
+    .key(keyFunc)
+    .entries(data)
+    .map((g) => ({ name: g.key, entries: g.values as DataRow[] }))
+    .filter((g) => g.name != null && g.name !== "??");
+  return groups;
+}
+
+
 export function productNameFromUrlString(urlString: string) {
   return urlString.replace(/%2F/g, "/").replace(/\+/g, " ");
 }

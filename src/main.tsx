@@ -19,9 +19,11 @@ import {
   Ideas6,
   Ideas7,
 } from "./routes/collections";
+import FabricId from "./routes/product-fabrics/fabric-id";
+import Fabrics from "./routes/product-fabrics/fabrics";
 import ProductId from "./routes/products/product-id";
-import Styles from "./routes/product-styles/styles";
 import StyleId from "./routes/product-styles/style-id";
+import Styles from "./routes/product-styles/styles";
 import { PATH_STRUCTURE } from "./routes/route-paths";
 
 import "./styles/index.scss";
@@ -46,6 +48,17 @@ const router = createBrowserRouter([
           {
             path: PATH_STRUCTURE.products.children.product.path,
             Component: ProductId,
+          },
+        ],
+      },
+      {
+        path: PATH_STRUCTURE.fabrics.path,
+        Component: Outlet,
+        children: [
+          { index: true, Component: Fabrics },
+          {
+            path: PATH_STRUCTURE.fabrics.children.fabric.path,
+            Component: FabricId,
           },
         ],
       },

@@ -17,7 +17,10 @@ import Histogram from "../../features/chart/Histogram";
 import BinnedScatter from "../../features/chart/BinnedScatter";
 import ReleaseImagesUnique from "../../features/images/ReleaseImagesUnique";
 import LoadingSpinner from "../../features/LoadingSpinner";
-import { productNameFromUrlString } from "../../features/utils";
+import {
+  productNameFromUrlString,
+  urlStringForProductName,
+} from "../../features/utils";
 
 import { PATHS } from "../route-paths";
 
@@ -182,7 +185,15 @@ function ProductPageHeaderDetails({
             </tr>
             <tr>
               <th scope="row">Fabric</th>
-              <td>{fabric}</td>
+              <td>
+                <Link
+                  to={`${generatePath(PATHS.fabric, {
+                    fabricId: urlStringForProductName(fabric),
+                  })}`}
+                >
+                  {fabric}
+                </Link>
+              </td>
             </tr>
             {style != null ? (
               <tr>
