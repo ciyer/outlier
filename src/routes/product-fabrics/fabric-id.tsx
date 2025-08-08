@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { Col, Row } from "reactstrap";
+import { useMatch, useNavigate } from "react-router";
 
 import {
   augmentWithReleaseDate,
@@ -10,13 +12,18 @@ import ArchiveWithImages from "../../features/archive/ArchiveWithImages";
 import ArchiveControls from "../../features/controls/ArchiveControls";
 import ArchiveWithText from "../../features/archive/ArchiveWithText";
 import { useControlsStateSelector } from "../../features/controls/controls.slice";
-import { filterArchive } from "../../features/controls/filter";
+import { filterArchiveForFabric } from "../../features/controls/filter";
 import LoadingSpinner from "../../features/LoadingSpinner";
-import { groupedByStyle } from "../../features/utils/utils";
+import {
+  groupedByYearQuarter,
+  productNameFromUrlString,
+} from "../../features/utils";
 
-function ArchiveByStyle({ data }: Pick<StylesBodyProps, "data">) {
+import { PATHS } from "../route-paths";
+
+function ArchiveBody({ data }: Pick<FabricBodyProps, "data">) {
   const { showImages } = useControlsStateSelector((state) => state.controls);
-  const groups = groupedByStyle(data);
+  const groups = groupedByYearQuarter(data);
   return showImages ? (
     <ArchiveWithImages groups={groups} />
   ) : (
@@ -24,16 +31,16 @@ function ArchiveByStyle({ data }: Pick<StylesBodyProps, "data">) {
   );
 }
 
-type StylesBodyProps = {
+type FabricBodyProps = {
   data: DataRow[];
+  fabricName: string;
 };
 
-function StylesBody({ data }: StylesBodyProps) {
-  const { filters } = useControlsStateSelector((state) => state.controls);
-  const summaryData = filterArchive(data, filters);
+function FabricBody({ data, fabricName }: FabricBodyProps) {
+  const summaryData = filterArchiveForFabric(data, fabricName);
 
   const releases = summaryData.filtered;
-  if (releases.length < 1) return <div>No releases found.</div>;
+  if (releases.length < 1) return <div>No releases found for {fabricName}</div>;
   return (
     <>
       <Row>
@@ -41,7 +48,11 @@ function StylesBody({ data }: StylesBodyProps) {
           <ArchiveSummary data={summaryData} />
         </Col>
         <Col md={{ size: 4, order: 0 }}>
-          <ArchiveControls data={summaryData} showExplanations={false} />
+          <ArchiveControls
+            data={summaryData}
+            showCategoryFilters={false}
+            showExplanations={false}
+          />
         </Col>
       </Row>
       <Row>
@@ -49,7 +60,7 @@ function StylesBody({ data }: StylesBodyProps) {
           {summaryData == null ? (
             <LoadingSpinner />
           ) : (
-            <ArchiveByStyle data={summaryData.filtered} />
+            <ArchiveBody data={summaryData.filtered} />
           )}
         </Col>
       </Row>
@@ -57,8 +68,15 @@ function StylesBody({ data }: StylesBodyProps) {
   );
 }
 
-export default function ProductStyles() {
+export default function ProductFabric() {
   const { data: rawData, isLoading } = useGetArchiveDataQuery();
+  const navigate = useNavigate();
+  const match = useMatch(PATHS.fabric);
+  useEffect(() => {
+    if (match == null || match.params.fabricId == null) {
+      navigate("/");
+    }
+  }, [match, navigate]);
 
   if (rawData == null || isLoading) {
     return (
@@ -71,6 +89,12 @@ export default function ProductStyles() {
       </>
     );
   }
+  // This is handled in the effect, but we still need to check here
+  if (match == null) return null;
+  const { params } = match;
+  const fabricId = params.fabricId;
+  if (fabricId == null) return null;
+  const fabricName = productNameFromUrlString(fabricId);
   const data = rawData.map(augmentWithReleaseDate);
-  return <StylesBody data={data} />;
+  return <FabricBody data={data} fabricName={fabricName} />;
 }

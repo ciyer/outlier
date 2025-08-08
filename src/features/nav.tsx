@@ -57,6 +57,7 @@ function AppNavBar() {
             />
             <NavItem to="/" title="Chronological" />
             <NavItem to="/style/" title="Style" />
+            <NavItem to="/fabric/" title="Fabric" />
             <Dropdown nav isOpen={collectionOpen} toggle={collectionToggle}>
               <DropdownToggle nav caret>
                 Collections
