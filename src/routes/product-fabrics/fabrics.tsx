@@ -13,14 +13,21 @@ import { useControlsStateSelector } from "../../features/controls/controls.slice
 import { filterArchive } from "../../features/controls/filter";
 import LoadingSpinner from "../../features/LoadingSpinner";
 import { groupedByFabric } from "../../features/utils/utils";
+import { PATH_STRUCTURE } from "../../routes/route-paths";
 
 function ArchiveByFabric({ data }: Pick<FabricsBodyProps, "data">) {
   const { showImages } = useControlsStateSelector((state) => state.controls);
   const groups = groupedByFabric(data);
   return showImages ? (
-    <ArchiveWithImages groups={groups} />
+    <ArchiveWithImages
+      groups={groups}
+      groupLinkUrl={PATH_STRUCTURE.fabrics.path}
+    />
   ) : (
-    <ArchiveWithText groups={groups} />
+    <ArchiveWithText
+      groups={groups}
+      groupLinkUrl={PATH_STRUCTURE.fabrics.path}
+    />
   );
 }
 

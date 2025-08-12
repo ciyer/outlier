@@ -1,6 +1,10 @@
 import { Link, generatePath } from "react-router";
 import { Col, Row } from "reactstrap";
 
+import type {
+  ArchiveGroupDisplayProps,
+  ArchiveGroupRowsProps,
+} from "./archive.types";
 import { type DataRow } from "./Data";
 import { PATHS } from "../../routes/route-paths";
 import { urlStringForProductName } from "../utils";
@@ -48,13 +52,19 @@ function ReleaseImagesTitled({ entries }: ReleaseImagesTitledProps) {
   return <div className="d-flex flex-wrap">{images}</div>;
 }
 
-type ArchiveTextGroupRowsProps = {
-  group: { name: string; entries: DataRow[] };
-  showTitle: boolean;
-};
-
-function ArchiveImageGroup({ group, showTitle }: ArchiveTextGroupRowsProps) {
-  const title = showTitle ? <h3>{group.name}</h3> : <span></span>;
+function ArchiveImageGroup({
+  group,
+  showTitle,
+  groupLinkUrl,
+}: ArchiveGroupRowsProps) {
+  const groupNameDisplay = groupLinkUrl ? (
+    <Link to={`${groupLinkUrl}/${urlStringForProductName(group.name)}`}>
+      {group.name}
+    </Link>
+  ) : (
+    <span>{group.name}</span>
+  );
+  const title = showTitle ? <h3>{groupNameDisplay}</h3> : <span></span>;
   return (
     <Row>
       <Col>
@@ -65,16 +75,18 @@ function ArchiveImageGroup({ group, showTitle }: ArchiveTextGroupRowsProps) {
   );
 }
 
-interface ArchiveWithTextProps {
-  groups: {
-    name: string;
-    entries: DataRow[];
-  }[];
-}
 
-export default function ArchiveWithImages({ groups }: ArchiveWithTextProps) {
+export default function ArchiveWithImages({
+  groups,
+  groupLinkUrl,
+}: ArchiveGroupDisplayProps) {
   const children = groups.map((g) => (
-    <ArchiveImageGroup key={g.name} group={g} showTitle={groups.length > 1} />
+    <ArchiveImageGroup
+      key={g.name}
+      group={g}
+      groupLinkUrl={groupLinkUrl}
+      showTitle={groups.length > 1}
+    />
   ));
   return children;
 }

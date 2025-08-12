@@ -1,18 +1,24 @@
 import { Link, generatePath } from "react-router";
 import { Col, Row, Table } from "reactstrap";
 
+import type {
+  ArchiveGroupDisplayProps,
+  ArchiveGroupRowsProps,
+} from "./archive.types";
 import { type DataRow } from "./Data";
 import { PATHS } from "../../routes/route-paths";
 import { urlStringForProductName } from "../utils";
 
 type ArchiveTextGroupRowProps = {
   entry: DataRow;
+  groupLinkUrl: string | undefined;
   index: number;
   name: string;
   showTitle: boolean;
 };
 function ArchiveTextGroupRow({
   entry,
+  groupLinkUrl,
   index,
   name,
   showTitle,
@@ -20,7 +26,16 @@ function ArchiveTextGroupRow({
   const price = entry.Price != null ? `$${entry.Price}` : "";
   let groupTitle = null;
   if (showTitle) {
-    groupTitle = index < 1 ? <th scope="row">{name}</th> : <td></td>;
+    const groupNameDisplay = groupLinkUrl ? (
+      <th scope="row">
+        <Link to={`${groupLinkUrl}/${urlStringForProductName(name)}`}>
+          {name}
+        </Link>
+      </th>
+    ) : (
+      <th scope="row">{name}</th>
+    );
+    groupTitle = index < 1 ? groupNameDisplay : <td></td>;
   }
   return (
     <tr>
@@ -40,17 +55,17 @@ function ArchiveTextGroupRow({
   );
 }
 
-type ArchiveTextGroupRowsProps = {
-  group: { name: string; entries: DataRow[] };
-  showTitle: boolean;
-};
-
-function ArchiveTextGroupRows({ group, showTitle }: ArchiveTextGroupRowsProps) {
+function ArchiveTextGroupRows({
+  group,
+  showTitle,
+  groupLinkUrl,
+}: ArchiveGroupRowsProps) {
   const entries = group.entries;
   return entries.map((d, i) => (
     <ArchiveTextGroupRow
       key={i}
       entry={d}
+      groupLinkUrl={groupLinkUrl}
       name={group.name}
       showTitle={showTitle}
       index={i}
@@ -58,14 +73,10 @@ function ArchiveTextGroupRows({ group, showTitle }: ArchiveTextGroupRowsProps) {
   ));
 }
 
-interface ArchiveWithTextProps {
-  groups: {
-    name: string;
-    entries: DataRow[];
-  }[];
-}
-
-export default function ArchiveWithText({ groups }: ArchiveWithTextProps) {
+export default function ArchiveWithText({
+  groups,
+  groupLinkUrl,
+}: ArchiveGroupDisplayProps) {
   const showTitle = groups.length > 1;
   const tableHead = showTitle ? (
     <tr>
@@ -85,6 +96,7 @@ export default function ArchiveWithText({ groups }: ArchiveWithTextProps) {
     <ArchiveTextGroupRows
       key={g.name}
       group={g}
+      groupLinkUrl={groupLinkUrl}
       showTitle={groups.length > 1}
     />
   ));
