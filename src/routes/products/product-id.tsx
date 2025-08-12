@@ -1,7 +1,13 @@
 import cx from "classnames";
 import { useEffect } from "react";
 import { Col, Row, Table } from "reactstrap";
-import { Link, generatePath, useMatch, useNavigate } from "react-router";
+import {
+  Link,
+  ScrollRestoration,
+  generatePath,
+  useMatch,
+  useNavigate,
+} from "react-router";
 
 import {
   ReleaseBaselineStats,
@@ -405,6 +411,7 @@ export default function Product() {
   const productName = productNameFromUrlString(productId ?? "");
   return (
     <>
+      <ScrollRestoration />
       <Row>
         <Col xs={12}>
           <ProductBody data={data} productName={productName} />

@@ -1,4 +1,5 @@
 import { Col, Row } from "reactstrap";
+import { ScrollRestoration } from "react-router";
 
 import {
   augmentWithReleaseDate,
@@ -43,6 +44,7 @@ function FabricsBody({ data }: FabricsBodyProps) {
   if (releases.length < 1) return <div>No releases found.</div>;
   return (
     <>
+      <ScrollRestoration />
       <Row>
         <Col md={{ size: 8, order: 1 }}>
           <ArchiveSummary data={summaryData} />

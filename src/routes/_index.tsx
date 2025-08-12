@@ -1,4 +1,5 @@
 import { Col, Row } from "reactstrap";
+import { ScrollRestoration } from "react-router";
 
 import {
   augmentWithReleaseDate,
@@ -35,6 +36,7 @@ export default function Archive() {
   const summaryData = data == null ? null : filterArchive(data, filters);
   return (
     <>
+      <ScrollRestoration />
       <Row>
         <Col md={{ size: 8, order: 1 }}>
           <ArchiveSummary data={summaryData} />

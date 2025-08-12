@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Col, Row } from "reactstrap";
-import { useMatch, useNavigate } from "react-router";
+import { ScrollRestoration, useMatch, useNavigate } from "react-router";
 
 import {
   augmentWithReleaseDate,
@@ -43,6 +43,7 @@ function FabricBody({ data, fabricName }: FabricBodyProps) {
   if (releases.length < 1) return <div>No releases found for {fabricName}</div>;
   return (
     <>
+      <ScrollRestoration />
       <Row>
         <Col md={{ size: 8, order: 1 }}>
           <ArchiveSummary data={summaryData} />
