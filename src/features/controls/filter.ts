@@ -50,7 +50,10 @@ export function filterArchive(
     matchCategories(row, filters.category)
   );
   filtered = topLevelFiltered.filter((row) =>
-    matchFabrics(row, filters.fabric)
+    matchFabrics(
+      row,
+      filters.fabric.map((d) => d.trim().toUpperCase())
+    )
   );
   filtered = filtered.filter((row) => matchColor(row, filters.color));
   filtered = filtered.filter((row) => matchText(row, filters.text));
