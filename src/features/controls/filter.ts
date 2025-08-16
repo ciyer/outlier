@@ -1,6 +1,6 @@
 import { type DataRow } from "../archive";
 
-import { type ArchiveControls } from "./controls.slice";
+import { Period, type ArchiveControls } from "./controls.slice";
 
 function matchCategories(row: DataRow, categories: string[]): boolean {
   return (
@@ -39,10 +39,14 @@ export type FilterArchiveResult = {
 
 export function filterArchive(
   full: DataRow[],
-  filters: ArchiveControls["filters"]
+  filters: ArchiveControls["filters"],
+  period: ArchiveControls["period"]
 ): FilterArchiveResult {
   let filtered = full;
-  const topLevelFiltered = full.filter((row) =>
+  if (period !== Period.ALL) {
+    filtered = filterArchiveForPeriod(full, period).filtered;
+  }
+  const topLevelFiltered = filtered.filter((row) =>
     matchCategories(row, filters.category)
   );
   filtered = topLevelFiltered.filter((row) =>
@@ -64,7 +68,6 @@ export function filterArchiveForFabric(
   return { full: filtered, filtered, topLevelFiltered: filtered };
 }
 
-
 export function filterArchiveForStyle(
   full: DataRow[],
   inputStyleId: string
@@ -73,4 +76,48 @@ export function filterArchiveForStyle(
   const filtered = full.filter((row) => matchStyle(row, styleId));
 
   return { full: filtered, filtered, topLevelFiltered: filtered };
+}
+
+export function filterArchiveForPeriod(
+  full: DataRow[],
+  period: Period
+): FilterArchiveResult {
+  const now = new Date();
+  let filtered = full;
+  const start =
+    period == Period.ALL
+      ? null
+      : period == Period.LAST_5_YEARS
+      ? // Start of the year 5 years ago
+        new Date(now.getFullYear() - 5, 0, 1)
+      : period == Period.CURRENT
+      ? // Start of last year
+        new Date(now.getFullYear() - 1, 0, 1)
+      : // Start of this year
+        new Date(now.getFullYear(), 0, 1);
+
+  filtered =
+    start == null
+      ? filtered
+      : filtered.filter(
+          (row) => row.releaseDate != null && row.releaseDate >= start
+        );
+  return { full, filtered, topLevelFiltered: filtered };
+}
+
+
+export function periodFilterDescription(period: Period): string | null {
+  if (period === Period.ALL) return null;
+  const now = new Date();
+  const start =
+    period == Period.LAST_5_YEARS
+      ? // Start of the year 5 years ago
+        new Date(now.getFullYear() - 5, 0, 1)
+      : period == Period.CURRENT
+      ? // Start of last year
+        new Date(now.getFullYear() - 1, 0, 1)
+      : // Start of this year
+        new Date(now.getFullYear(), 0, 1);
+
+  return `Jan ${start.getFullYear()} — today`;
 }

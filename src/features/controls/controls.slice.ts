@@ -9,6 +9,13 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../../app/store";
 
+
+export enum Period {
+  ALL = "all",
+  CURRENT = "current",
+  LAST_5_YEARS = "last_5_years",
+}
+
 export interface ArchiveControls {
   showImages: boolean;
   filters: {
@@ -22,6 +29,7 @@ export interface ArchiveControls {
     page: number;
     perPage: number;
   };
+  period: Period;
 }
 
 const initialState: ArchiveControls = {
@@ -34,6 +42,7 @@ const initialState: ArchiveControls = {
     text: [],
     color: [],
   },
+  period: Period.CURRENT,
 };
 
 export const controls = createSlice({
@@ -58,6 +67,12 @@ export const controls = createSlice({
       { payload: { page } }: PayloadAction<{ page: number }>
     ) => {
       state.paging.page = page;
+    },
+    setPeriod: (
+      state,
+      { payload: { period } }: PayloadAction<{ period: Period }>
+    ) => {
+      state.period = period;
     },
     setCategoryFilter: (
       state,
@@ -128,6 +143,7 @@ export const {
   clearAllFilters,
   setColorFilter,
   setPage,
+  setPeriod,
   setShowImages,
   setTextFilter,
   toggleCategoryFilter,

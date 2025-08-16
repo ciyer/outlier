@@ -31,9 +31,12 @@ function ArchiveBody({ data }: ArchiveProps) {
 
 export default function Archive() {
   const { data: rawData, isLoading } = useGetArchiveDataQuery();
-  const { filters } = useControlsStateSelector((state) => state.controls);
+  const { filters, period } = useControlsStateSelector(
+    (state) => state.controls
+  );
   const data = rawData ? rawData.map(augmentWithReleaseDate) : null;
-  const summaryData = data == null ? null : filterArchive(data, filters);
+  const summaryData =
+    data == null ? null : filterArchive(data, filters, period);
   return (
     <>
       <ScrollRestoration />
