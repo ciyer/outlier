@@ -37,7 +37,8 @@ type FabricBodyProps = {
 };
 
 function FabricBody({ data, fabricName }: FabricBodyProps) {
-  const summaryData = filterArchiveForFabric(data, fabricName);
+  const { filters } = useControlsStateSelector((state) => state.controls);
+  const summaryData = filterArchiveForFabric(data, fabricName, filters);
 
   const releases = summaryData.filtered;
   if (releases.length < 1) return <div>No releases found for {fabricName}</div>;

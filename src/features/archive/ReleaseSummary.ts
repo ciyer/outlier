@@ -152,13 +152,16 @@ export class ReleaseSummary {
       .thresholds(priceBins.slice(0, length - 1))(sortedPrices);
     length = priceBins.length;
     const priceHistogram = priceBins.slice(0, length - 1).map((d, i) => {
-      const priceBinAmt = toIntegerString(priceBins[i + 1]);
+      const priceBinAmt =
+        i == 0
+          ? toIntegerString(priceBins[i + 1] - 1)
+          : toIntegerString(priceBins[i + 1]);
       const name =
         i > 0
           ? i === length - 2
             ? `<=${priceBinAmt}`
             : `<${priceBinAmt}`
-          : `$${d}-${priceBins[i + 1] - 1}`;
+          : `$${d}-${priceBinAmt}`;
       const bin = { min: priceBins[i], max: priceBins[i + 1], count: 0 };
       if (rawPriceHist[i] != null) bin["count"] = rawPriceHist[i].length;
       return { name, ...bin };

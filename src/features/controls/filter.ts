@@ -63,22 +63,40 @@ export function filterArchive(
 
 export function filterArchiveForFabric(
   full: DataRow[],
-  inputFabricId: string
+  inputFabricId: string,
+  filters: ArchiveControls["filters"]
 ): FilterArchiveResult {
   const fabricId = inputFabricId.trim().toUpperCase();
-  const filtered = full.filter((row) => matchFabrics(row, [fabricId]));
+  const topLevelFiltered = full.filter((row) => matchFabrics(row, [fabricId]));
+  let filtered = topLevelFiltered.filter((row) =>
+    matchFabrics(
+      row,
+      filters.fabric.map((d) => d.trim().toUpperCase())
+    )
+  );
+  filtered = filtered.filter((row) => matchColor(row, filters.color));
+  filtered = filtered.filter((row) => matchText(row, filters.text));
 
-  return { full: filtered, filtered, topLevelFiltered: filtered };
+  return { full: topLevelFiltered, filtered, topLevelFiltered };
 }
 
 export function filterArchiveForStyle(
   full: DataRow[],
-  inputStyleId: string
+  inputStyleId: string,
+  filters: ArchiveControls["filters"]
 ): FilterArchiveResult {
   const styleId = inputStyleId.trim().toUpperCase();
-  const filtered = full.filter((row) => matchStyle(row, styleId));
+  const topLevelFiltered = full.filter((row) => matchStyle(row, styleId));
+  let filtered = topLevelFiltered.filter((row) =>
+    matchFabrics(
+      row,
+      filters.fabric.map((d) => d.trim().toUpperCase())
+    )
+  );
+  filtered = filtered.filter((row) => matchColor(row, filters.color));
+  filtered = filtered.filter((row) => matchText(row, filters.text));
 
-  return { full: filtered, filtered, topLevelFiltered: filtered };
+  return { full: topLevelFiltered, filtered, topLevelFiltered };
 }
 
 export function filterArchiveForPeriod(

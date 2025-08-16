@@ -34,7 +34,8 @@ type StyleBodyProps = {
 };
 
 function StyleBody({ data, styleId }: StyleBodyProps) {
-  const summaryData = filterArchiveForStyle(data, styleId);
+  const { filters } = useControlsStateSelector((state) => state.controls);
+  const summaryData = filterArchiveForStyle(data, styleId, filters);
 
   const releases = summaryData.filtered;
   if (releases.length < 1) return <div>No releases found for {styleId}</div>;
