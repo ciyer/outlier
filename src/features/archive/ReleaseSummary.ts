@@ -150,30 +150,6 @@ export class ReleaseSummary {
     const rawPriceHist = d3Array
       .bin()
       .thresholds(priceBins.slice(0, length - 1))(sortedPrices);
-    length = rawPriceHist.length;
-    const priceHistMap: Record<
-      number,
-      { min: number; max: number; count: number }
-    > = {};
-    rawPriceHist.forEach((d) => {
-      if (d.x0 == null || d.x1 == null) return;
-      priceHistMap[d.x0] = { min: d.x0, max: d.x1, count: d.length };
-    });
-    // Make sure the keys in the priceHistMap are from the bins, otherwise adjust
-    Object.keys(priceHistMap).forEach((key) => {
-      const k = +key;
-      const diffs = priceBins.map((b, i) => ({
-        idx: i,
-        bin: b,
-        origBin: k,
-        diff: Math.abs(b - k),
-      }));
-      diffs.sort((a, b) => a.diff - b.diff);
-      if (diffs[0].diff !== 0) {
-        const diff = diffs[0];
-        priceHistMap[diff.bin] = priceHistMap[diff.origBin];
-      }
-    });
     length = priceBins.length;
     const priceHistogram = priceBins.slice(0, length - 1).map((d, i) => {
       const priceBinAmt = toIntegerString(priceBins[i + 1]);
@@ -182,9 +158,9 @@ export class ReleaseSummary {
           ? i === length - 2
             ? `<=${priceBinAmt}`
             : `<${priceBinAmt}`
-          : `$${d}-${priceBinAmt}`;
+          : `$${d}-${priceBins[i + 1] - 1}`;
       const bin = { min: priceBins[i], max: priceBins[i + 1], count: 0 };
-      if (priceHistMap[d] != null) bin["count"] = priceHistMap[d]["count"];
+      if (rawPriceHist[i] != null) bin["count"] = rawPriceHist[i].length;
       return { name, ...bin };
     });
     const priceMedian = d3Array.median(prices);
