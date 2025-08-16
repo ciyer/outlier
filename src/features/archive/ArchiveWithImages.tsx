@@ -1,18 +1,24 @@
 import { Link, generatePath } from "react-router";
 import { Col, Row } from "reactstrap";
 
+import { PATHS } from "../../routes/route-paths";
+import { urlStringForProductName } from "../utils";
 import type {
   ArchiveGroupDisplayProps,
   ArchiveGroupRowsProps,
 } from "./archive.types";
 import { type DataRow } from "./Data";
-import { PATHS } from "../../routes/route-paths";
-import { urlStringForProductName } from "../utils";
+import { releaseDetailsSummary } from "./Utils";
 
 type ArchiveTextGroupRowProps = {
   entry: DataRow;
+  showDetails: boolean;
 };
-function ReleaseImageTitled({ entry }: ArchiveTextGroupRowProps) {
+function ReleaseImageTitled({ entry, showDetails }: ArchiveTextGroupRowProps) {
+  const detailsSummary = releaseDetailsSummary([entry]);
+  const details = showDetails ? (
+    <div>{detailsSummary.numberOfColors} colors</div>
+  ) : null;
   const src = entry["Image"];
   return (
     <div
@@ -37,17 +43,22 @@ function ReleaseImageTitled({ entry }: ArchiveTextGroupRowProps) {
           style={{ width: "100%", height: "100%" }}
         />
       </Link>
+      <div>{details}</div>
     </div>
   );
 }
 
 type ReleaseImagesTitledProps = {
   entries: DataRow[];
+  showDetails: boolean;
 };
 
-function ReleaseImagesTitled({ entries }: ReleaseImagesTitledProps) {
+function ReleaseImagesTitled({
+  entries,
+  showDetails,
+}: ReleaseImagesTitledProps) {
   const images = entries.map((r, i) => (
-    <ReleaseImageTitled key={i} entry={r} />
+    <ReleaseImageTitled key={i} entry={r} showDetails={showDetails} />
   ));
   return <div className="d-flex flex-wrap">{images}</div>;
 }
@@ -55,6 +66,7 @@ function ReleaseImagesTitled({ entries }: ReleaseImagesTitledProps) {
 function ArchiveImageGroup({
   group,
   showTitle,
+  showDetails,
   groupLinkUrl,
 }: ArchiveGroupRowsProps) {
   const groupNameDisplay = groupLinkUrl ? (
@@ -69,22 +81,26 @@ function ArchiveImageGroup({
     <Row>
       <Col>
         {title}
-        <ReleaseImagesTitled entries={group.entries} />
+        <ReleaseImagesTitled
+          entries={group.entries}
+          showDetails={showDetails}
+        />
       </Col>
     </Row>
   );
 }
 
-
 export default function ArchiveWithImages({
   groups,
   groupLinkUrl,
+  showDetails,
 }: ArchiveGroupDisplayProps) {
   const children = groups.map((g) => (
     <ArchiveImageGroup
       key={g.name}
       group={g}
       groupLinkUrl={groupLinkUrl}
+      showDetails={!!showDetails}
       showTitle={groups.length > 1}
     />
   ));

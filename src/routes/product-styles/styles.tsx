@@ -23,11 +23,13 @@ function ArchiveByStyle({ data }: Pick<StylesBodyProps, "data">) {
     <ArchiveWithImages
       groups={groups}
       groupLinkUrl={PATH_STRUCTURE.styles.path}
+      showDetails={true}
     />
   ) : (
     <ArchiveWithText
       groups={groups}
       groupLinkUrl={PATH_STRUCTURE.styles.path}
+      showDetails={true}
     />
   );
 }

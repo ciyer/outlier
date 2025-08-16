@@ -1,13 +1,14 @@
 import { Link, generatePath } from "react-router";
 import { Col, Row, Table } from "reactstrap";
 
+import { PATHS } from "../../routes/route-paths";
+import { urlStringForProductName } from "../utils";
 import type {
   ArchiveGroupDisplayProps,
   ArchiveGroupRowsProps,
 } from "./archive.types";
 import { type DataRow } from "./Data";
-import { PATHS } from "../../routes/route-paths";
-import { urlStringForProductName } from "../utils";
+import { releaseDetailsSummary } from "./Utils";
 
 type ArchiveTextGroupRowProps = {
   entry: DataRow;
@@ -15,6 +16,7 @@ type ArchiveTextGroupRowProps = {
   index: number;
   name: string;
   showTitle: boolean;
+  showDetails: boolean;
 };
 function ArchiveTextGroupRow({
   entry,
@@ -22,9 +24,11 @@ function ArchiveTextGroupRow({
   index,
   name,
   showTitle,
+  showDetails,
 }: ArchiveTextGroupRowProps) {
   const price = entry.Price != null ? `$${entry.Price}` : "";
   let groupTitle = null;
+  const detailsSummary = releaseDetailsSummary([entry]);
   if (showTitle) {
     const groupNameDisplay = groupLinkUrl ? (
       <th scope="row">
@@ -47,7 +51,13 @@ function ArchiveTextGroupRow({
           })}`}
         >
           {entry.Product}
-        </Link>
+        </Link>{" "}
+        {showDetails ? (
+          <span>
+            | {detailsSummary.numberOfColors}{" "}
+            {detailsSummary.numberOfColors > 1 ? "colors" : "color"}
+          </span>
+        ) : null}
       </td>
       <td>{price}</td>
       <td>{entry.Release}</td>
@@ -59,6 +69,7 @@ function ArchiveTextGroupRows({
   group,
   showTitle,
   groupLinkUrl,
+  showDetails,
 }: ArchiveGroupRowsProps) {
   const entries = group.entries;
   return entries.map((d, i) => (
@@ -68,6 +79,7 @@ function ArchiveTextGroupRows({
       groupLinkUrl={groupLinkUrl}
       name={group.name}
       showTitle={showTitle}
+      showDetails={showDetails}
       index={i}
     />
   ));
@@ -76,6 +88,7 @@ function ArchiveTextGroupRows({
 export default function ArchiveWithText({
   groups,
   groupLinkUrl,
+  showDetails,
 }: ArchiveGroupDisplayProps) {
   const showTitle = groups.length > 1;
   const tableHead = showTitle ? (
@@ -98,6 +111,7 @@ export default function ArchiveWithText({
       group={g}
       groupLinkUrl={groupLinkUrl}
       showTitle={groups.length > 1}
+      showDetails={!!showDetails}
     />
   ));
   return (

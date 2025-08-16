@@ -23,11 +23,13 @@ function ArchiveByFabric({ data }: Pick<FabricsBodyProps, "data">) {
     <ArchiveWithImages
       groups={groups}
       groupLinkUrl={PATH_STRUCTURE.fabrics.path}
+      showDetails={true}
     />
   ) : (
     <ArchiveWithText
       groups={groups}
       groupLinkUrl={PATH_STRUCTURE.fabrics.path}
+      showDetails={true}
     />
   );
 }

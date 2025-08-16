@@ -76,4 +76,13 @@ function outlierProductUrls(releases: DataRow[]) {
   return { outlierCcUrl, outlierNycUrl, archiveUrl };
 }
 
-export { releasesForProduct, outlierProductUrls };
+function releaseDetailsSummary(releases: DataRow[]) {
+  const numberOfColors = releases.reduce((acc, r) => {
+    const color = r["Colors"];
+    const number = color?.split(",").length;
+    return acc + (number ?? 0);
+  }, 0);
+  return { numberOfColors };
+}
+
+export { releasesForProduct, outlierProductUrls, releaseDetailsSummary };
