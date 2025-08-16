@@ -46,7 +46,7 @@ function FabricBody({ data, fabricName }: FabricBodyProps) {
       <ScrollRestoration />
       <Row>
         <Col md={{ size: 8, order: 1 }}>
-          <ArchiveSummary data={summaryData} />
+          <ArchiveSummary data={summaryData} hidePeriod />
         </Col>
         <Col md={{ size: 4, order: 0 }}>
           <ArchiveControls

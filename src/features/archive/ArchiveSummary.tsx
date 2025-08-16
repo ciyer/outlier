@@ -22,10 +22,12 @@ import {
 
 export type ArchiveSummaryProps = {
   data: FilterArchiveResult | null;
+  hidePeriod?: boolean;
 };
 
 type ArchiveSummaryMaximalProps = {
   data: NonNullable<ArchiveSummaryProps["data"]>;
+  hidePeriod: NonNullable<ArchiveSummaryProps["hidePeriod"]>;
 } & {
   summary: ComputedReleaseSummary | null;
 };
@@ -77,7 +79,11 @@ function ArchivePeriodControls() {
   );
 }
 
-function ArchiveSummaryMaximal({ data, summary }: ArchiveSummaryMaximalProps) {
+function ArchiveSummaryMaximal({
+  data,
+  summary,
+  hidePeriod,
+}: ArchiveSummaryMaximalProps) {
   if (summary == null) return <p></p>;
   const totalNumberOfEntries = data.full ? data.full.length : 0;
   const numberOfEntries = data.filtered ? data.filtered.length : 0;
@@ -90,7 +96,7 @@ function ArchiveSummaryMaximal({ data, summary }: ArchiveSummaryMaximalProps) {
   const priceHistogram = summary.priceHistogram;
   return (
     <>
-      <ArchivePeriodControls />
+      {!hidePeriod && <ArchivePeriodControls />}
       <p className="my-0">{sizeText}</p>
       <div className="d-flex flex-wrap">
         <div>
@@ -120,7 +126,11 @@ function ArchiveSummaryMaximal({ data, summary }: ArchiveSummaryMaximalProps) {
   );
 }
 
-function ArchiveSummaryMinimal({ data, summary }: ArchiveSummaryMaximalProps) {
+function ArchiveSummaryMinimal({
+  data,
+  summary,
+  hidePeriod,
+}: ArchiveSummaryMaximalProps) {
   if (summary == null) return <p></p>;
   const totalNumberOfEntries = data.full ? data.full.length : 0;
   const numberOfEntries = data.filtered ? data.filtered.length : 0;
@@ -130,13 +140,16 @@ function ArchiveSummaryMinimal({ data, summary }: ArchiveSummaryMaximalProps) {
       : `${numberOfEntries} of ${totalNumberOfEntries} entries`;
   return (
     <>
-      <ArchivePeriodControls />
+      {!hidePeriod && <ArchivePeriodControls />}
       <p className="my-0">{sizeText}</p>
     </>
   );
 }
 
-export default function ArchiveSummary({ data }: ArchiveSummaryProps) {
+export default function ArchiveSummary({
+  data,
+  hidePeriod,
+}: ArchiveSummaryProps) {
   if (data == null) return null;
   const baseline = new ReleaseBaselineStats(data.full).compute();
   const summary =
@@ -145,7 +158,19 @@ export default function ArchiveSummary({ data }: ArchiveSummaryProps) {
       : new ReleaseSummary(data.filtered, baseline).compute();
   const useMinimalSummary = false;
   if (useMinimalSummary)
-    return <ArchiveSummaryMinimal data={data} summary={summary} />;
+    return (
+      <ArchiveSummaryMinimal
+        data={data}
+        hidePeriod={!!hidePeriod}
+        summary={summary}
+      />
+    );
 
-  return <ArchiveSummaryMaximal data={data} summary={summary} />;
+  return (
+    <ArchiveSummaryMaximal
+      data={data}
+      hidePeriod={!!hidePeriod}
+      summary={summary}
+    />
+  );
 }
