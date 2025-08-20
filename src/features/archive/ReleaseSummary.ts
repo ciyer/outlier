@@ -51,7 +51,7 @@ export class ReleaseBaselineStats {
     this.releases = releases;
   }
 
-  priceBins() {
+  priceBins(): number[] {
     const releases = this.releases;
     const prices = toPrices(releases);
     const sortedPrices = prices.sort(d3Array.ascending);
@@ -61,10 +61,10 @@ export class ReleaseBaselineStats {
     const bins = quintiles
       .map((q) => d3Array.quantile(sortedPrices, q))
       .filter((d) => d != null);
-    return bins;
+    return bins as number[];
   }
 
-  compute() {
+  compute(): { priceBins: number[] } {
     const priceBins = this.priceBins();
     return { priceBins };
   }

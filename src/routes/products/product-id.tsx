@@ -144,11 +144,11 @@ function ProductPageHeaderLinks({
 function ProductPageHeaderDetails({
   releases,
 }: Pick<ProductPageHeaderProps, "releases">) {
-  const prices = releases
+  const prices: number[] = releases
     .map(function (d) {
       return d["Price"];
     })
-    .filter((p) => p != null);
+    .filter((p) => p != null) as number[];
   const minPrice = Math.min(...prices);
   const maxPrice = Math.max(...prices);
   const colors = releases
