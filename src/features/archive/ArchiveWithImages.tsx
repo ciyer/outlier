@@ -78,7 +78,7 @@ function ArchiveImageGroup({
   );
   const title = showTitle ? <h3>{groupNameDisplay}</h3> : <span></span>;
   return (
-    <Row>
+    <Row className="mb-5">
       <Col>
         {title}
         <ReleaseImagesTitled

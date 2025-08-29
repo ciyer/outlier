@@ -101,7 +101,7 @@ function ArchiveImageGroupByProduct({
     </h3>
   );
   return (
-    <Row>
+    <Row className="mb-5">
       <Col>
         {title}
         <ReleaseImagesByProductTitled entries={group.entries} />
