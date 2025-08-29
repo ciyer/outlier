@@ -8,8 +8,6 @@ import {
   Row,
 } from "reactstrap";
 
-import { CategoryFilterGroup } from "./basic-controls";
-import { computeFilterSummary } from "./filter-summary";
 
 import { type ArchiveSummaryProps } from "../archive/ArchiveSummary";
 import {
@@ -18,6 +16,7 @@ import {
   ReleaseTextSummary,
 } from "../archive/ReleaseSummary";
 
+import ArchivePeriodControls from "./ArchivePeriodControls";
 import ArchiveSortControls from "./ArchiveSortControls";
 import {
   clearAllFilters,
@@ -30,6 +29,8 @@ import {
   FabricFilterGroup,
   TextFilterGroup,
 } from "./autocomplete-controls";
+import { CategoryFilterGroup } from "./basic-controls";
+import { computeFilterSummary } from "./filter-summary";
 
 type ArchiveDisplayControlsExplanationsProps = {
   showImages: boolean;
@@ -189,6 +190,7 @@ function ArchiveFilters({
 }
 
 interface ArchiveControlsProps extends ArchiveSummaryProps {
+  hidePeriod?: boolean;
   showCategoryFilters?: boolean;
   showExplanations?: boolean;
   showSort?: boolean;
@@ -196,6 +198,7 @@ interface ArchiveControlsProps extends ArchiveSummaryProps {
 
 export default function ArchiveControls({
   data,
+  hidePeriod,
   showCategoryFilters,
   showExplanations,
   showSort,
@@ -229,6 +232,13 @@ export default function ArchiveControls({
   }
   return (
     <>
+      <Row>
+        <Col>
+          {!hidePeriod && (
+            <ArchivePeriodControls showExplanations={showExplanations} />
+          )}
+        </Col>
+      </Row>
       <Row>
         <Col>
           <ArchiveDisplayControls showExplanations={showExplanations} />

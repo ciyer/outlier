@@ -44,13 +44,14 @@ function StyleBody({ data, styleId }: StyleBodyProps) {
       <ScrollRestoration />
       <Row>
         <Col md={{ size: 8, order: 1 }}>
-          <ArchiveSummary data={summaryData} hidePeriod />
+          <ArchiveSummary data={summaryData} />
         </Col>
         <Col md={{ size: 4, order: 0 }}>
           <ArchiveControls
             data={summaryData}
             showCategoryFilters={false}
             showExplanations={false}
+            hidePeriod
           />
         </Col>
       </Row>
