@@ -165,9 +165,10 @@ function ProductPageHeaderDetails({
   const colorCount = colorSet.size;
   const fabric = releases[0]["Fabric"];
   const fabrics = fabric.split(",").map((f) => f.trim());
-  const webStyle = releases[0]["Web Style"];
-  const style =
-    webStyle != null && webStyle.length > 0 ? webStyle.split("-")[0] : null;
+  const webStyles = releases
+    .map((d) => d["Web Style"])
+    .filter((ws) => ws != null && ws.length > 0);
+  const releaseStyles = new Set(webStyles.map((d) => d.split("-")[0].trim()));
 
   return (
     <Row>
@@ -206,17 +207,22 @@ function ProductPageHeaderDetails({
                 ))}
               </td>
             </tr>
-            {style != null ? (
+            {releaseStyles.size > 0 ? (
               <tr>
                 <th scope="row">Style</th>
                 <td>
-                  <Link
-                    to={`${generatePath(PATHS.style, {
-                      styleId: style,
-                    })}`}
-                  >
-                    {style}
-                  </Link>
+                  {Array.from(releaseStyles).map((style, i) => (
+                    <span key={style}>
+                      {i > 0 ? ", " : ""}
+                      <Link
+                        to={`${generatePath(PATHS.style, {
+                          styleId: style,
+                        })}`}
+                      >
+                        {style}
+                      </Link>
+                    </span>
+                  ))}
                 </td>
               </tr>
             ) : null}
