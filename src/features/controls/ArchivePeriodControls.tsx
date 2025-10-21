@@ -79,11 +79,7 @@ export default function ArchivePeriodControls({
             </ButtonGroup>
           </ButtonToolbar>
         </div>
-        <div>
-          {periodDescription && (
-            <span className="ms-2">{periodDescription}</span>
-          )}
-        </div>
+        {periodDescription && <div className="ms-2">{periodDescription}</div>}
       </div>
       {showExplanations && (
         <ArchivePeriodControlsExplanations period={period} />
