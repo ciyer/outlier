@@ -43,6 +43,13 @@ function StyleBody({ data, styleId }: StyleBodyProps) {
     <>
       <ScrollRestoration />
       <Row>
+        <Col xs={12}>
+          <h4>
+            <span className="text-muted">Style</span> <span>{styleId}</span>
+          </h4>
+        </Col>
+      </Row>
+      <Row>
         <Col md={{ size: 8, order: 1 }}>
           <ArchiveSummary data={summaryData} />
         </Col>

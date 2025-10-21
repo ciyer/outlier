@@ -46,6 +46,13 @@ function FabricBody({ data, fabricName }: FabricBodyProps) {
     <>
       <ScrollRestoration />
       <Row>
+        <Col xs={12}>
+          <h4>
+            <span className="text-muted">Fabric</span> <span>{fabricName}</span>
+          </h4>
+        </Col>
+      </Row>
+      <Row>
         <Col md={{ size: 8, order: 1 }}>
           <ArchiveSummary data={summaryData} />
         </Col>
