@@ -1,5 +1,5 @@
 import { Col, Row } from "reactstrap";
-import { ScrollRestoration } from "react-router";
+import { ScrollRestoration, useSearchParams } from "react-router";
 
 import {
   augmentWithReleaseDate,
@@ -19,12 +19,16 @@ import LoadingSpinner from "../../features/LoadingSpinner";
 import { groupedByFabric, sortedByCount } from "../../features/utils/utils";
 import { PATH_STRUCTURE } from "../../routes/route-paths";
 
-function ArchiveByFabric({ data }: Pick<FabricsBodyProps, "data">) {
+interface ArchiveByFabricProps extends Pick<FabricsBodyProps, "data"> {
+  year: number | null;
+}
+
+function ArchiveByFabric({ data, year }: ArchiveByFabricProps) {
   const { showImages, sorting } = useControlsStateSelector(
     (state) => state.controls
   );
   let groups = groupedByFabric(data);
-  if (sorting == SortKind.COUNT) {
+  if (sorting == SortKind.COUNT || year != null) {
     groups = sortedByCount(groups);
   }
   return showImages ? (
@@ -48,13 +52,17 @@ function FabricsBody({ data }: FabricsBodyProps) {
   const { filters, period } = useControlsStateSelector(
     (state) => state.controls
   );
-  const summaryData = filterArchive(data, filters, period);
+  const [searchParams] = useSearchParams();
+  const yearParam = searchParams.get("year");
+  const year = yearParam != null ? parseInt(yearParam, 10) : null;
+  const summaryData = filterArchive(data, filters, period, year);
 
   const releases = summaryData.filtered;
   if (releases.length < 1) return <div>No releases found.</div>;
   return (
     <>
       <ScrollRestoration />
+      {year && <h1 className="mb-3">{year} Fabrics</h1>}
       <Row>
         <Col md={{ size: 8, order: 1 }}>
           <ArchiveSummary data={summaryData} />
@@ -62,8 +70,9 @@ function FabricsBody({ data }: FabricsBodyProps) {
         <Col md={{ size: 4, order: 0 }}>
           <ArchiveControls
             data={summaryData}
+            hidePeriod={year != null}
             showExplanations={false}
-            showSort={true}
+            showSort={year == null}
           />
         </Col>
       </Row>
@@ -72,7 +81,7 @@ function FabricsBody({ data }: FabricsBodyProps) {
           {summaryData == null ? (
             <LoadingSpinner />
           ) : (
-            <ArchiveByFabric data={summaryData.filtered} />
+            <ArchiveByFabric data={summaryData.filtered} year={year} />
           )}
         </Col>
       </Row>

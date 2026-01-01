@@ -40,10 +40,13 @@ export type FilterArchiveResult = {
 export function filterArchive(
   full: DataRow[],
   filters: ArchiveControls["filters"],
-  period: ArchiveControls["period"]
+  period: ArchiveControls["period"],
+  year: number | null = null
 ): FilterArchiveResult {
   let filtered = full;
-  if (period !== Period.ALL) {
+  if (year != null) {
+    filtered = filterArchiveForYear(full, year).filtered;
+  } else if (period !== Period.ALL) {
     filtered = filterArchiveForPeriod(full, period).filtered;
   }
   const topLevelFiltered = filtered.filter((row) =>
@@ -123,6 +126,16 @@ export function filterArchiveForPeriod(
       : filtered.filter(
           (row) => row.releaseDate != null && row.releaseDate >= start
         );
+  return { full, filtered, topLevelFiltered: filtered };
+}
+
+export function filterArchiveForYear(
+  full: DataRow[],
+  year: number
+): FilterArchiveResult {
+  const filtered = full.filter(
+    (row) => row.releaseDate != null && row.releaseDate.getFullYear() == year
+  );
   return { full, filtered, topLevelFiltered: filtered };
 }
 
